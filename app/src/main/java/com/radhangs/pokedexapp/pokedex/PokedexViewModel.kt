@@ -10,13 +10,11 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
-import com.radhangs.pokedexapp.repository.PokemonTypeRepository
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 // wouldn't it be nice if these were injectable :kekw:
 class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
-    private val pokemonTypeRepository = PokemonTypeRepository(apolloClient)
     private val pokedexRepository = PokedexRepository(apolloClient)
 
     // can this be put into a state class?
@@ -37,8 +35,7 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
     private fun fetchData() {
         viewModelScope.launch {
             try {
-                pokemonTypeRepository.fetchPokemonTypes()
-                pokedexRepository.fetchPokedex(pokemonTypeRepository)
+                pokedexRepository.fetchPokedex()
                 composablePokedexList.addAll(pokedexRepository.getPokedexPokemon())
                 loading.value = false
             } catch (e: ApolloException) {

@@ -1,0 +1,34 @@
+query PokemonDetail($pokemonV2PokemonByPkId: Int!) {
+    pokemon_v2_pokemon_by_pk(id: $pokemonV2PokemonByPkId) {
+        id
+        name
+        height
+        weight
+        pokemon_v2_pokemonstats {
+            base_stat
+            pokemon_v2_stat {
+                name
+            }
+        }
+        pokemon_v2_pokemontypes {
+            pokemon_v2_type {
+                name
+            }
+        }
+        pokemon_v2_pokemonspecy {
+            base_happiness
+            capture_rate
+            pokemon_v2_evolutionchain {
+                pokemon_v2_pokemonspecies {
+                    name
+                    id
+                    pokemon_v2_pokemons {
+                        pokemon_v2_pokemonsprites {
+                            sprites
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

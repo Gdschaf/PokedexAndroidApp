@@ -8,12 +8,12 @@ import com.radhangs.pokedexapp.model.PokedexPresentationModel
 class PokedexRepository(private val apolloClient: ApolloClient) {
     private var pokedexPokemon: List<PokedexPresentationModel>? = null
 
-    suspend fun fetchPokedex(typeRepository: PokemonTypeRepository) {
+    suspend fun fetchPokedex() {
         val response = apolloClient.query(PokedexQuery()).execute()
         val data = response.data
         data?.pokemon_v2_pokemon?.let { listOfPokemon ->
             pokedexPokemon = listOfPokemon.map {
-                PokedexPresentationModel.fromNetworkData(it, typeRepository)
+                PokedexPresentationModel.fromNetworkData(it)
             }
         }
     }

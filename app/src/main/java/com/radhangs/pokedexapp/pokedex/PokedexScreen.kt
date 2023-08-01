@@ -1,5 +1,6 @@
 package com.radhangs.pokedexapp.pokedex
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +25,10 @@ import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import com.radhangs.pokedexapp.R
+import com.radhangs.pokedexapp.pokemondetail.PokemonDetailIntent
 import com.radhangs.pokedexapp.shared.Constants
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromUrl
@@ -34,9 +36,11 @@ import com.radhangs.pokedexapp.shared.Loading
 import com.radhangs.pokedexapp.shared.apolloClient
 
 @Composable
-fun Pokedex(context: ViewModelStoreOwner) {
-    val pokedexViewModel = ViewModelProvider(context, PokedexViewModelFactory(apolloClient())).get(
-        PokedexViewModel::class.java)
+fun Pokedex(context: ComponentActivity) {
+    val pokedexViewModel = ViewModelProvider(
+        context,
+        PokedexViewModelFactory(apolloClient())
+    )[PokedexViewModel::class.java]
 
     if(pokedexViewModel.isLoading().value) {
         Loading()
@@ -52,7 +56,9 @@ fun Pokedex(context: ViewModelStoreOwner) {
             contentPadding = PaddingValues(16.dp)
         ) {
             items(pokedexViewModel.getLazyListData()) {item ->
-                PokedexCard(item)
+                PokedexCard(item) {
+                    startActivity(context, context.PokemonDetailIntent(item.pokemonId), null)
+                }
             }
         }
     }
@@ -60,11 +66,12 @@ fun Pokedex(context: ViewModelStoreOwner) {
 
 // this could be cleaned up tbh
 @Composable
-fun PokedexCard(item: PokedexPresentationModel) {
+fun PokedexCard(item: PokedexPresentationModel, onPokemonClicked: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 8.dp) // todo, add this padding somewhere, dimen?
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onPokemonClicked() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         PokedexSprite(spriteUri = item.spriteUri)
@@ -73,7 +80,7 @@ fun PokedexCard(item: PokedexPresentationModel) {
             modifier = Modifier.padding(start = 8.dp, end = 8.dp), // todo figure out padding and fine it somewhere
             style = TextStyle(fontSize = 25.sp, color = colorResource(id = R.color.text_color) // todo fine a place to define text sizes that isn't the dimen file
         ))
-        PokemonTypes(item.pokemonPresentationTypes)
+        PokemonTypes(item.pokemonTypes)
     }
 }
 
@@ -101,6 +108,7 @@ fun PokedexSprite(spriteUri: String?) {
     }
 }
 
+// make reusable so we can use it on the details page
 @Composable
 fun PokemonTypes(pokemonPresentationTypes: PokemonPresentationTypes) {
     Row (

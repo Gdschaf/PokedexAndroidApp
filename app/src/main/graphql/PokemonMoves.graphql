@@ -1,0 +1,23 @@
+query PokemonMoves($pokemonV2PokemonByPkId: Int!) {
+    pokemon_v2_pokemon_by_pk(id: $pokemonV2PokemonByPkId) {
+        pokemon_v2_pokemonmoves {
+            pokemon_v2_move {
+                name
+                accuracy
+                pp
+                power
+                pokemon_v2_type {
+                    name
+                    id
+                }
+                pokemon_v2_movedamageclass {
+                    name
+                }
+            }
+            pokemon_v2_movelearnmethod {
+                name
+            }
+            level
+        }
+    }
+}

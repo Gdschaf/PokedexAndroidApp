@@ -1,8 +1,7 @@
 package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokedexQuery
-import com.radhangs.pokedexapp.PokedexQuery.Pokemon_v2_pokemontype
-import com.radhangs.pokedexapp.repository.PokemonTypeRepository
+import com.radhangs.pokedexapp.PokemonDetailQuery
 
 // this is named too similarly to the PokemonTypes enum...
 data class PokemonPresentationTypes(
@@ -13,9 +12,17 @@ data class PokemonPresentationTypes(
     {
         val empty = PokemonPresentationTypes(PokemonType.NORMAL)
 
-        fun fromNetworkData(
-            listOfTypes: List<Pokemon_v2_pokemontype>?,
-            typeRepository: PokemonTypeRepository
+        // todo, this isn't the best pattern, maybe figure out something else?
+        fun fromDetailsNetworkData(
+            listOfTypes: List<PokemonDetailQuery.Pokemon_v2_pokemontype>
+        ) = fromPokedexNetworkData(
+            listOfTypes.map {
+                PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = it.pokemon_v2_type?.name ?: ""))
+            }
+        )
+
+        fun fromPokedexNetworkData(
+            listOfTypes: List<PokedexQuery.Pokemon_v2_pokemontype>?
         ): PokemonPresentationTypes {
             if(listOfTypes.isNullOrEmpty())
                 return empty
@@ -31,8 +38,8 @@ data class PokemonPresentationTypes(
             var secondType: PokemonType? = null
             for(i in listOfTypes.indices)
             {
-                listOfTypes[i].type_id?.let {id ->
-                    val typeString = typeRepository.getPokemonTypeById(id)
+                listOfTypes[i].pokemon_v2_type?.let {type ->
+                    val typeString = type.name
                     if(typeString.isNotEmpty())
                     {
                         when(i)
@@ -55,21 +62,21 @@ data class PokemonPresentationTypes(
 // not terrible, could add some helper functions to help with ui
 // this is essentially what will be used by the lazy list for the main page
 data class PokedexPresentationModel(
+    val pokemonId: Int,
     val pokemonName: String,
-    val pokemonPresentationTypes: PokemonPresentationTypes,
+    val pokemonTypes: PokemonPresentationTypes,
     val spriteUri: String?
 ) {
     companion object
     {
         fun fromNetworkData(
-            pokemon: PokedexQuery.Pokemon_v2_pokemon,
-            typeRepository: PokemonTypeRepository
+            pokemon: PokedexQuery.Pokemon_v2_pokemon
         ) : PokedexPresentationModel =
             PokedexPresentationModel(
+                pokemonId = pokemon.id,
                 pokemonName = capitalizeFirstLetter(pokemon.name),
-                pokemonPresentationTypes = PokemonPresentationTypes.fromNetworkData(
-                    pokemon.pokemon_v2_pokemontypes,
-                    typeRepository
+                pokemonTypes = PokemonPresentationTypes.fromPokedexNetworkData(
+                    pokemon.pokemon_v2_pokemontypes
                 ),
                 spriteUri = getFrontDefaultSprite(pokemon.pokemon_v2_pokemonsprites.first().sprites)
             )
