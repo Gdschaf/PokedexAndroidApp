@@ -12,6 +12,7 @@ import com.radhangs.pokedexapp.ui.theme.PokedexAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             PokedexAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -19,10 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.background_primary)
                 ) {
-                    // had to move this here, it was causing issues once it wasn't loading any more, it'd recreate the view model every time
-                    // pulling this outside of that scope fixed it but it ain't perfect. there's a better way to do this
-                    val pokedexViewModel = PokedexViewModel(apolloClient())
-                    Pokedex(pokedexViewModel)
+                    Pokedex(this)
                 }
             }
         }

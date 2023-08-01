@@ -1,5 +1,7 @@
 package com.radhangs.pokedexapp
 
+import android.content.Context
+import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +16,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.model.PokemonPresentationTypes
@@ -25,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import coil.compose.rememberAsyncImagePainter
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 
 // could be used for testing, and should be
 val test: List<PokedexPresentationModel> = listOf(
@@ -34,12 +40,14 @@ val test: List<PokedexPresentationModel> = listOf(
 )
 
 @Composable
-fun Pokedex(pokedexViewModel: PokedexViewModel) {
+fun Pokedex(context: ViewModelStoreOwner) {
+    val pokedexViewModel = ViewModelProvider(context, PokedexViewModelFactory(apolloClient())).get(PokedexViewModel::class.java)
+
     if(pokedexViewModel.isLoading().value) {
         Loading()
     }
     else if(pokedexViewModel.hasError().value) {
-        ErrorTryAgain()
+        ErrorTryAgain(pokedexViewModel::retry)
     }
     else {
         LazyColumn(
@@ -53,6 +61,7 @@ fun Pokedex(pokedexViewModel: PokedexViewModel) {
     }
 }
 
+// this could be cleaned up tbh
 @Composable
 fun PokedexCard(item: PokedexPresentationModel) {
     Row(
@@ -126,6 +135,26 @@ fun Loading() {
 
 // also reusable
 @Composable
-fun ErrorTryAgain() {
-
+fun ErrorTryAgain(onRetryClicked: () -> Unit) {
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        // show an exclamation point
+        Image(
+            contentDescription = null,
+            painter = painterResource(R.drawable.alert_circle),
+            modifier = Modifier.size(width = 100.dp, height = 100.dp), // TODO add this to the values xml
+            colorFilter = ColorFilter.tint(colorResource(id = R.color.primary_color))
+        )
+        // show an error: something went wrong
+        Text(
+            text = "Something went wrong.",
+            style = TextStyle(fontSize = 20.sp, color = colorResource(id = R.color.text_color)),
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp) // TODO add this to the values xml
+        )
+        // show a retry button, figure out callbacks for that
+        Button(onClick = { onRetryClicked() } ) {
+            Text(
+                text = "Retry"
+            )
+        }
+    }
 }
