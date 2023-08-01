@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- retro palette colors -->
+    <color name="light_FDF5E1">#FDF5E1</color>
+    <color name="dark_005582">#005582</color>
+    <color name="red_FF4C8B">#FF4C8B</color>
+    <color name="yellow_FFB600">#FFB600</color>
+    <color name="blue_00BBE0">#00BBE0</color>
+    <color name="purple_C380FF">#C380FF</color>
+    <color name="green_00C9B2">#00C9B2</color>
+    <color name="dark_gray">#FFFFFF</color>
+    <color name="light_gray">#FFFFFF</color>
 </resources>

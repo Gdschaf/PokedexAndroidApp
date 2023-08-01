@@ -1,12 +1,12 @@
 query Pokedex {
-  pokemon_v2_pokemonsprites {
-    pokemon_v2_pokemon {
-      name
-      id
-      pokemon_v2_pokemontypes {
-        type_id
-      }
+  pokemon_v2_pokemon {
+    id
+    name
+    pokemon_v2_pokemontypes {
+      type_id
     }
-    sprites
+    pokemon_v2_pokemonsprites {
+      sprites
+    }
   }
 }

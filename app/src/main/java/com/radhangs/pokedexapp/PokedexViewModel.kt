@@ -1,6 +1,8 @@
 package com.radhangs.pokedexapp
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
@@ -17,12 +19,15 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
 
     // can this be put into a state class?
     private val composablePokedexList = mutableStateListOf<PokedexPresentationModel>()
+    private val loading = mutableStateOf(true)
 
     init {
         fetchData()
     }
 
     fun getLazyListData() = composablePokedexList
+
+    fun isLoading(): State<Boolean> = loading
 
     private fun fetchData() {
         viewModelScope.launch {
@@ -31,6 +36,7 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
                 // not sure if i need to put a break here to wait or not... we'll find out!
                 pokedexRepository.fetchPokedex(pokemonTypeRepository)
                 composablePokedexList.addAll(pokedexRepository.getPokedexPokemon())
+                loading.value = false
             } catch (e: ApolloException) {
                 // TODO handle errors
             }
