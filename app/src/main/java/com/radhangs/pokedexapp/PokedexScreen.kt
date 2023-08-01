@@ -35,22 +35,13 @@ val test: List<PokedexPresentationModel> = listOf(
 
 @Composable
 fun Pokedex(pokedexViewModel: PokedexViewModel) {
-    if(pokedexViewModel.isLoading().value)
-    {
-        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(50.dp, 50.dp),
-                // color = colorResource(id = R.color.primary_color) //kinda silly, kinda cool, idk
-            ) //put into values resource file
-            Text(
-                text = "Loading...",
-                modifier = Modifier.padding(start = 16.dp),
-                style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 25.sp)
-            )
-        }
+    if(pokedexViewModel.isLoading().value) {
+        Loading()
     }
-    else
-    {
+    else if(pokedexViewModel.hasError().value) {
+        ErrorTryAgain()
+    }
+    else {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
@@ -72,8 +63,13 @@ fun PokedexCard(item: PokedexPresentationModel) {
     ) {
         if(item.spriteUri != null)
         {
-            // load sprite image here, find the proper domain first though...
-            SpriteImageFromUri(item.spriteUri)
+            val domain = "https://raw.githubusercontent.com/PokeAPI/sprites/master/" // define this somewhere?
+            val url = item.spriteUri.replace("/media", domain) // the sprite paths are honestly, a bit wack.
+            ImageFromUrl(
+                url = url,
+                modifier = Modifier.size(75.dp, 75.dp),
+                contentDescription = "Pokemon sprite"
+            )
         }
         Text(
             text = item.pokemonName,
@@ -101,14 +97,35 @@ fun PokedexCard(item: PokedexPresentationModel) {
     }
 }
 
+// reusable
 @Composable
-fun SpriteImageFromUri(uri: String) {
-    val domain = "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
-    val url = uri.replace("/media", domain) // the sprite paths are honestly, a bit wack.
+fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
     val painter = rememberAsyncImagePainter(model = url)
     Image(
         painter = painter,
-        contentDescription = "Pokemon sprite", // TODO replace with proper content description?
-        modifier = Modifier.size(75.dp, 75.dp)
+        contentDescription = contentDescription,
+        modifier = modifier
     )
+}
+
+// reusable on the other page as well
+@Composable
+fun Loading() {
+    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(50.dp, 50.dp),
+            // color = colorResource(id = R.color.primary_color) //kinda silly, kinda cool, idk
+        ) //put into values resource file
+        Text(
+            text = "Loading...",
+            modifier = Modifier.padding(start = 16.dp),
+            style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 25.sp)
+        )
+    }
+}
+
+// also reusable
+@Composable
+fun ErrorTryAgain() {
+
 }

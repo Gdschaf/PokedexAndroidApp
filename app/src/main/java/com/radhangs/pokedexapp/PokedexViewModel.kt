@@ -20,6 +20,7 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
     // can this be put into a state class?
     private val composablePokedexList = mutableStateListOf<PokedexPresentationModel>()
     private val loading = mutableStateOf(true)
+    private val error = mutableStateOf(false)
 
     init {
         fetchData()
@@ -29,17 +30,24 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
 
     fun isLoading(): State<Boolean> = loading
 
+    fun hasError(): State<Boolean> = error
+
     private fun fetchData() {
         viewModelScope.launch {
             try {
                 pokemonTypeRepository.fetchPokemonTypes()
-                // not sure if i need to put a break here to wait or not... we'll find out!
                 pokedexRepository.fetchPokedex(pokemonTypeRepository)
                 composablePokedexList.addAll(pokedexRepository.getPokedexPokemon())
                 loading.value = false
             } catch (e: ApolloException) {
-                // TODO handle errors
+                error.value = true
             }
         }
+    }
+
+    fun retry() {
+        loading.value = true
+        error.value = false
+        fetchData()
     }
 }
