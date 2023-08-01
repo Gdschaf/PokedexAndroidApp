@@ -1,4 +1,4 @@
-package com.radhangs.pokedexapp
+package com.radhangs.pokedexapp.pokedex
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf

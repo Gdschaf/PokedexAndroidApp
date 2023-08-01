@@ -1,4 +1,4 @@
-package com.radhangs.pokedexapp
+package com.radhangs.pokedexapp.pokedex
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.ui.theme.PokedexAppTheme
 
-class MainActivity : ComponentActivity() {
+class PokedexActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

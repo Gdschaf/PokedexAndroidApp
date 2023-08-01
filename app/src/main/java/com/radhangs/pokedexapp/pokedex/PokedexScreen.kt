@@ -1,10 +1,8 @@
-package com.radhangs.pokedexapp
+package com.radhangs.pokedexapp.pokedex
 
-import android.content.Context
-import android.graphics.fonts.FontStyle
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,21 +14,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.model.PokemonPresentationTypes
 import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import coil.compose.rememberAsyncImagePainter
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import com.radhangs.pokedexapp.R
+import com.radhangs.pokedexapp.shared.ErrorTryAgain
+import com.radhangs.pokedexapp.shared.ImageFromUrl
+import com.radhangs.pokedexapp.shared.Loading
+import com.radhangs.pokedexapp.shared.apolloClient
 
 // could be used for testing, and should be
 val test: List<PokedexPresentationModel> = listOf(
@@ -41,7 +40,8 @@ val test: List<PokedexPresentationModel> = listOf(
 
 @Composable
 fun Pokedex(context: ViewModelStoreOwner) {
-    val pokedexViewModel = ViewModelProvider(context, PokedexViewModelFactory(apolloClient())).get(PokedexViewModel::class.java)
+    val pokedexViewModel = ViewModelProvider(context, PokedexViewModelFactory(apolloClient())).get(
+        PokedexViewModel::class.java)
 
     if(pokedexViewModel.isLoading().value) {
         Loading()
@@ -51,7 +51,7 @@ fun Pokedex(context: ViewModelStoreOwner) {
     }
     else {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().clickable {  },
             contentPadding = PaddingValues(16.dp)
         ) {
             items(pokedexViewModel.getLazyListData()) {item ->
@@ -102,59 +102,6 @@ fun PokedexCard(item: PokedexPresentationModel) {
                     modifier = Modifier.size(25.dp, 25.dp), // move to a sizes values resource file
                 )
             }
-        }
-    }
-}
-
-// reusable
-@Composable
-fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
-    val painter = rememberAsyncImagePainter(model = url)
-    Image(
-        painter = painter,
-        contentDescription = contentDescription,
-        modifier = modifier
-    )
-}
-
-// reusable on the other page as well
-@Composable
-fun Loading() {
-    Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(50.dp, 50.dp),
-            // color = colorResource(id = R.color.primary_color) //kinda silly, kinda cool, idk
-        ) //put into values resource file
-        Text(
-            text = "Loading...",
-            modifier = Modifier.padding(start = 16.dp),
-            style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 25.sp)
-        )
-    }
-}
-
-// also reusable
-@Composable
-fun ErrorTryAgain(onRetryClicked: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        // show an exclamation point
-        Image(
-            contentDescription = null,
-            painter = painterResource(R.drawable.alert_circle),
-            modifier = Modifier.size(width = 100.dp, height = 100.dp), // TODO add this to the values xml
-            colorFilter = ColorFilter.tint(colorResource(id = R.color.primary_color))
-        )
-        // show an error: something went wrong
-        Text(
-            text = "Something went wrong.",
-            style = TextStyle(fontSize = 20.sp, color = colorResource(id = R.color.text_color)),
-            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp) // TODO add this to the values xml
-        )
-        // show a retry button, figure out callbacks for that
-        Button(onClick = { onRetryClicked() } ) {
-            Text(
-                text = "Retry"
-            )
         }
     }
 }

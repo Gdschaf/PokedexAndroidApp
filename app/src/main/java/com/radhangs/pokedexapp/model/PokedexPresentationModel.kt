@@ -76,6 +76,8 @@ data class PokedexPresentationModel(
     }
 }
 
+// TODO the below functions could either be put into their respective classes they help or a larger helper class that's more global?
+
 fun capitalizeFirstLetter(string: String?) : String =
     string?.let { s ->
         s.replaceFirstChar { char -> char.uppercase() }

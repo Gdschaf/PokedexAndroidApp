@@ -1,4 +1,4 @@
-package com.radhangs.pokedexapp
+package com.radhangs.pokedexapp.shared
 
 import com.apollographql.apollo3.ApolloClient
 
