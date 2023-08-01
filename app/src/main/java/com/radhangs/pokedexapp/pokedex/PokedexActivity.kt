@@ -13,10 +13,8 @@ import com.radhangs.pokedexapp.ui.theme.PokedexAppTheme
 class PokedexActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             PokedexAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.background_primary)

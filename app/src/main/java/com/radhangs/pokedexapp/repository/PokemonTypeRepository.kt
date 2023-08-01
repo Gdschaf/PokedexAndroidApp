@@ -3,7 +3,7 @@ package com.radhangs.pokedexapp.repository
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.PokemonTypesQuery
 
-// if we use dagger, we can easily make this injectable
+// if we use dagger, we can easily make this injectable, then we wouldn't have to pass it into the view models...
 class PokemonTypeRepository(private val apolloClient: ApolloClient) {
     private var pokemonTypeMap: Map<Int, String>? = null
 

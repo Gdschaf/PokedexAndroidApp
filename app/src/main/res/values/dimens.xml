@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sprite_size">75dp</dimen>
+    <dimen name="type_icon_size">25dp</dimen>
+    <dimen name="loading_progress_size">50dp</dimen>
+    <dimen name="error_icon_size">100dp</dimen>
+</resources>

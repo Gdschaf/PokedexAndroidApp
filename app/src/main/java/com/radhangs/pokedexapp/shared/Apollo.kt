@@ -11,7 +11,7 @@ fun apolloClient(): ApolloClient {
     }
 
     instance = ApolloClient.Builder()
-        .serverUrl("https://beta.pokeapi.co/graphql/v1beta")
+        .serverUrl(Constants.POKEAPI_GRAPHQL_URL)
         .build()
 
     return instance!!

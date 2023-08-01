@@ -4,7 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 
-// make injectable?
+// make injectable? then I wouldn't need to pass it into the view models...
 class PokedexRepository(private val apolloClient: ApolloClient) {
     private var pokedexPokemon: List<PokedexPresentationModel>? = null
 

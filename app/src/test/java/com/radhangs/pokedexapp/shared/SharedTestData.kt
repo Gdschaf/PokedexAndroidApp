@@ -40,3 +40,10 @@ val mockPresentationData = listOf(
         spriteUri = "/media/sprites/pokemon/1.png"
     )
 )
+
+// could be used for testing, and should be
+val test: List<PokedexPresentationModel> = listOf(
+    PokedexPresentationModel(pokemonName = "Bulbasaur", pokemonPresentationTypes = PokemonPresentationTypes.empty, null),
+    PokedexPresentationModel(pokemonName = "Ivysaur", pokemonPresentationTypes = PokemonPresentationTypes.empty, null),
+    PokedexPresentationModel(pokemonName = "Venusaur", pokemonPresentationTypes = PokemonPresentationTypes.empty, null),
+)
