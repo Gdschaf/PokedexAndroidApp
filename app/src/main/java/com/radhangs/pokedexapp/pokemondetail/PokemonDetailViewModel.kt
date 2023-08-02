@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.model.PokemonMovePresentationData
 import com.radhangs.pokedexapp.repository.PokemonDetailRepository
@@ -41,17 +40,19 @@ class PokemonDetailViewModel(
 
     private fun fetchData() {
         viewModelScope.launch {
-            try {
-                // i'm gonna try to load all the details and image of the pokemon once we get most of the info
-                pokemonDetailRepository.fetchPokemonDetails(pokemonId)
-                // todo, thanks, i hate it.
-                pokemonDetail.value = pokemonDetailRepository.getPokemonDetails() ?: PokemonDetailPresentationModel.bulbasaur
-                loading.value = false
-                // the moves will populate after, hopefully it doesn't look too jarring
-                pokemonMovesRepository.fetchMovesForPokemon(pokemonId)
-                pokemonMoves.addAll(pokemonMovesRepository.getPokemonMoves())
-            } catch (e: ApolloException) {
+            // i'm gonna try to load all the details and image of the pokemon once we get most of the info
+            val detailsRessult = pokemonDetailRepository.fetchPokemonDetails(pokemonId)
+            if (detailsRessult is PokemonDetailRepository.PokemonDetailResult.Success) {
+                pokemonDetail.value = detailsRessult.data
+            } else {
                 error.value = true
+            }
+            loading.value = false
+
+            // I'm not worrying TOO much about this failing, if it does, it just won't display the moves
+            val movesResult = pokemonMovesRepository.fetchMovesForPokemon(pokemonId)
+            if (movesResult is PokemonMovesRepository.PokemonMovesResult.Success) {
+                pokemonMoves.addAll(movesResult.data)
             }
         }
     }

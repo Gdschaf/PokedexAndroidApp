@@ -17,13 +17,13 @@ data class PokemonMovePresentationData(
     companion object {
         fun fromNetworkData(moveInfo: PokemonMovesQuery.Pokemon_v2_pokemonmofe) =
             PokemonMovePresentationData(
-                moveName = moveInfo.pokemon_v2_move?.name ?: "",
+                moveName = moveInfo.pokemon_v2_move?.name?.ConvertToTitle() ?: "",
                 accuracy = moveInfo.pokemon_v2_move?.accuracy ?: 100,
                 power = moveInfo.pokemon_v2_move?.power,
                 pp = moveInfo.pokemon_v2_move?.pp ?: 0, // uuuuh no shot this should be null, right?
                 type = moveInfo.pokemon_v2_move?.pokemon_v2_type?.let { PokemonTypeMap[it.name] } ?: PokemonType.UNKNOWN,
                 learnType = getLearnType(moveInfo.pokemon_v2_movelearnmethod),
-                learnLevel = moveInfo.level,
+                learnLevel = if (moveInfo.level <= 0) null else moveInfo.level,
                 damageType = getDamageType(moveInfo.pokemon_v2_move)
             )
     }
@@ -47,7 +47,7 @@ fun getDrawableDamageTypeIcon(type: DamageType): Int =
         DamageType.PHYSICAL -> R.drawable.physical_move_icon
         DamageType.SPECIAL -> R.drawable.special_move_icon
         DamageType.STATUS -> R.drawable.status_move_icon
-        else -> R.drawable.physical_move_icon
+        else -> R.drawable.physical_move_icon // todo change this out to something better
     }
 
 fun getDamageType(move: PokemonMovesQuery.Pokemon_v2_move?) =

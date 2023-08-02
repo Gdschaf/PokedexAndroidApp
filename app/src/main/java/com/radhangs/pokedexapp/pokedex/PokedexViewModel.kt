@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import java.lang.IllegalArgumentException
 
 // wouldn't it be nice if these were injectable :kekw:
@@ -35,10 +36,19 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
     private fun fetchData() {
         viewModelScope.launch {
             try {
-                pokedexRepository.fetchPokedex()
-                composablePokedexList.addAll(pokedexRepository.getPokedexPokemon())
+                // we'll use a 10 second timeout here, no retries since there's a retry screen/button
+                // I haven't fully gotten it to work, if you restore internet, it doesn't seem to work and I'm not sure why
+                val result = withTimeout(10000) {
+                    pokedexRepository.fetchPokedex()
+                }
+                if(result is PokedexRepository.PokedexResult.Success) {
+                    composablePokedexList.addAll(result.data)
+                } else {
+                    error.value = true
+                }
                 loading.value = false
-            } catch (e: ApolloException) {
+            } catch (e: TimeoutCancellationException) {
+                loading.value = false
                 error.value = true
             }
         }

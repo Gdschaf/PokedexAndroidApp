@@ -1,29 +1,42 @@
 package com.radhangs.pokedexapp.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.model.PokemonMovePresentationData
 
 class PokemonMovesRepository(private val apolloClient: ApolloClient) {
-    private var pokemonMoves: List<PokemonMovePresentationData>? = null
+    sealed class PokemonMovesResult {
+        data class Success(val data: List<PokemonMovePresentationData>): PokemonMovesResult()
+        data class Error(val errorMessage: String): PokemonMovesResult()
+    }
 
-    suspend fun fetchMovesForPokemon(pokemonId: Int) {
-        val response = apolloClient.query(PokemonMovesQuery(pokemonId)).execute()
-        val data = response.data
-        data?.pokemon_v2_pokemon_by_pk?.let { pokemonData ->
-            // for(move in pokemonData.pokemon_v2_pokemonmoves)
-            // {
-            //     // todo please convert move data into move presentation data
-            //     // todo we'll need to remove duplicates (by name), and sort them (by type, level up first, then TM/HM, then egg moves, etc, and sort the level up by level learned
-            //     PokemonMovePresentationData.fromNetworkData(move)
-            // }
-
-            pokemonMoves = pokemonData.pokemon_v2_pokemonmoves
-                .map { PokemonMovePresentationData.fromNetworkData(it) }
-                .distinctBy { it.moveName }
-                .sortedBy { it.learnLevel }
+    private val moveComparator = Comparator<PokemonMovePresentationData> { obj1, obj2 ->
+        when {
+            obj1.learnLevel == null && obj2.learnLevel == null -> 0
+            obj1.learnLevel == null -> 1
+            obj2.learnLevel == null -> -1
+            else -> obj1.learnLevel.compareTo(obj2.learnLevel)
         }
     }
 
-    fun getPokemonMoves() = pokemonMoves ?: emptyList()
+    suspend fun fetchMovesForPokemon(pokemonId: Int) =
+        try {
+            val response = apolloClient.query(PokemonMovesQuery(pokemonId)).execute()
+            if (response.hasErrors()) {
+                PokemonMovesResult.Error(errorMessage = "Pokemon moves query response included errors")
+            } else {
+                response.data?.pokemon_v2_pokemon_by_pk?.let { pokemon ->
+                    PokemonMovesResult.Success(
+                        data = pokemon.pokemon_v2_pokemonmoves
+                            .map { PokemonMovePresentationData.fromNetworkData(it) }
+                            .filter { it.moveName.isNotEmpty() }
+                            .distinctBy { it.moveName }
+                            .sortedWith(moveComparator)
+                    )
+                } ?: PokemonMovesResult.Error(errorMessage = "Pokemon moves query returned null data we weren't expecting")
+            }
+        } catch (e: ApolloException) {
+            PokemonMovesResult.Error(errorMessage = "Apollo Exception: ${e.message}")
+        }
 }

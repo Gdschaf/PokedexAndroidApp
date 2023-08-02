@@ -1,20 +1,27 @@
 package com.radhangs.pokedexapp.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 
 class PokemonDetailRepository(private val apolloClient: ApolloClient) {
-    private var pokemonDetails: PokemonDetailPresentationModel? = null
-
-    suspend fun fetchPokemonDetails(pokemonId: Int) {
-        val response = apolloClient.query(PokemonDetailQuery(pokemonId)).execute()
-        val data = response.data
-        data?.pokemon_v2_pokemon_by_pk?.let { pokemonData ->
-            // pokemonDetails = pokemonData // todo convert this to presetnation data, please.
-            pokemonDetails = PokemonDetailPresentationModel.fromNetworkData(pokemonData)
-        }
+    sealed class PokemonDetailResult {
+        data class Success(val data: PokemonDetailPresentationModel): PokemonDetailResult()
+        data class Error(val errorMessage: String): PokemonDetailResult()
     }
 
-    fun getPokemonDetails() = pokemonDetails
+    suspend fun fetchPokemonDetails(pokemonId: Int): PokemonDetailResult =
+        try {
+            val response = apolloClient.query(PokemonDetailQuery(pokemonId)).execute()
+            if (response.hasErrors()) {
+                PokemonDetailResult.Error(errorMessage = "Pokemon detail query response included errors")
+            } else {
+                response.data?.pokemon_v2_pokemon_by_pk?.let { pokemonData ->
+                    PokemonDetailResult.Success(data = PokemonDetailPresentationModel.fromNetworkData(pokemonData))
+                } ?: PokemonDetailResult.Error(errorMessage = "Pokemon detail query returned null data we weren't expecting")
+            }
+        } catch (e: ApolloException) {
+            PokemonDetailResult.Error(errorMessage = "Apollo Exception: ${e.message}")
+        }
 }

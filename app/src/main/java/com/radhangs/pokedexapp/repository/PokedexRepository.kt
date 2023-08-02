@@ -1,22 +1,31 @@
 package com.radhangs.pokedexapp.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 
-// make injectable? then I wouldn't need to pass it into the view models...
 class PokedexRepository(private val apolloClient: ApolloClient) {
-    private var pokedexPokemon: List<PokedexPresentationModel>? = null
-
-    suspend fun fetchPokedex() {
-        val response = apolloClient.query(PokedexQuery()).execute()
-        val data = response.data
-        data?.pokemon_v2_pokemon?.let { listOfPokemon ->
-            pokedexPokemon = listOfPokemon.map {
-                PokedexPresentationModel.fromNetworkData(it)
-            }
-        }
+    sealed class PokedexResult {
+        data class Success(val data: List<PokedexPresentationModel>): PokedexResult()
+        data class Error(val errorMessage: String): PokedexResult()
     }
 
-    fun getPokedexPokemon() = pokedexPokemon ?: emptyList()
+    suspend fun fetchPokedex(): PokedexResult =
+        try {
+            val response = apolloClient.query(PokedexQuery()).execute()
+            if (response.hasErrors()) {
+                PokedexResult.Error(errorMessage = "Pokedex query response included errors")
+            } else {
+                response.data?.pokemon_v2_pokemon?.let { listOfPokemon ->
+                    PokedexResult.Success(
+                        data = listOfPokemon.map {
+                            PokedexPresentationModel.fromNetworkData(it)
+                        }
+                    )
+                } ?: PokedexResult.Error(errorMessage = "Response data returned null")
+            }
+        } catch (e: ApolloException) {
+            PokedexResult.Error(errorMessage = "Apollo Exception: ${e.message}")
+        }
 }

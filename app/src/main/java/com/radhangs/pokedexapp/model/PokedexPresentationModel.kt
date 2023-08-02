@@ -90,6 +90,8 @@ fun capitalizeFirstLetter(string: String?) : String =
         s.replaceFirstChar { char -> char.uppercase() }
     } ?: ""
 
+fun String.ConvertToTitle(): String = this.split("-").joinToString(" ") { capitalizeFirstLetter(it) }
+
 // create a test for if there's a map with no front_default key and see what it returns, make sure it doesn't break
 fun getFrontDefaultSprite(input: String) = parseStringToMap(input)["front_default"] //front_default, front_transparent isn't for all pokemon
 // TODO default to front_transparent, if it doesn't exist, do front_default, else just do the 0.png for a question mark sprite image

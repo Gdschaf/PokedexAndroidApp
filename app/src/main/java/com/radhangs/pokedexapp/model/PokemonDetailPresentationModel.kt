@@ -1,6 +1,8 @@
 package com.radhangs.pokedexapp.model
 
+import androidx.compose.ui.text.capitalize
 import com.radhangs.pokedexapp.PokemonDetailQuery
+import java.util.Locale
 
 data class PokemonDetailPresentationModel(
     val pokemonId: Int,
@@ -28,7 +30,7 @@ data class PokemonDetailPresentationModel(
                 evolutionaryChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
                 baseStats = pokemonData.pokemon_v2_pokemonstats
                     .filter { it.pokemon_v2_stat != null }
-                    .associate { it.pokemon_v2_stat!!.name to it.base_stat }
+                    .associate { it.pokemon_v2_stat!!.name.ConvertToTitle() to it.base_stat }
             )
     }
 }
@@ -46,11 +48,11 @@ fun buildEvolutionChain(evolutionaryChain: PokemonDetailQuery.Pokemon_v2_evoluti
     } ?: emptyList()
 
 // might wanna add the sprite onto this
-class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?) {
+data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?) {
     companion object {
         fun fromNetworkData(evo: PokemonDetailQuery.Pokemon_v2_pokemonspecy1) =
             EvolutionChainPresentationModel(
-                pokemonName = evo.name,
+                pokemonName = capitalizeFirstLetter(evo.name),
                 pokemonId = evo.id,
                 spriteUri = getFrontDefaultSprite(evo.pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites)
             )
