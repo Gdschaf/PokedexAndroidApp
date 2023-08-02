@@ -1,6 +1,7 @@
 package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokemonMovesQuery
+import com.radhangs.pokedexapp.R
 
 data class PokemonMovePresentationData(
     val moveName: String,
@@ -40,6 +41,14 @@ val DamageTypeMap = mapOf(
     "special" to DamageType.SPECIAL,
     "status" to DamageType.STATUS
 )
+
+fun getDrawableDamageTypeIcon(type: DamageType): Int =
+    when (type) {
+        DamageType.PHYSICAL -> R.drawable.physical_move_icon
+        DamageType.SPECIAL -> R.drawable.special_move_icon
+        DamageType.STATUS -> R.drawable.status_move_icon
+        else -> R.drawable.physical_move_icon
+    }
 
 fun getDamageType(move: PokemonMovesQuery.Pokemon_v2_move?) =
     move?.pokemon_v2_movedamageclass?.let { damageClass ->

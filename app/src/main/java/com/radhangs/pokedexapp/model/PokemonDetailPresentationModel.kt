@@ -19,14 +19,16 @@ data class PokemonDetailPresentationModel(
         fun fromNetworkData(pokemonData: PokemonDetailQuery.Pokemon_v2_pokemon_by_pk) =
             PokemonDetailPresentationModel(
                 pokemonId = pokemonData.id,
-                pokemonName = pokemonData.name,
+                pokemonName = capitalizeFirstLetter(pokemonData.name),
                 height = divideByTen(pokemonData.height),
                 weight = divideByTen(pokemonData.weight),
                 types = PokemonPresentationTypes.fromDetailsNetworkData(pokemonData.pokemon_v2_pokemontypes),
-                baseHappiness = 0, // pokemonData.pokemon_v2_pokemonspecy.base_happiness,
-                captureRate = 0,
-                evolutionaryChain = emptyList(),
-                baseStats = emptyMap()
+                baseHappiness = pokemonData.pokemon_v2_pokemonspecy?.base_happiness ?: 0,
+                captureRate = pokemonData.pokemon_v2_pokemonspecy?.capture_rate ?: 0,
+                evolutionaryChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
+                baseStats = pokemonData.pokemon_v2_pokemonstats
+                    .filter { it.pokemon_v2_stat != null }
+                    .associate { it.pokemon_v2_stat!!.name to it.base_stat }
             )
     }
 }
@@ -36,11 +38,21 @@ fun divideByTen(value: Int?) =
         value / 10.0f
     } ?: 0.0f
 
+fun buildEvolutionChain(evolutionaryChain: PokemonDetailQuery.Pokemon_v2_evolutionchain?) =
+    evolutionaryChain?.pokemon_v2_pokemonspecies?.let {list ->
+        list.map { evo ->
+            EvolutionChainPresentationModel.fromNetworkData(evo)
+        }.sortedBy { it.pokemonId }
+    } ?: emptyList()
+
 // might wanna add the sprite onto this
 class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?) {
     companion object {
-        fun fromNetworkData() {
-
-        }
+        fun fromNetworkData(evo: PokemonDetailQuery.Pokemon_v2_pokemonspecy1) =
+            EvolutionChainPresentationModel(
+                pokemonName = evo.name,
+                pokemonId = evo.id,
+                spriteUri = getFrontDefaultSprite(evo.pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites)
+            )
     }
 }

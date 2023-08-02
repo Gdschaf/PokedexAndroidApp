@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -23,8 +24,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.radhangs.pokedexapp.R
+import com.radhangs.pokedexapp.model.PokemonPresentationTypes
+import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 // TODO clean all this up, kthx.
+
+// might wanna consider breaking this out into other files or moving things else where? better organization
+
+@Composable
+fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonPresentationTypes, modifier: Modifier) {
+    Row(modifier) {
+        Text(
+            text = pokemonName,
+            style = TextStyle(fontSize = 25.sp, color = colorResource(id = R.color.text_color) // todo fine a place to define text sizes that isn't the dimen file
+            ))
+        PokemonTypes(pokemonTypes)
+    }
+}
+
+@Composable
+fun PokemonTypes(pokemonTypes: PokemonPresentationTypes) {
+    Row (
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Image (
+            painter = painterResource(getDrawableTypeIcon(pokemonTypes.mainType)),
+            contentDescription = "something type", // todo, add content description for the types
+            modifier = Modifier.size(dimensionResource(id = R.dimen.type_icon_size)),
+        )
+        if(pokemonTypes.secondaryType != null)
+        {
+            Image (
+                painter = painterResource(getDrawableTypeIcon(pokemonTypes.secondaryType)),
+                contentDescription = "something type", // todo, add content description for the types
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .size(dimensionResource(id = R.dimen.type_icon_size)),
+            )
+        }
+    }
+}
 
 @Composable
 fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {

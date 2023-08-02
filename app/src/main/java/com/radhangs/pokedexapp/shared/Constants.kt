@@ -7,4 +7,6 @@ object Constants {
     const val SPRITE_UNKNOWN_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
 
     const val LARGE_POKEMON_IMAGE_URL = "https://raw.githubusercontent.com/HybridShivam/Pokemon/master/assets/images/"
+
+    const val MAX_STAT_VALUE = 255
 }

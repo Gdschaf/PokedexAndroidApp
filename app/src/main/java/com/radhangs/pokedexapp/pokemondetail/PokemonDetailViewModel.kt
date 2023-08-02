@@ -49,6 +49,7 @@ class PokemonDetailViewModel(
                 loading.value = false
                 // the moves will populate after, hopefully it doesn't look too jarring
                 pokemonMovesRepository.fetchMovesForPokemon(pokemonId)
+                pokemonMoves.addAll(pokemonMovesRepository.getPokemonMoves())
             } catch (e: ApolloException) {
                 error.value = true
             }
