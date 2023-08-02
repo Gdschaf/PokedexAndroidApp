@@ -33,10 +33,13 @@ import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 @Composable
 fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonPresentationTypes, modifier: Modifier) {
-    Row(modifier) {
+    Row(
+        modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
             text = pokemonName,
-            style = TextStyle(fontSize = 25.sp, color = colorResource(id = R.color.text_color) // todo fine a place to define text sizes that isn't the dimen file
+            style = TextStyle(fontSize = 24.sp, color = colorResource(id = R.color.text_color) // todo fine a place to define text sizes that isn't the dimen file
             ))
         PokemonTypes(pokemonTypes)
     }

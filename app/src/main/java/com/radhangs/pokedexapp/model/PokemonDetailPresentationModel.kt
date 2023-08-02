@@ -1,8 +1,8 @@
 package com.radhangs.pokedexapp.model
 
-import androidx.compose.ui.text.capitalize
 import com.radhangs.pokedexapp.PokemonDetailQuery
-import java.util.Locale
+import com.radhangs.pokedexapp.shared.ConvertToTitle
+import com.radhangs.pokedexapp.shared.capitalizeFirstLetter
 
 data class PokemonDetailPresentationModel(
     val pokemonId: Int,
@@ -21,7 +21,7 @@ data class PokemonDetailPresentationModel(
         fun fromNetworkData(pokemonData: PokemonDetailQuery.Pokemon_v2_pokemon_by_pk) =
             PokemonDetailPresentationModel(
                 pokemonId = pokemonData.id,
-                pokemonName = capitalizeFirstLetter(pokemonData.name),
+                pokemonName = pokemonData.name.capitalizeFirstLetter(),
                 height = divideByTen(pokemonData.height),
                 weight = divideByTen(pokemonData.weight),
                 types = PokemonPresentationTypes.fromDetailsNetworkData(pokemonData.pokemon_v2_pokemontypes),
@@ -52,7 +52,7 @@ data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonI
     companion object {
         fun fromNetworkData(evo: PokemonDetailQuery.Pokemon_v2_pokemonspecy1) =
             EvolutionChainPresentationModel(
-                pokemonName = capitalizeFirstLetter(evo.name),
+                pokemonName = evo.name.capitalizeFirstLetter(),
                 pokemonId = evo.id,
                 spriteUri = getFrontDefaultSprite(evo.pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites)
             )

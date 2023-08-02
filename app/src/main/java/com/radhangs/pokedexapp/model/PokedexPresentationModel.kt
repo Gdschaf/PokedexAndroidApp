@@ -2,6 +2,7 @@ package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.PokemonDetailQuery
+import com.radhangs.pokedexapp.shared.capitalizeFirstLetter
 
 // this is named too similarly to the PokemonTypes enum...
 data class PokemonPresentationTypes(
@@ -74,7 +75,7 @@ data class PokedexPresentationModel(
         ) : PokedexPresentationModel =
             PokedexPresentationModel(
                 pokemonId = pokemon.id,
-                pokemonName = capitalizeFirstLetter(pokemon.name),
+                pokemonName = pokemon.name.capitalizeFirstLetter(),
                 pokemonTypes = PokemonPresentationTypes.fromPokedexNetworkData(
                     pokemon.pokemon_v2_pokemontypes
                 ),
@@ -84,13 +85,6 @@ data class PokedexPresentationModel(
 }
 
 // TODO the below functions could either be put into their respective classes they help or a larger helper class that's more global?
-
-fun capitalizeFirstLetter(string: String?) : String =
-    string?.let { s ->
-        s.replaceFirstChar { char -> char.uppercase() }
-    } ?: ""
-
-fun String.ConvertToTitle(): String = this.split("-").joinToString(" ") { capitalizeFirstLetter(it) }
 
 // create a test for if there's a map with no front_default key and see what it returns, make sure it doesn't break
 fun getFrontDefaultSprite(input: String) = parseStringToMap(input)["front_default"] //front_default, front_transparent isn't for all pokemon

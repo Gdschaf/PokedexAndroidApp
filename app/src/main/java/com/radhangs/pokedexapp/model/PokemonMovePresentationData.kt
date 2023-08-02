@@ -2,6 +2,7 @@ package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.R
+import com.radhangs.pokedexapp.shared.ConvertToTitle
 
 data class PokemonMovePresentationData(
     val moveName: String,

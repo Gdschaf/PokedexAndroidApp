@@ -1,5 +1,5 @@
 query Pokedex {
-  pokemon_v2_pokemon {
+  pokemon_v2_pokemon(where: { id: { _lt: 1011 } }) {
     id
     name
     pokemon_v2_pokemontypes {
