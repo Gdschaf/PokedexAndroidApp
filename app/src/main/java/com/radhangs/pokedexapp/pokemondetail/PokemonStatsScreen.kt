@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -104,7 +103,6 @@ fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(bottom = dimensionResource(id = R.dimen.default_gap))
             .semantics(mergeDescendants = true) {
                 contentDescription = evolutionChainContentDescription
             }
@@ -136,14 +134,18 @@ val statColorMap = mapOf(
 // todo, add base stat values
 @Composable
 fun BaseStats(stats: Map<String, Int>) {
-    for(stat in stats) {
-        StatDisplay(
-            label = stat.key.ConvertToTitle(),
-            value = stat.value,
-            maxValue = MAX_STAT_VALUE,
-            fillColor = statColorMap[stat.key]?.let { colorResource(id = it) } ?: Color.Black,
-            emptyColor = Color.White
-        )
+    Column(
+        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+    ) {
+        for(stat in stats) {
+            StatDisplay(
+                label = stat.key.ConvertToTitle(),
+                value = stat.value,
+                maxValue = MAX_STAT_VALUE,
+                fillColor = statColorMap[stat.key]?.let { colorResource(id = it) } ?: Color.Black,
+                emptyColor = Color.White
+            )
+        }
     }
 }
 
@@ -152,7 +154,9 @@ fun BaseStats(stats: Map<String, Int>) {
 fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, emptyColor: Color)
 {
     Row(
-        modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

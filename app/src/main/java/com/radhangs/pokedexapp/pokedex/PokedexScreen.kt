@@ -3,10 +3,12 @@ package com.radhangs.pokedexapp.pokedex
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -56,11 +58,9 @@ fun Pokedex(context: ComponentActivity) {
     else {
         val defaultGap = dimensionResource(id = R.dimen.default_gap)
         LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { },
-            // bottom gap is handled by PokedexCard item
-            contentPadding = PaddingValues(start = defaultGap, top = defaultGap, end = defaultGap)
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(defaultGap),
+            verticalArrangement = Arrangement.spacedBy(defaultGap)
         ) {
             items(pokedexViewModel.getPokedexList()) { item ->
                 PokedexCard(item) {
@@ -75,7 +75,6 @@ fun Pokedex(context: ComponentActivity) {
 fun PokedexCard(item: PokedexPresentationModel, onPokemonClicked: () -> Unit) {
     Row(
         modifier = Modifier
-            .padding(bottom = dimensionResource(id = R.dimen.default_gap))
             .fillMaxWidth()
             .clickable { onPokemonClicked() },
         verticalAlignment = Alignment.CenterVertically

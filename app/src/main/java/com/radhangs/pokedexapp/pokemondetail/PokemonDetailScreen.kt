@@ -71,22 +71,21 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
 // todo, see about remove the nested column, not sure we need it in the lazy column
 @Composable
 fun PokemonDetail(details: PokemonDetailPresentationModel) {
+    val defaultGap = dimensionResource(id = R.dimen.default_gap)
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.fillMaxSize().padding(defaultGap),
+        verticalArrangement = Arrangement.spacedBy(defaultGap),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val defaultGap = dimensionResource(id = R.dimen.default_gap)
         PokemonTitle(
             pokemonName = details.pokemonName,
             pokemonTypes = details.types,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = defaultGap, end = defaultGap, top = defaultGap)
                 .semantics(mergeDescendants = true) { }
         )
-        PokemonCoreStats(details, Modifier.padding(defaultGap).semantics(mergeDescendants = true) { })
+        PokemonCoreStats(details, Modifier.semantics(mergeDescendants = true) { })
         EvolutionChain(chain = details.evolutionaryChain)
         BaseStats(stats = details.baseStats)
     }
