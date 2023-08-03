@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.ViewModelProvider
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
@@ -67,6 +68,7 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
     }
 }
 
+// todo, see about remove the nested column, not sure we need it in the lazy column
 @Composable
 fun PokemonDetail(details: PokemonDetailPresentationModel) {
     Column(
@@ -82,8 +84,11 @@ fun PokemonDetail(details: PokemonDetailPresentationModel) {
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(start = defaultGap, end = defaultGap, top = defaultGap)
+                .semantics(mergeDescendants = true) { }
         )
-        PokemonStats(details, Modifier.padding(defaultGap))
+        PokemonCoreStats(details, Modifier.padding(defaultGap).semantics(mergeDescendants = true) { })
+        EvolutionChain(chain = details.evolutionaryChain)
+        BaseStats(stats = details.baseStats)
     }
 }
 

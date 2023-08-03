@@ -40,8 +40,8 @@
 
     <!-- Content Description -->
     <string name="pokemon_sprite_content_description">"Pokemon sprite"</string>
-    <string name="pokemon_image_content_description">Pokemon image</string>
-    <string name="pokemon_evolution_sprite_content_description">"Evolution sprite"</string>
+    <string name="pokemon_image_content_description">Pokemon</string>
+    <string name="pokemon_evolution_chain_content_description">"Evolution chain"</string>
     <string name="type_content_description">"type"</string>
     <string name="pokedex_number_content_description">"Pokedex number</string>
 

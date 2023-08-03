@@ -13,28 +13,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
-import com.radhangs.pokedexapp.shared.Constants
 import com.radhangs.pokedexapp.shared.Constants.MAX_STAT_VALUE
 import com.radhangs.pokedexapp.shared.ConvertToTitle
-import com.radhangs.pokedexapp.shared.ImageFromUrl
 import com.radhangs.pokedexapp.shared.PokedexSprite
 
 // all the pokemon stats under the titles and above the moves
 @Composable
-fun PokemonStats(details: PokemonDetailPresentationModel, modifier: Modifier) {
+fun PokemonCoreStats(details: PokemonDetailPresentationModel, modifier: Modifier) {
     Column(modifier = modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -73,9 +72,6 @@ fun PokemonStats(details: PokemonDetailPresentationModel, modifier: Modifier) {
                 Arrangement.End
             )
         }
-
-        EvolutionChain(chain = details.evolutionaryChain)
-        BaseStats(stats = details.baseStats)
     }
 }
 
@@ -103,11 +99,15 @@ fun LabelValueStat(label: String, value: String, modifier: Modifier, arrangement
 // reuses the PokedexSprite composable used on the main/pokedex screen
 @Composable
 fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
+    val evolutionChainContentDescription = stringResource(id = R.string.pokemon_evolution_chain_content_description)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = dimensionResource(id = R.dimen.default_gap))
+            .semantics(mergeDescendants = true) {
+                contentDescription = evolutionChainContentDescription
+            }
     ) {
         for (evo in chain)
         {
@@ -116,7 +116,7 @@ fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
                 modifier = Modifier
                     .size(dimensionResource(id = R.dimen.sprite_size))
                     .weight(1.0f / chain.count()),
-                contentDescription = stringResource(id = R.string.pokemon_evolution_sprite_content_description)
+                contentDescription = evo.pokemonName
             )
         }
     }
@@ -152,7 +152,7 @@ fun BaseStats(stats: Map<String, Int>) {
 fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, emptyColor: Color)
 {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) { },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -164,6 +164,7 @@ fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, empt
             modifier = Modifier
                 .fillMaxSize()
                 .weight(0.5f)
+                .semantics { contentDescription = value.toString() }
         ) {
             val weight = (value.toFloat() / maxValue).coerceIn(0.0f, 1.0f)
             val barHeight = dimensionResource(id = R.dimen.stat_bar_height)

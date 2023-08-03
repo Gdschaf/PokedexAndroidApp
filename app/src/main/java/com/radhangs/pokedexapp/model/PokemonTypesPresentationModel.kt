@@ -1,5 +1,6 @@
 package com.radhangs.pokedexapp.model
 
+import androidx.compose.ui.res.stringResource
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.R
@@ -129,6 +130,7 @@ val PokemonTypeMap = mapOf(
 )
 
 data class PokemonTypeWithResources(val type: PokemonType, val typeIconResourceId: Int, val typeStringResourceId: Int) {
+
     companion object {
         val unknown = PokemonTypeWithResources(
             PokemonType.UNKNOWN,
