@@ -24,6 +24,7 @@ import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading
 import com.radhangs.pokedexapp.shared.PokemonTitle
 import com.radhangs.pokedexapp.shared.apolloClient
+import com.radhangs.pokedexapp.shared.BackIcon
 
 @Composable
 fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
@@ -43,7 +44,6 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // todo add a back button that isn't on the tool back, maybe a small circle back icon over the image
             // this first set of items is for all the stuff above the live of moves/header
             items(listOf("")) {
                 Box(
@@ -54,6 +54,11 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
                     contentAlignment = Alignment.Center
                 ) {
                     LargePokemonImage(pokemonDetailViewModel.getPokemonBitmap().value)
+                    BackIcon(
+                        Modifier.align(Alignment.TopStart).padding(8.dp)
+                    ) {
+                        context.finish()
+                    }
                 }
                 PokemonDetail(pokemonId, pokemonDetailViewModel.getPokemonDetails().value)
                 MoveHeader()
