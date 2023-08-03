@@ -1,7 +1,9 @@
 package com.radhangs.pokedexapp.shared
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -77,6 +80,19 @@ fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
         contentDescription = contentDescription,
         modifier = modifier
     )
+}
+
+@Composable
+fun ImageFromBitmap(bitmap: Bitmap?, modifier: Modifier, contentDescription: String) {
+    if(bitmap != null) {
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = contentDescription,
+            modifier = modifier
+        )
+    } else {
+        Box(modifier = modifier) { }
+    }
 }
 
 @Composable
