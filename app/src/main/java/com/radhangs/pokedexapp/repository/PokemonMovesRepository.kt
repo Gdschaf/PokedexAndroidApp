@@ -3,15 +3,15 @@ package com.radhangs.pokedexapp.repository
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonMovesQuery
-import com.radhangs.pokedexapp.model.PokemonMovePresentationData
+import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 
 class PokemonMovesRepository(private val apolloClient: ApolloClient) {
     sealed class PokemonMovesResult {
-        data class Success(val data: List<PokemonMovePresentationData>): PokemonMovesResult()
+        data class Success(val data: List<PokemonMovePresentationModel>): PokemonMovesResult()
         data class Error(val errorMessage: String): PokemonMovesResult()
     }
 
-    private val moveComparator = Comparator<PokemonMovePresentationData> { obj1, obj2 ->
+    private val moveComparator = Comparator<PokemonMovePresentationModel> { obj1, obj2 ->
         when {
             obj1.learnLevel == null && obj2.learnLevel == null -> 0
             obj1.learnLevel == null -> 1
@@ -29,7 +29,7 @@ class PokemonMovesRepository(private val apolloClient: ApolloClient) {
                 response.data?.pokemon_v2_pokemon_by_pk?.let { pokemon ->
                     PokemonMovesResult.Success(
                         data = pokemon.pokemon_v2_pokemonmoves
-                            .map { PokemonMovePresentationData.fromNetworkData(it) }
+                            .map { PokemonMovePresentationModel.fromNetworkData(it) }
                             .filter { it.moveName.isNotEmpty() }
                             .distinctBy { it.moveName }
                             .sortedWith(moveComparator)

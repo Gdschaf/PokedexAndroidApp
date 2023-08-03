@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.radhangs.pokedexapp.R
-import com.radhangs.pokedexapp.model.PokemonPresentationTypes
+import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 // TODO clean all this up, kthx.
@@ -40,7 +40,7 @@ import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 // might wanna consider breaking this out into other files or moving things else where? better organization
 
 @Composable
-fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonPresentationTypes, modifier: Modifier) {
+fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationModel, modifier: Modifier) {
     Row(
         modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -54,7 +54,7 @@ fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonPresentationTypes, mo
 }
 
 @Composable
-fun PokemonTypes(pokemonTypes: PokemonPresentationTypes) {
+fun PokemonTypes(pokemonTypes: PokemonTypesPresentationModel) {
     Row (
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End

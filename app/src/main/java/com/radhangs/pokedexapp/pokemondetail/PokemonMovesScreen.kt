@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.radhangs.pokedexapp.model.PokemonMovePresentationData
-import com.radhangs.pokedexapp.model.getDrawableDamageTypeIcon
+import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
+import com.radhangs.pokedexapp.model.PokemonMovePresentationModel.Companion.getDrawableDamageTypeIcon
 import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 @Composable
@@ -20,7 +20,7 @@ fun MoveHeader() {
 }
 
 @Composable
-fun Move(item: PokemonMovePresentationData) {
+fun Move(item: PokemonMovePresentationModel) {
     // make a row, lets copy serbii basically
     // do level, name, type icon, category icon, power, accuracy, pp
     // don't bother with the description at all

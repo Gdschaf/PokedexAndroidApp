@@ -3,7 +3,7 @@ package com.radhangs.pokedexapp.data
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.model.DamageType
 import com.radhangs.pokedexapp.model.LearnType
-import com.radhangs.pokedexapp.model.PokemonMovePresentationData
+import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 import com.radhangs.pokedexapp.model.PokemonType
 
 val mockLearnLevelUpNetworkData = PokemonMovesQuery.Pokemon_v2_movelearnmethod(
@@ -99,7 +99,7 @@ val mockPokemonMovesDuplicateNetworkData = PokemonMovesQuery.Pokemon_v2_pokemon_
 )
 
 val mockPokemonMovesPresentationData = listOf(
-    PokemonMovePresentationData(
+    PokemonMovePresentationModel(
         moveName = "Razor Leaf",
         accuracy = 95,
         power = 55,
@@ -109,7 +109,7 @@ val mockPokemonMovesPresentationData = listOf(
         learnLevel = 27,
         damageType = DamageType.PHYSICAL
     ),
-    PokemonMovePresentationData(
+    PokemonMovePresentationModel(
         moveName = "Swords Dance",
         accuracy = 100,
         power = null,
@@ -119,7 +119,7 @@ val mockPokemonMovesPresentationData = listOf(
         learnLevel = null,
         damageType = DamageType.STATUS
     ),
-    PokemonMovePresentationData(
+    PokemonMovePresentationModel(
         moveName = "Growl",
         accuracy = 100,
         power = null,
@@ -132,7 +132,7 @@ val mockPokemonMovesPresentationData = listOf(
 )
 
 val mockPokemonSwordsDancePresentationData = listOf(
-    PokemonMovePresentationData(
+    PokemonMovePresentationModel(
         moveName = "Swords Dance",
         accuracy = 100,
         power = null,

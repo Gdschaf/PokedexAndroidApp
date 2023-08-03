@@ -15,7 +15,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
-import com.radhangs.pokedexapp.model.PokemonMovePresentationData
+import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 import com.radhangs.pokedexapp.repository.PokemonDetailRepository
 import com.radhangs.pokedexapp.repository.PokemonMovesRepository
 import com.radhangs.pokedexapp.shared.Constants
@@ -33,7 +33,7 @@ class PokemonDetailViewModel(
     private val pokemonMovesRepository = PokemonMovesRepository(apolloClient)
 
     private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.bulbasaur) // super temporary
-    private val pokemonMoves = mutableStateListOf<PokemonMovePresentationData>()
+    private val pokemonMoves = mutableStateListOf<PokemonMovePresentationModel>()
     private val pokemonBitmap = mutableStateOf<Bitmap?>(null)
     private val pokemonDominantColor = mutableStateOf(Color.Transparent)
     private val loading = mutableStateOf(true)

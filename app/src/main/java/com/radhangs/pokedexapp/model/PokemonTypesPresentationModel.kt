@@ -1,5 +1,7 @@
 package com.radhangs.pokedexapp.model
 
+import com.radhangs.pokedexapp.PokedexQuery
+import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.R
 
 // Pulling this data from the API but converting ids/names to enum types for ease of use
@@ -73,3 +75,58 @@ fun getDrawableTypeIcon(typeValue: PokemonType): Int =
         PokemonType.FAIRY -> R.drawable.pokemon_type_icon_fairy
         else -> R.drawable.pokemon_type_icon_normal
     }
+
+data class PokemonTypesPresentationModel(
+    val mainType: PokemonType,
+    val secondaryType: PokemonType? = null
+) {
+    companion object
+    {
+        val empty = PokemonTypesPresentationModel(PokemonType.NORMAL)
+
+        // todo, this isn't the best pattern, maybe figure out something else?
+        fun fromDetailsNetworkData(
+            listOfTypes: List<PokemonDetailQuery.Pokemon_v2_pokemontype>
+        ) = fromPokedexNetworkData(
+            listOfTypes.map {
+                PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = it.pokemon_v2_type?.name ?: ""))
+            }
+        )
+
+        fun fromPokedexNetworkData(
+            listOfTypes: List<PokedexQuery.Pokemon_v2_pokemontype>?
+        ): PokemonTypesPresentationModel {
+            if(listOfTypes.isNullOrEmpty())
+                return empty
+
+            // val mappedItems = listOfTypes.take(2).map {type ->
+            //     type.type_id?.let { id ->
+            //         typeRepository.getPokemonTypeById(id)
+            //     } ?: ""
+            // }
+
+            // we should be able to do this a bit more elegantly honestly...
+            var mainType: PokemonType? = null
+            var secondType: PokemonType? = null
+            for(i in listOfTypes.indices)
+            {
+                listOfTypes[i].pokemon_v2_type?.let {type ->
+                    val typeString = type.name
+                    if(typeString.isNotEmpty())
+                    {
+                        when(i)
+                        {
+                            0 -> mainType = PokemonTypeMap[typeString]
+                            1 -> secondType = PokemonTypeMap[typeString]
+                            // else -> // UUUH WHAT POKEMON HAS MORE THEN 2 TYPES? something is wrong... log something
+                        }
+                    }
+                }
+            }
+
+            return mainType?.let {
+                PokemonTypesPresentationModel(it, secondType)
+            } ?: empty
+        }
+    }
+}

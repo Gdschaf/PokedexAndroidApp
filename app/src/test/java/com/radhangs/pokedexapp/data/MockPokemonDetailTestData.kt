@@ -3,7 +3,7 @@ package com.radhangs.pokedexapp.data
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
-import com.radhangs.pokedexapp.model.PokemonPresentationTypes
+import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 import com.radhangs.pokedexapp.model.PokemonType
 
 const val mockPokemonId: Int = 1
@@ -124,7 +124,7 @@ val mockPokemonDetailPresentationData = PokemonDetailPresentationModel(
     pokemonName = "Bulbasaur",
     height = 0.7f,
     weight = 6.9f,
-    types = PokemonPresentationTypes(PokemonType.GRASS, PokemonType.POISON),
+    types = PokemonTypesPresentationModel(PokemonType.GRASS, PokemonType.POISON),
     baseHappiness = 50,
     captureRate = 45,
     evolutionaryChain = mockPresentationEvolutionChain,
@@ -146,7 +146,7 @@ val mockPokemonDetailNullPresentationData = PokemonDetailPresentationModel(
     pokemonName = "Bulbasaur",
     height = 0.0f,
     weight = 0.0f,
-    types = PokemonPresentationTypes.empty,
+    types = PokemonTypesPresentationModel.empty,
     baseHappiness = 0,
     captureRate = 0,
     evolutionaryChain = emptyList(),
