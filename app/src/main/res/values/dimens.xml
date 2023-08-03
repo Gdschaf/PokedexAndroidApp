@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Pokedex Screen Values -->
+    <dimen name="pokedex_number_width">16dp</dimen>
+    <dimen name="pokedex_number_side_padding">4dp</dimen>
+    <dimen name="sprite_title_gap">8dp</dimen>
+
+    <!-- Pokemon Details Screen Values -->
+    <dimen name="pokemon_detail_image_size">300dp</dimen>
+    <dimen name="back_button_icon_padding">8dp</dimen>
+    <dimen name="stat_bar_height">15dp</dimen>
+    <dimen name="label_value_gap">8dp</dimen>
+
+    <!-- Shared Values -->
     <dimen name="sprite_size">75dp</dimen>
     <dimen name="type_icon_size">25dp</dimen>
     <dimen name="loading_progress_size">50dp</dimen>
     <dimen name="error_icon_size">100dp</dimen>
+    <dimen name="default_gap">16dp</dimen>
 </resources>

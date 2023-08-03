@@ -25,7 +25,6 @@ class PokemonDetailActivity : ComponentActivity() {
 
         setContent {
             PokedexAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.background_primary)

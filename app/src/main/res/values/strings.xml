@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">Pokedex</string>
-    <string name="loading_text">Loading...</string>
+
+    <!-- Shared Text -->
+    <string name="loading_text">Loading…</string>
     <string name="error_text">Something went wrong.</string>
     <string name="retry">Retry</string>
+
+    <!-- Pokemon Stats Text -->
+    <string name="height_label">Height</string>
+    <string name="weight_label">Weight</string>
+    <string name="base_happiness_label">Base Happiness</string>
+    <string name="capture_rate_label">Capture Rate</string>
+
+    <!-- Content Description -->
+    <string name="pokemon_sprite_content_description">"Pokemon sprite"</string>
+    <string name="pokemon_image_content_description">Pokemon image</string>
+    <string name="pokemon_evolution_sprite_content_description">"Evolution sprite"</string>
 </resources>

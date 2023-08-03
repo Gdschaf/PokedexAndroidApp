@@ -3,4 +3,13 @@
     <color name="background_primary">@color/light_FDF5E1</color>
     <color name="primary_color">@color/red_FF4C8B</color>
     <color name="text_color">@color/black</color>
+
+    <!-- color defines for the base stat graphs -->
+    <!-- no need to override in the night theme -->
+    <color name="hp_foreground">@color/green_00C9B2</color>
+    <color name="attack_foreground">@color/red_FF4C8B</color>
+    <color name="defense_foreground">@color/blue_00BBE0</color>
+    <color name="special_attack_foreground">@color/orange_E14E11</color>
+    <color name="special_defense_foreground">@color/purple_C380FF</color>
+    <color name="speed_foreground">@color/yellow_FFB600</color>
 </resources>

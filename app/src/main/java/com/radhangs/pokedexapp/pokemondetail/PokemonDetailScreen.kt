@@ -16,15 +16,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
+import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
+import com.radhangs.pokedexapp.shared.BackIcon
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading
 import com.radhangs.pokedexapp.shared.PokemonTitle
 import com.radhangs.pokedexapp.shared.apolloClient
-import com.radhangs.pokedexapp.shared.BackIcon
 
 @Composable
 fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
@@ -45,22 +48,16 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // this first set of items is for all the stuff above the live of moves/header
+            // needed a list of size one for this there's a static header which always
+            // stays at the top but not header option that I could find.
             items(listOf("")) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .background(color = pokemonDetailViewModel.getPokemonDominantColor().value),
-                    contentAlignment = Alignment.Center
+                LargePokemonImage(
+                    pokemonDetailViewModel.getPokemonBitmap().value,
+                    pokemonDetailViewModel.getPokemonDominantColor().value
                 ) {
-                    LargePokemonImage(pokemonDetailViewModel.getPokemonBitmap().value)
-                    BackIcon(
-                        Modifier.align(Alignment.TopStart).padding(8.dp)
-                    ) {
-                        context.finish()
-                    }
+                    context.finish()
                 }
-                PokemonDetail(pokemonId, pokemonDetailViewModel.getPokemonDetails().value)
+                PokemonDetail(pokemonDetailViewModel.getPokemonDetails().value)
                 MoveHeader()
             }
             items(pokemonDetailViewModel.getPokemonMoves()) { item ->
@@ -71,33 +68,47 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
 }
 
 @Composable
-fun PokemonDetail(pokemonId: Int, details: PokemonDetailPresentationModel) {
+fun PokemonDetail(details: PokemonDetailPresentationModel) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val defaultGap = dimensionResource(id = R.dimen.default_gap)
         PokemonTitle(
             pokemonName = details.pokemonName,
             pokemonTypes = details.types,
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                .padding(start = defaultGap, end = defaultGap, top = defaultGap)
         )
-        PokemonStats(details, Modifier.padding(16.dp))
+        PokemonStats(details, Modifier.padding(defaultGap))
     }
 }
 
 @Composable
-fun LargePokemonImage(bitmap: Bitmap?) {
-    ImageFromBitmap(
-        bitmap = bitmap,
+fun LargePokemonImage(bitmap: Bitmap?, backgroundColor: Color, onBackButtonPressed: () -> Unit) {
+    Box(
         modifier = Modifier
-            .size(300.dp)
-            .padding(top = 16.dp),
-        contentDescription = "Pokemon Image"
-    )
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(color = backgroundColor),
+        contentAlignment = Alignment.Center
+    ) {
+        ImageFromBitmap(
+            bitmap = bitmap,
+            modifier = Modifier
+                .size(dimensionResource(id = R.dimen.pokemon_detail_image_size))
+                .padding(top = dimensionResource(id = R.dimen.default_gap)),
+            contentDescription = stringResource(id = R.string.pokemon_image_content_description)
+        )
+        BackIcon(
+            Modifier
+                .align(Alignment.TopStart)
+                .padding(dimensionResource(id = R.dimen.back_button_icon_padding))
+        ) {
+            onBackButtonPressed()
+        }
+    }
 }
-
-fun getFormattedImageFilename(pokemonId: Int): String = String.format("%03d.png", pokemonId)

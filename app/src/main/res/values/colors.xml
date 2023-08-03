@@ -16,6 +16,7 @@
     <color name="blue_00BBE0">#00BBE0</color>
     <color name="purple_C380FF">#C380FF</color>
     <color name="green_00C9B2">#00C9B2</color>
-    <color name="dark_gray">#FFFFFF</color>
-    <color name="light_gray">#FFFFFF</color>
+    <color name="orange_E14E11">#E14E11</color>
+    <color name="dark_gray_4C4C4C">#4C4C4C</color>
+    <color name="light_gray_D8D8D8">#D8D8D8</color>
 </resources>

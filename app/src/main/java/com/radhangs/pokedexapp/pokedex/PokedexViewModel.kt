@@ -9,17 +9,16 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
+import java.lang.IllegalArgumentException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import java.lang.IllegalArgumentException
 
-// wouldn't it be nice if these were injectable :kekw:
 class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
     private val pokedexRepository = PokedexRepository(apolloClient)
 
     // can this be put into a state class?
-    private val composablePokedexList = mutableStateListOf<PokedexPresentationModel>()
+    private val pokedexList = mutableStateListOf<PokedexPresentationModel>()
     private val loading = mutableStateOf(true)
     private val error = mutableStateOf(false)
 
@@ -27,7 +26,7 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
         fetchData()
     }
 
-    fun getLazyListData() = composablePokedexList
+    fun getPokedexList() = pokedexList
 
     fun isLoading(): State<Boolean> = loading
 
@@ -37,12 +36,13 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
         viewModelScope.launch {
             try {
                 // we'll use a 10 second timeout here, no retries since there's a retry screen/button
-                // I haven't fully gotten it to work, if you restore internet, it doesn't seem to work and I'm not sure why
+                // I haven't fully gotten it to work, if you restore internet
+                // it doesn't seem to work and I'm not sure why
                 val result = withTimeout(10000) {
                     pokedexRepository.fetchPokedex()
                 }
                 if(result is PokedexRepository.PokedexResult.Success) {
-                    composablePokedexList.addAll(result.data)
+                    pokedexList.addAll(result.data)
                 } else {
                     error.value = true
                 }

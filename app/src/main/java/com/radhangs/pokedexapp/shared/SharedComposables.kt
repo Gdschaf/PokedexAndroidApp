@@ -157,3 +157,30 @@ fun BackIcon(
         )
     }
 }
+
+// todo kind of wanna add a stroke around the sprite to make it look better? idk, try it.
+@Composable
+fun PokedexSprite(spriteUri: String?, modifier: Modifier, contentDescription: String) {
+    // the sprite paths are honestly, a bit wack.
+    // this could be better but with how odd it is, I'm not sure it matters.
+    val url = spriteUri?.replace("/media", Constants.SPRITE_DOMAIN) ?: Constants.SPRITE_UNKNOWN_URL
+
+    ImageFromUrl(
+        url = url,
+        modifier = modifier,
+        contentDescription = contentDescription
+    )
+}
+
+@Composable
+fun VerticalText(text: String, modifier: Modifier, style: TextStyle)
+{
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
+        for(char in text) {
+            Text(text = char.toString(), style = style)
+        }
+    }
+}

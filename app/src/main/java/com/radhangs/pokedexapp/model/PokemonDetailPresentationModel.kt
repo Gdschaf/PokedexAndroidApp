@@ -31,7 +31,7 @@ data class PokemonDetailPresentationModel(
                 evolutionaryChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
                 baseStats = pokemonData.pokemon_v2_pokemonstats
                     .filter { it.pokemon_v2_stat != null }
-                    .associate { it.pokemon_v2_stat!!.name.ConvertToTitle() to it.base_stat }
+                    .associate { it.pokemon_v2_stat!!.name to it.base_stat }
             )
 
         fun divideByTen(value: Int?) =

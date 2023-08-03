@@ -20,10 +20,10 @@ import com.radhangs.pokedexapp.repository.PokemonDetailRepository
 import com.radhangs.pokedexapp.repository.PokemonMovesRepository
 import com.radhangs.pokedexapp.shared.Constants
 import com.radhangs.pokedexapp.shared.getDominantColorFromBitmap
+import java.lang.IllegalArgumentException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.IllegalArgumentException
 
 class PokemonDetailViewModel(
     private val apolloClient: ApolloClient,
@@ -32,7 +32,7 @@ class PokemonDetailViewModel(
     private val pokemonDetailRepository = PokemonDetailRepository(apolloClient)
     private val pokemonMovesRepository = PokemonMovesRepository(apolloClient)
 
-    private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.bulbasaur) // super temporary
+    private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.bulbasaur) // should replace bulbasaur with some other default
     private val pokemonMoves = mutableStateListOf<PokemonMovePresentationModel>()
     private val pokemonBitmap = mutableStateOf<Bitmap?>(null)
     private val pokemonDominantColor = mutableStateOf(Color.Transparent)
@@ -57,7 +57,8 @@ class PokemonDetailViewModel(
 
     private fun fetchData() {
         viewModelScope.launch {
-            // i'm gonna try to load all the details and image of the pokemon once we get most of the info
+            // I decided to load the details first, show the page, then load the image and moves
+            // it's not too jarring and presents the user with something to view/read
             val detailsRessult = pokemonDetailRepository.fetchPokemonDetails(pokemonId)
             if (detailsRessult is PokemonDetailRepository.PokemonDetailResult.Success) {
                 pokemonDetail.value = detailsRessult.data
@@ -74,6 +75,14 @@ class PokemonDetailViewModel(
         }
     }
 
+    fun retry() {
+        loading.value = true
+        error.value = false
+        fetchData()
+    }
+
+    // rather then having a painter load this image, we're doing it separately so we can
+    // get the image's bitmap for the dominant color background.
     fun loadLargeBitmap(context: Context) {
         viewModelScope.launch {
             val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL + getFormattedImageFilename(pokemonDetail.value.pokemonId)
@@ -101,11 +110,7 @@ class PokemonDetailViewModel(
         }
     }
 
-    fun retry() {
-        loading.value = true
-        error.value = false
-        fetchData()
-    }
+    private fun getFormattedImageFilename(pokemonId: Int): String = String.format("%03d.png", pokemonId)
 }
 
 class PokemonDetailViewModelFactory(
