@@ -94,12 +94,12 @@ val mockNetworkBaseStats = listOf(
 )
 
 val mockPresentationBaseStats = mapOf(
-    "Hp" to 45,
-    "Attack" to 49,
-    "Defense" to 49,
-    "Special Attack" to 65,
-    "Special Defense" to 65,
-    "Speed" to 45
+    "hp" to 45,
+    "attack" to 49,
+    "defense" to 49,
+    "special-attack" to 65,
+    "special-defense" to 65,
+    "speed" to 45
 )
 
 val mockPokemonDetailNetworkData = PokemonDetailQuery.Pokemon_v2_pokemon_by_pk(
