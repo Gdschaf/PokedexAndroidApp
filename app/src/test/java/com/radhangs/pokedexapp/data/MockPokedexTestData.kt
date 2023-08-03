@@ -4,11 +4,15 @@ import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 import com.radhangs.pokedexapp.model.PokemonType
+import com.radhangs.pokedexapp.model.PokemonTypeWithResources
 
 val mockGrassNetworkType = PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = "grass"))
 val mockPoisonNetworkType = PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = "poison"))
 
-val mockPresentationType = PokemonTypesPresentationModel(PokemonType.GRASS, PokemonType.POISON)
+val mockPresentationType = PokemonTypesPresentationModel(
+    PokemonTypeWithResources.getType("grass"),
+    PokemonTypeWithResources.getType("poison")
+)
 
 val mockPokedexNetworkData = listOf(
     PokedexQuery.Pokemon_v2_pokemon(

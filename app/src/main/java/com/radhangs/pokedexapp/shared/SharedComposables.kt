@@ -27,13 +27,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
-import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 // TODO clean all this up, kthx.
 
@@ -59,16 +60,17 @@ fun PokemonTypes(pokemonTypes: PokemonTypesPresentationModel) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
+        val typeContentDescription = stringResource(id = R.string.type_content_description)
         Image (
-            painter = painterResource(getDrawableTypeIcon(pokemonTypes.mainType)),
-            contentDescription = "something type", // todo, add content description for the types
+            painter = painterResource(pokemonTypes.mainType.typeIconResourceId),
+            contentDescription = stringResource(id = pokemonTypes.mainType.typeStringResourceId) + typeContentDescription,
             modifier = Modifier.size(dimensionResource(id = R.dimen.type_icon_size)),
         )
         if(pokemonTypes.secondaryType != null)
         {
             Image (
-                painter = painterResource(getDrawableTypeIcon(pokemonTypes.secondaryType)),
-                contentDescription = "something type", // todo, add content description for the types
+                painter = painterResource(pokemonTypes.secondaryType.typeIconResourceId),
+                contentDescription = "${stringResource(id = pokemonTypes.secondaryType.typeStringResourceId)} $typeContentDescription",
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .size(dimensionResource(id = R.dimen.type_icon_size)),
@@ -173,11 +175,11 @@ fun PokedexSprite(spriteUri: String?, modifier: Modifier, contentDescription: St
 }
 
 @Composable
-fun VerticalText(text: String, modifier: Modifier, style: TextStyle)
+fun VerticalText(text: String, modifier: Modifier, style: TextStyle, description: String = text)
 {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center
+        modifier = modifier.semantics { contentDescription = description },
+        verticalArrangement = Arrangement.Center,
     ) {
         for(char in text) {
             Text(text = char.toString(), style = style)

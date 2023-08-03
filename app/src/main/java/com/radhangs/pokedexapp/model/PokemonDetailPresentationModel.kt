@@ -17,7 +17,7 @@ data class PokemonDetailPresentationModel(
     val baseStats: Map<String, Int>
 ) {
     companion object {
-        val bulbasaur = PokemonDetailPresentationModel(1, "Bulbasaur", 0.7f, 6.9f, PokemonTypesPresentationModel(PokemonType.GRASS, PokemonType.POISON), 50, 50, emptyList(), emptyMap())
+        val bulbasaur = PokemonDetailPresentationModel(1, "Bulbasaur", 0.7f, 6.9f, PokemonTypesPresentationModel.empty, 50, 50, emptyList(), emptyMap())
 
         fun fromNetworkData(pokemonData: PokemonDetailQuery.Pokemon_v2_pokemon_by_pk) =
             PokemonDetailPresentationModel(

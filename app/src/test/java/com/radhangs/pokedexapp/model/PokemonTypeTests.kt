@@ -1,6 +1,5 @@
 package com.radhangs.pokedexapp.model
 
-import com.radhangs.pokedexapp.R
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
@@ -9,32 +8,32 @@ class PokemonTypeTests {
 
     @Test
     fun `test parsing to type map`() {
-        assertEquals(PokemonType.NORMAL, PokemonTypeMap["normal"])
-        assertEquals(PokemonType.FIGHTING, PokemonTypeMap["fighting"])
-        assertEquals(PokemonType.FLYING, PokemonTypeMap["flying"])
-        assertEquals(PokemonType.POISON, PokemonTypeMap["poison"])
-        assertEquals(PokemonType.GROUND, PokemonTypeMap["ground"])
-        assertEquals(PokemonType.ROCK, PokemonTypeMap["rock"])
-        assertEquals(PokemonType.BUG, PokemonTypeMap["bug"])
-        assertEquals(PokemonType.GHOST, PokemonTypeMap["ghost"])
-        assertEquals(PokemonType.STEEL, PokemonTypeMap["steel"])
-        assertEquals(PokemonType.FIRE, PokemonTypeMap["fire"])
-        assertEquals(PokemonType.WATER, PokemonTypeMap["water"])
-        assertEquals(PokemonType.GRASS, PokemonTypeMap["grass"])
-        assertEquals(PokemonType.ELECTRIC, PokemonTypeMap["electric"])
-        assertEquals(PokemonType.PSYCHIC, PokemonTypeMap["psychic"])
-        assertEquals(PokemonType.ICE, PokemonTypeMap["ice"])
-        assertEquals(PokemonType.DRAGON, PokemonTypeMap["dragon"])
-        assertEquals(PokemonType.DARK, PokemonTypeMap["dark"])
-        assertEquals(PokemonType.FAIRY, PokemonTypeMap["fairy"])
-        assertEquals(PokemonType.UNKNOWN, PokemonTypeMap["unknown"])
-        assertEquals(PokemonType.SHADOW, PokemonTypeMap["shadow"])
+        assertEquals(PokemonType.NORMAL, PokemonTypeWithResources.getType("normal").type)
+        assertEquals(PokemonType.FIGHTING, PokemonTypeWithResources.getType("fighting").type)
+        assertEquals(PokemonType.FLYING, PokemonTypeWithResources.getType("flying").type)
+        assertEquals(PokemonType.POISON, PokemonTypeWithResources.getType("poison").type)
+        assertEquals(PokemonType.GROUND, PokemonTypeWithResources.getType("ground").type)
+        assertEquals(PokemonType.ROCK, PokemonTypeWithResources.getType("rock").type)
+        assertEquals(PokemonType.BUG, PokemonTypeWithResources.getType("bug").type)
+        assertEquals(PokemonType.GHOST, PokemonTypeWithResources.getType("ghost").type)
+        assertEquals(PokemonType.STEEL, PokemonTypeWithResources.getType("steel").type)
+        assertEquals(PokemonType.FIRE, PokemonTypeWithResources.getType("fire").type)
+        assertEquals(PokemonType.WATER, PokemonTypeWithResources.getType("water").type)
+        assertEquals(PokemonType.GRASS, PokemonTypeWithResources.getType("grass").type)
+        assertEquals(PokemonType.ELECTRIC, PokemonTypeWithResources.getType("electric").type)
+        assertEquals(PokemonType.PSYCHIC, PokemonTypeWithResources.getType("psychic").type)
+        assertEquals(PokemonType.ICE, PokemonTypeWithResources.getType("ice").type)
+        assertEquals(PokemonType.DRAGON, PokemonTypeWithResources.getType("dragon").type)
+        assertEquals(PokemonType.DARK, PokemonTypeWithResources.getType("dark").type)
+        assertEquals(PokemonType.FAIRY, PokemonTypeWithResources.getType("fairy").type)
+        assertEquals(PokemonType.UNKNOWN, PokemonTypeWithResources.getType("unknown").type)
+        assertEquals(PokemonType.SHADOW, PokemonTypeWithResources.getType("shadow").type)
     }
 
     @Test
     fun `test all types are in the type map`() {
         for(e in PokemonType.values()) {
-            assertTrue(PokemonTypeMap.containsValue(e))
+            assertTrue(PokemonTypeMap.values.any { it.type == e })
         }
     }
 

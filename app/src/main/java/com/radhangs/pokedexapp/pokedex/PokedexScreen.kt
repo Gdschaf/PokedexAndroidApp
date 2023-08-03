@@ -28,7 +28,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
-import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 import com.radhangs.pokedexapp.pokemondetail.PokemonDetailIntent
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.Loading
@@ -88,18 +87,20 @@ fun PokedexCard(item: PokedexPresentationModel, onPokemonClicked: () -> Unit) {
               .background(
                   getDominantColor(
                       LocalContext.current,
-                      getDrawableTypeIcon(item.pokemonTypes.mainType)
+                      item.pokemonTypes.mainType.typeIconResourceId
                   )
               )
         ) {
             val pokedexNumberSidePadding = dimensionResource(id = R.dimen.pokedex_number_side_padding)
+            val pokedexNumberString = item.pokemonId.toString()
             VerticalText(
-                text = item.pokemonId.toString(),
+                text = pokedexNumberString,
                 modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentWidth()
                     .padding(start = pokedexNumberSidePadding, end = pokedexNumberSidePadding),
-                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.white)) // todo can we define this text style somewhere?
+                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.white)), // todo can we define this text style somewhere?
+                description = "${stringResource(id = R.string.pokedex_number_content_description)} $pokedexNumberString"
             )
         }
         PokedexSprite(

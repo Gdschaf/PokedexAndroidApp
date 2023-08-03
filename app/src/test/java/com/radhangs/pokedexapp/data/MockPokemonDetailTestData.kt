@@ -4,7 +4,6 @@ import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
-import com.radhangs.pokedexapp.model.PokemonType
 
 const val mockPokemonId: Int = 1
 const val mockPokemonName: String = "bulbasaur"
@@ -124,7 +123,7 @@ val mockPokemonDetailPresentationData = PokemonDetailPresentationModel(
     pokemonName = "Bulbasaur",
     height = 0.7f,
     weight = 6.9f,
-    types = PokemonTypesPresentationModel(PokemonType.GRASS, PokemonType.POISON),
+    types = mockPresentationType,
     baseHappiness = 50,
     captureRate = 45,
     evolutionaryChain = mockPresentationEvolutionChain,

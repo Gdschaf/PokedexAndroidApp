@@ -29,60 +29,124 @@ enum class PokemonType {
     SHADOW
 }
 
-// TODO create tests for this...
 val PokemonTypeMap = mapOf(
-    "normal" to PokemonType.NORMAL,
-    "fighting" to PokemonType.FIGHTING,
-    "flying" to PokemonType.FLYING,
-    "poison" to PokemonType.POISON,
-    "ground" to PokemonType.GROUND,
-    "rock" to PokemonType.ROCK,
-    "bug" to PokemonType.BUG,
-    "ghost" to PokemonType.GHOST,
-    "steel" to PokemonType.STEEL,
-    "fire" to PokemonType.FIRE,
-    "water" to PokemonType.WATER,
-    "grass" to PokemonType.GRASS,
-    "electric" to PokemonType.ELECTRIC,
-    "psychic" to PokemonType.PSYCHIC,
-    "ice" to PokemonType.ICE,
-    "dragon" to PokemonType.DRAGON,
-    "dark" to PokemonType.DARK,
-    "fairy" to PokemonType.FAIRY,
-    "unknown" to PokemonType.UNKNOWN,
-    "shadow" to PokemonType.SHADOW
+    "normal" to PokemonTypeWithResources(
+        PokemonType.NORMAL,
+        R.drawable.pokemon_type_icon_normal,
+        R.string.normal_type_name
+    ),
+    "fighting" to PokemonTypeWithResources(
+        PokemonType.FIGHTING,
+        R.drawable.pokemon_type_icon_fighting,
+        R.string.normal_type_name
+    ),
+    "flying" to PokemonTypeWithResources(
+        PokemonType.FLYING,
+        R.drawable.pokemon_type_icon_flying,
+        R.string.flying_type_name
+    ),
+    "poison" to PokemonTypeWithResources(
+        PokemonType.POISON,
+        R.drawable.pokemon_type_icon_poison,
+        R.string.poison_type_name
+    ),
+    "ground" to PokemonTypeWithResources(
+        PokemonType.GROUND,
+        R.drawable.pokemon_type_icon_ground,
+        R.string.ground_type_name
+    ),
+    "rock" to PokemonTypeWithResources(
+        PokemonType.ROCK,
+        R.drawable.pokemon_type_icon_rock,
+        R.string.rock_type_name
+    ),
+    "bug" to PokemonTypeWithResources(
+        PokemonType.BUG,
+        R.drawable.pokemon_type_icon_bug,
+        R.string.bug_type_name
+    ),
+    "ghost" to PokemonTypeWithResources(
+        PokemonType.GHOST,
+        R.drawable.pokemon_type_icon_ghost,
+        R.string.ghost_type_name
+    ),
+    "steel" to PokemonTypeWithResources(
+        PokemonType.STEEL,
+        R.drawable.pokemon_type_icon_steel,
+        R.string.steel_type_name
+    ),
+    "fire" to PokemonTypeWithResources(
+        PokemonType.FIRE,
+        R.drawable.pokemon_type_icon_fire,
+        R.string.fire_type_name
+    ),
+    "water" to PokemonTypeWithResources(
+        PokemonType.WATER,
+        R.drawable.pokemon_type_icon_water,
+        R.string.water_type_name
+    ),
+    "grass" to PokemonTypeWithResources(
+        PokemonType.GRASS,
+        R.drawable.pokemon_type_icon_grass,
+        R.string.grass_type_name
+    ),
+    "electric" to PokemonTypeWithResources(
+        PokemonType.ELECTRIC,
+        R.drawable.pokemon_type_icon_electric,
+        R.string.electric_type_name
+    ),
+    "psychic" to PokemonTypeWithResources(
+        PokemonType.PSYCHIC,
+        R.drawable.pokemon_type_icon_psychic,
+        R.string.psychic_type_name
+    ),
+    "ice" to PokemonTypeWithResources(
+        PokemonType.ICE,
+        R.drawable.pokemon_type_icon_ice,
+        R.string.ice_type_name
+    ),
+    "dragon" to PokemonTypeWithResources(
+        PokemonType.DRAGON,
+        R.drawable.pokemon_type_icon_dragon,
+        R.string.dragon_type_name
+    ),
+    "dark" to PokemonTypeWithResources(
+        PokemonType.DARK,
+        R.drawable.pokemon_type_icon_dark,
+        R.string.dark_type_name
+    ),
+    "fairy" to PokemonTypeWithResources(
+        PokemonType.FAIRY,
+        R.drawable.pokemon_type_icon_fairy,
+        R.string.fairy_type_name
+    ),
+    "unknown" to PokemonTypeWithResources.unknown,
+    "shadow" to PokemonTypeWithResources(
+        PokemonType.SHADOW,
+        R.drawable.pokemon_type_icon_normal,
+        R.string.shadow_name
+    )
 )
 
-fun getDrawableTypeIcon(typeValue: PokemonType): Int =
-    when (typeValue) {
-        PokemonType.NORMAL -> R.drawable.pokemon_type_icon_normal
-        PokemonType.FIGHTING -> R.drawable.pokemon_type_icon_fighting
-        PokemonType.FLYING -> R.drawable.pokemon_type_icon_flying
-        PokemonType.POISON -> R.drawable.pokemon_type_icon_poison
-        PokemonType.GROUND -> R.drawable.pokemon_type_icon_ground
-        PokemonType.ROCK -> R.drawable.pokemon_type_icon_rock
-        PokemonType.BUG -> R.drawable.pokemon_type_icon_bug
-        PokemonType.GHOST -> R.drawable.pokemon_type_icon_ghost
-        PokemonType.STEEL -> R.drawable.pokemon_type_icon_steel
-        PokemonType.FIRE -> R.drawable.pokemon_type_icon_fire
-        PokemonType.WATER -> R.drawable.pokemon_type_icon_water
-        PokemonType.GRASS -> R.drawable.pokemon_type_icon_grass
-        PokemonType.ELECTRIC -> R.drawable.pokemon_type_icon_electric
-        PokemonType.PSYCHIC -> R.drawable.pokemon_type_icon_psychic
-        PokemonType.ICE -> R.drawable.pokemon_type_icon_ice
-        PokemonType.DRAGON -> R.drawable.pokemon_type_icon_dragon
-        PokemonType.DARK -> R.drawable.pokemon_type_icon_dark
-        PokemonType.FAIRY -> R.drawable.pokemon_type_icon_fairy
-        else -> R.drawable.pokemon_type_icon_normal
+data class PokemonTypeWithResources(val type: PokemonType, val typeIconResourceId: Int, val typeStringResourceId: Int) {
+    companion object {
+        val unknown = PokemonTypeWithResources(
+            PokemonType.UNKNOWN,
+            R.drawable.pokemon_type_icon_normal,
+            R.string.unknown_name
+        )
+
+        fun getType(typeName: String) = PokemonTypeMap[typeName] ?: unknown
     }
+}
 
 data class PokemonTypesPresentationModel(
-    val mainType: PokemonType,
-    val secondaryType: PokemonType? = null
+    val mainType: PokemonTypeWithResources,
+    val secondaryType: PokemonTypeWithResources? = null
 ) {
     companion object
     {
-        val empty = PokemonTypesPresentationModel(PokemonType.NORMAL)
+        val empty = PokemonTypesPresentationModel(PokemonTypeWithResources.unknown)
 
         // todo, this isn't the best pattern, maybe figure out something else?
         fun fromDetailsNetworkData(
@@ -106,8 +170,8 @@ data class PokemonTypesPresentationModel(
             // }
 
             // we should be able to do this a bit more elegantly honestly...
-            var mainType: PokemonType? = null
-            var secondType: PokemonType? = null
+            var mainType: PokemonTypeWithResources? = null
+            var secondType: PokemonTypeWithResources? = null
             for(i in listOfTypes.indices)
             {
                 listOfTypes[i].pokemon_v2_type?.let {type ->
@@ -116,8 +180,8 @@ data class PokemonTypesPresentationModel(
                     {
                         when(i)
                         {
-                            0 -> mainType = PokemonTypeMap[typeString]
-                            1 -> secondType = PokemonTypeMap[typeString]
+                            0 -> mainType = PokemonTypeWithResources.getType(typeString)
+                            1 -> secondType = PokemonTypeWithResources.getType(typeString)
                             // else -> // UUUH WHAT POKEMON HAS MORE THEN 2 TYPES? something is wrong... log something
                         }
                     }

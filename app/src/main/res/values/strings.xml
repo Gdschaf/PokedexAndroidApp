@@ -6,6 +6,32 @@
     <string name="error_text">Something went wrong.</string>
     <string name="retry">Retry</string>
 
+    <!--
+    The reason for all of these, rather then just using the string passed to us via the api is for localization
+    this is used for the content description/talk back of the types
+    and just in case they'd need to be localized, they're in this strings file
+    -->
+    <string name="normal_type_name">"Normal"</string>,
+    <string name="fire_type_name">"Fire"</string>,
+    <string name="water_type_name">"Water"</string>,
+    <string name="grass_type_name">"Grass"</string>,
+    <string name="electric_type_name">"Electric"</string>,
+    <string name="ice_type_name">"Ice"</string>,
+    <string name="fighting_type_name">"Fighting"</string>,
+    <string name="poison_type_name">"Poison"</string>,
+    <string name="ground_type_name">"Ground"</string>,
+    <string name="flying_type_name">"Flying"</string>,
+    <string name="psychic_type_name">"Psychic"</string>,
+    <string name="bug_type_name">"Bug"</string>,
+    <string name="rock_type_name">"Rock"</string>,
+    <string name="ghost_type_name">"Ghost"</string>,
+    <string name="dragon_type_name">"Dragon"</string>,
+    <string name="dark_type_name">"Dark"</string>,
+    <string name="steel_type_name">"Steel"</string>,
+    <string name="fairy_type_name">"Fairy"</string>,
+    <string name="unknown_name">"Unknown"</string>,
+    <string name="shadow_name">"Shadow"</string>
+
     <!-- Pokemon Stats Text -->
     <string name="height_label">Height</string>
     <string name="weight_label">Weight</string>
@@ -16,4 +42,7 @@
     <string name="pokemon_sprite_content_description">"Pokemon sprite"</string>
     <string name="pokemon_image_content_description">Pokemon image</string>
     <string name="pokemon_evolution_sprite_content_description">"Evolution sprite"</string>
+    <string name="type_content_description">"type"</string>
+    <string name="pokedex_number_content_description">"Pokedex number</string>
+
 </resources>

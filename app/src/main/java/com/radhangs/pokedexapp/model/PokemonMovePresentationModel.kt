@@ -35,7 +35,7 @@ data class PokemonMovePresentationModel(
     val accuracy: Int,
     val power: Int?,
     val pp: Int,
-    val type: PokemonType,
+    val type: PokemonTypeWithResources,
     val learnType: LearnType,
     val learnLevel: Int?,
     val damageType: DamageType
@@ -48,7 +48,9 @@ data class PokemonMovePresentationModel(
                 accuracy = moveInfo.pokemon_v2_move?.accuracy ?: 100,
                 power = moveInfo.pokemon_v2_move?.power,
                 pp = moveInfo.pokemon_v2_move?.pp ?: 0, // uuuuh no shot this should be null, right?
-                type = moveInfo.pokemon_v2_move?.pokemon_v2_type?.let { PokemonTypeMap[it.name] } ?: PokemonType.UNKNOWN,
+                type = moveInfo.pokemon_v2_move?.pokemon_v2_type?.let {
+                    PokemonTypeWithResources.getType(it.name)
+                } ?: PokemonTypeWithResources.unknown,
                 learnType = getLearnType(moveInfo.pokemon_v2_movelearnmethod),
                 learnLevel = if (moveInfo.level <= 0) null else moveInfo.level,
                 damageType = getDamageType(moveInfo.pokemon_v2_move)

@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel.Companion.getDrawableDamageTypeIcon
-import com.radhangs.pokedexapp.model.getDrawableTypeIcon
 
 @Composable
 fun MoveHeader() {
@@ -31,7 +30,7 @@ fun Move(item: PokemonMovePresentationModel) {
         Text(text = item.learnLevel.toString(), modifier = Modifier.weight(1.0f))
         Text(text = item.moveName, modifier = Modifier.weight(3.0f))
         Image (
-            painter = painterResource(getDrawableTypeIcon(item.type)),
+            painter = painterResource(item.type.typeIconResourceId),
             contentDescription = "something type", // todo, add content description for the types
             modifier = Modifier.size(15.dp).weight(1.0f)
         )
