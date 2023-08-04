@@ -26,8 +26,7 @@ import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel.Companion.getDrawableDamageTypeIcon
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.DamageType
-
-fun getValueString(value: Int?) = value?.toString() ?: "-"
+import com.radhangs.pokedexapp.shared.getValueString
 
 @Composable
 fun MoveCard(item: PokemonMovePresentationModel) {
@@ -77,7 +76,7 @@ fun PokemonMoveTitleRow(moveName: String, typeResourceId: Int, damageType: Damag
             text = moveName,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 18.sp), // todo, define text tyle somewhere?
+            style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 18.sp), // todo, define text style somewhere?
             modifier = Modifier.weight(1f).fillMaxWidth()
         )
         Image (
@@ -94,17 +93,17 @@ fun PokemonMoveDetailsRow(pp: Int, power: Int?, accuracy: Int, modifier: Modifie
         modifier = modifier
     ) {
         PokemonMoveDetail(
-            valueLabel = "PP",
+            valueLabel = "PP", // todo, add to strings value resource
             valueString = pp.toString(),
             modifier = Modifier.weight(1.0f)
         )
         PokemonMoveDetail(
-            valueLabel = "Power",
+            valueLabel = "Power", // todo, add to strings value resource
             valueString = getValueString(power),
             modifier = Modifier.weight(1.0f)
         )
         PokemonMoveDetail(
-            valueLabel = "Accuracy",
+            valueLabel = "Accuracy", // todo, add to strings value resource
             valueString = accuracy.toString(),
             modifier = Modifier.weight(1.0f)
         )

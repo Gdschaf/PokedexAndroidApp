@@ -13,17 +13,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.ViewModelProvider
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
-import com.radhangs.pokedexapp.shared.BackIcon
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading
@@ -87,6 +91,23 @@ fun PokemonDetail(details: PokemonDetailPresentationModel) {
         PokemonCoreStats(details, Modifier.semantics(mergeDescendants = true) { })
         EvolutionChain(chain = details.evolutionaryChain)
         BaseStats(stats = details.baseStats)
+    }
+}
+
+@Composable
+fun BackIcon(
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(R.drawable.back_arrow_inverse),
+            contentDescription = "Back",
+            tint = LocalContentColor.current
+        )
     }
 }
 

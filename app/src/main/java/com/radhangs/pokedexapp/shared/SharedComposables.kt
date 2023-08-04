@@ -12,21 +12,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
@@ -37,10 +32,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 
-// TODO clean all this up, kthx.
-
-// might wanna consider breaking this out into other files or moving things else where? better organization
-
+// used on both the pokedex and pokemon detail's screen
 @Composable
 fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationModel, modifier: Modifier) {
     Row(
@@ -57,6 +49,7 @@ fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationMode
     }
 }
 
+// used by the PokemonTitle above
 @Composable
 fun PokemonTypes(pokemonTypes: PokemonTypesPresentationModel) {
     Row (
@@ -82,29 +75,21 @@ fun PokemonTypes(pokemonTypes: PokemonTypesPresentationModel) {
     }
 }
 
+// used on the pokedex screen as well as the pokemon's evolution chain on the detail screen
 @Composable
-fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
-    val painter = rememberAsyncImagePainter(model = url)
-    Image(
-        painter = painter,
-        contentDescription = contentDescription,
-        modifier = modifier
+fun PokedexSprite(spriteUri: String?, modifier: Modifier, contentDescription: String) {
+    // the sprite paths are honestly, a bit wack.
+    // this could be better but with how odd it is, I'm not sure it matters.
+    val url = spriteUri?.replace("/media", Constants.SPRITE_DOMAIN) ?: Constants.SPRITE_UNKNOWN_URL
+
+    ImageFromUrl(
+        url = url,
+        modifier = modifier,
+        contentDescription = contentDescription
     )
 }
 
-@Composable
-fun ImageFromBitmap(bitmap: Bitmap?, modifier: Modifier, contentDescription: String) {
-    if(bitmap != null) {
-        Image(
-            bitmap = bitmap.asImageBitmap(),
-            contentDescription = contentDescription,
-            modifier = modifier
-        )
-    } else {
-        Box(modifier = modifier) { }
-    }
-}
-
+// same loading ui for both screens
 @Composable
 fun Loading() {
     Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
@@ -120,6 +105,7 @@ fun Loading() {
     }
 }
 
+// same error try again ui for both screens
 @Composable
 fun ErrorTryAgain(onRetryClicked: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -146,37 +132,32 @@ fun ErrorTryAgain(onRetryClicked: () -> Unit) {
     }
 }
 
+// generic helper image with loading from url
 @Composable
-fun BackIcon(
-    modifier: Modifier,
-    onClick: () -> Unit
-) {
-    IconButton(
-        onClick = onClick,
+fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
+    val painter = rememberAsyncImagePainter(model = url)
+    Image(
+        painter = painter,
+        contentDescription = contentDescription,
         modifier = modifier
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(R.drawable.back_arrow_inverse),
-            contentDescription = "Back",
-            tint = LocalContentColor.current
-        )
-    }
-}
-
-// todo kind of wanna add a stroke around the sprite to make it look better? idk, try it.
-@Composable
-fun PokedexSprite(spriteUri: String?, modifier: Modifier, contentDescription: String) {
-    // the sprite paths are honestly, a bit wack.
-    // this could be better but with how odd it is, I'm not sure it matters.
-    val url = spriteUri?.replace("/media", Constants.SPRITE_DOMAIN) ?: Constants.SPRITE_UNKNOWN_URL
-
-    ImageFromUrl(
-        url = url,
-        modifier = modifier,
-        contentDescription = contentDescription
     )
 }
 
+// generic helper image with bitmap that's already loaded either locally or via coil
+@Composable
+fun ImageFromBitmap(bitmap: Bitmap?, modifier: Modifier, contentDescription: String) {
+    if(bitmap != null) {
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = contentDescription,
+            modifier = modifier
+        )
+    } else {
+        Box(modifier = modifier) { }
+    }
+}
+
+// generic vertical text element, only used in one place, but it's generic enough
 @Composable
 fun VerticalText(text: String, modifier: Modifier, style: TextStyle, description: String = text)
 {
