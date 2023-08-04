@@ -30,6 +30,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -48,8 +49,10 @@ fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationMode
     ) {
         Text(
             text = pokemonName,
-            style = TextStyle(fontSize = 24.sp, color = colorResource(id = R.color.text_color) // todo fine a place to define text sizes that isn't the dimen file
-            ))
+            style = TextStyle(fontSize = 24.sp, color = colorResource(id = R.color.text_color)), // todo fine a place to define text sizes that isn't the dimen file
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         PokemonTypes(pokemonTypes)
     }
 }

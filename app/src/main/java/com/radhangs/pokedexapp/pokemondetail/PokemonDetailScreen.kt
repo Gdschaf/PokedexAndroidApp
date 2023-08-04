@@ -59,10 +59,9 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
                     context.finish()
                 }
                 PokemonDetail(pokemonDetailViewModel.getPokemonDetails().value)
-                MoveHeader()
             }
             items(pokemonDetailViewModel.getPokemonMoves()) { item ->
-                Move(item)
+                MoveCard(item)
             }
         }
     }

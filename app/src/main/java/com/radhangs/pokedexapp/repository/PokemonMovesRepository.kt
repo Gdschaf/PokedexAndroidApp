@@ -30,7 +30,7 @@ class PokemonMovesRepository(private val apolloClient: ApolloClient) {
                     PokemonMovesResult.Success(
                         data = pokemon.pokemon_v2_pokemonmoves
                             .map { PokemonMovePresentationModel.fromNetworkData(it) }
-                            .filter { it.moveName.isNotEmpty() && it.learnLevel != null }
+                            .filter { it.moveName.isNotEmpty() }
                             .distinctBy { it.moveName }
                             .sortedWith(moveComparator)
                     )
