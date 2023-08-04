@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
+import com.radhangs.pokedexapp.shared.apolloClient
 import java.lang.IllegalArgumentException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
@@ -34,23 +35,20 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
 
     private fun fetchData() {
         viewModelScope.launch {
-            try {
-                // we'll use a 10 second timeout here, no retries since there's a retry screen/button
-                // I haven't fully gotten it to work, if you restore internet
-                // it doesn't seem to work and I'm not sure why
-                val result = withTimeout(10000) {
-                    pokedexRepository.fetchPokedex()
-                }
-                if(result is PokedexRepository.PokedexResult.Success) {
-                    pokedexList.addAll(result.data)
-                } else {
-                    error.value = true
-                }
-                loading.value = false
-            } catch (e: TimeoutCancellationException) {
-                loading.value = false
+
+            // I had a coroutine timeout here but apollo will eventually time out itself, it takes a while
+            // and I was having issues trying to cancel the on going query after a set amount of time
+            // it also dawned on me that maybe not everyone has the fastest internet
+            // so whatever timeout time I pick might be too short for some people
+            // so i'll let apollo figure out the timeout for me
+
+            val result = pokedexRepository.fetchPokedex()
+            if(result is PokedexRepository.PokedexResult.Success) {
+                pokedexList.addAll(result.data)
+            } else {
                 error.value = true
             }
+            loading.value = false
         }
     }
 

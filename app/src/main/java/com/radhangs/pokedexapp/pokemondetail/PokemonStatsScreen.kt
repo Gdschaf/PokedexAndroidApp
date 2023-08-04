@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
@@ -113,7 +114,7 @@ fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
                 spriteUri = evo.spriteUri,
                 modifier = Modifier
                     .size(dimensionResource(id = R.dimen.sprite_size))
-                    .weight(1.0f / chain.count()),
+                    .weight(1.0f),
                 contentDescription = evo.pokemonName
             )
         }
@@ -133,7 +134,7 @@ val statColorMap = mapOf(
 // all of the base stats, their labels, and bar graph.
 // todo, add base stat values
 @Composable
-fun BaseStats(stats: Map<String, Int>) {
+fun PokemonBaseStats(stats: Map<String, Int>) {
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
     ) {
@@ -157,13 +158,23 @@ fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, empt
         modifier = Modifier
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Text(
-            text = "$label:",
+        Row(
             modifier = Modifier.weight(0.5f),
-            style = TextStyle(fontSize = 18.sp, color = colorResource(id = R.color.text_color)) // todo define this text style somewhere
-        )
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "$label:",
+                modifier = Modifier.weight(1f).fillMaxWidth(),
+                style = TextStyle(fontSize = 18.sp, color = colorResource(id = R.color.text_color)) // todo define this text style somewhere
+            )
+            Text(
+                text = "$value",
+                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.text_color)) // todo define this text style somewhere
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxSize()
