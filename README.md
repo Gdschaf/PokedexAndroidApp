@@ -7,7 +7,11 @@ This Android app was created as a week-long challenge, allowing the use of any p
 The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app.
 
 ## Accessibility (A11y):
-Accessibility was a key consideration while building the app. Both screens offer full TalkBack support, ensuring that all elements are appropriately ordered and grouped together with the right content descriptions. The color palettes for both light and dark themes were designed to meet minimum contrast ratios for better accessibility.
+Ensuring accessibility is a crucial aspect of app development, and this app was designed with inclusivity in mind. Both screens, the Pokedex screen, and the Pokemon detail screen, feature full TalkBack support. Elements are appropriately ordered and grouped together with the right content descriptions to facilitate a smooth user experience for those relying on assistive technologies.
+
+Regarding color palettes, I attempted to strike a balance between aesthetic appeal and accessibility. While I didn't check the contrast ratio for every color combination, I took inspiration from a retro color scheme. However, it's important to acknowledge that some color combinations may not meet the minimum contrast ratio of 4.5:1 for optimal accessibility.
+
+One challenge encountered during development was accommodating larger font sizes. Although the UI design aims to be accommodating, it may not be fully optimized for larger fonts. To address this, most text fields were set to single-line with an overflow type that adds ellipsis, reducing the risk of UI layout issues. While efforts were made to make the UI more robust for larger fonts, there is room for improvement in future updates.
 
 ## Notable Features:
 Several notable features were added to the app, enhancing the overall user experience:
