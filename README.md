@@ -3,6 +3,7 @@
 ## Summary:
 This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
 ![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
+<br>
 
 ## Screens/UI:
 The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app. The color pallet was inspired by a retro theme and I hope it meets the 4.5:1 minimum contrast ratio for optimal accessibility.
@@ -55,7 +56,7 @@ Several considerations were made during development, leading to certain decision
 I am super happy with how this project turned out. It may not be perfect, but I hope it comes across how much fun I had with this project. I tried to not only meet but exceed expectations of what a two screen/activity app can look like with only a weeks worth of work. As always, I'd love to here any and all feedback. I have a laundry list of stretch goals/features I didn't get around to that I think would be fun to add. Thanks for taking the time to look at my project!
 
 ## Project Details
-**Gradle Version:** 8.1.0
-**Gradle JDK:** JetBrains Runtime version 17.0.6 (jbr-17)
-**Minimum SDK:** 23
-**Target SDK:** 33
+**Gradle Version:** 8.1.0<br>
+**Gradle JDK:** JetBrains Runtime version 17.0.6 (jbr-17)<br>
+**Minimum SDK:** 23<br>
+**Target SDK:** 33<br>
