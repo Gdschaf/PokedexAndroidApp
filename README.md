@@ -2,7 +2,7 @@
 
 ## Summary:
 This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
-<br>
+<br><br>
 ![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
 
 ## Screens/UI:
