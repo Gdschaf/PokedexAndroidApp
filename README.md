@@ -45,7 +45,7 @@ Code Architecture and System Design: While solid patterns were used, there might
 
 Unit Test Granularity: The unit tests focused heavily on Apollo queries and specific queries. Breaking up these tests into smaller, more specific ones could enhance traceability in case of failures.
 
-##Other Considerations:
+## Other Considerations:
 Several considerations were made during development, leading to certain decisions:
 
 **Dagger:** While dependency injection is appealing, for this project's scope, it was deemed unnecessary. Injecting the Apollo client and repositories into view models would have added complexity without significant benefits.
