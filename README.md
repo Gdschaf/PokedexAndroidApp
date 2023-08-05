@@ -6,6 +6,8 @@ This Android app was created as a week-long challenge, allowing the use of any p
 ## Screens/UI:
 The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app.
 
+![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
+
 ## Accessibility (A11y):
 Ensuring accessibility is a crucial aspect of app development, and this app was designed with inclusivity in mind. Both screens, the Pokedex screen, and the Pokemon detail screen, feature full TalkBack support. Elements are appropriately ordered and grouped together with the right content descriptions to facilitate a smooth user experience for those relying on assistive technologies.
 
