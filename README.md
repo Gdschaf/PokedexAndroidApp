@@ -1,56 +1,61 @@
 # PokedexAndroidApp
 
 ## Summary:
-This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its beta GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
-
+This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
 ![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
 
 ## Screens/UI:
-The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app.
+The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app. The color pallet was inspired by a retro theme and I hope it meets the 4.5:1 minimum contrast ratio for optimal accessibility.
+
+I used palette to get the dominant color of the Pokemon and its main type. You can see those being used as the Pokemon’s background on its detail page as well as its Pokedex number’s background. This is a relatively small detail but I really enjoy how this looks and I think it adds an extra level of polish to the UI.
+
+I created two Composables that act as full screens for when a query is loading and if there are any errors. This way the user isn’t sitting at a blank screen while waiting for the data to load. If something goes wrong and we get an error back, we display a “something went wrong” screen with a retry button that tries to fetch the data again. These screens were made with re-usability in mind so any other screens that need this, can use it and it’d remain aesthetically consistent throughout the app.
+
+I also created a custom bar graph type composable that’s used to represent the base stats of a pokemon. This is another small detail I’m happy with how it turned out. This graph provides an easy-to-read visual representation of the stats, making it simpler for users to comprehend the data rather than just looking at a bunch of text fields.
 
 ## Accessibility (A11y):
-Ensuring accessibility is a crucial aspect of app development, and this app was designed with inclusivity in mind. Both screens, the Pokedex screen, and the Pokemon detail screen, feature full TalkBack support. Elements are appropriately ordered and grouped together with the right content descriptions to facilitate a smooth user experience for those relying on assistive technologies.
+Both screens, the Pokedex screen, and the Pokemon detail screen, feature full TalkBack support. Elements are appropriately ordered and grouped together with the right content descriptions to facilitate a smooth user experience for those relying on assistive technologies.
 
-Regarding color palettes, I attempted to strike a balance between aesthetic appeal and accessibility. While I didn't check the contrast ratio for every color combination, I took inspiration from a retro color scheme. However, it's important to acknowledge that some color combinations may not meet the minimum contrast ratio of 4.5:1 for optimal accessibility.
-
-One challenge encountered during development was accommodating larger font sizes. Although the UI design aims to be accommodating, it may not be fully optimized for larger fonts. To address this, most text fields were set to single-line with an overflow type that adds ellipsis, reducing the risk of UI layout issues. While efforts were made to make the UI more robust for larger fonts, there is room for improvement in future updates.
-
-## Notable Features:
-Several notable features were added to the app, enhancing the overall user experience:
-
-**Dominant Color:** To address the issue of determining background colors for images, the dominant color of each Pokemon's larger image was extracted using the palette-ktx module. This dominant color is used as the background, making the UI more visually appealing.
-
-**Custom Back Button:** Instead of using the default toolbar with a back button, a custom IconButton composable was created. The back button icon was designed using Illustrator, and its transparency allows the dominant color from the background to show through.
-
-**Stat Bar Graph:** To display each Pokemon's base stats more visually, a bar graph was created. This graph provides an easy-to-read visual representation of the stats, making it simpler for users to comprehend the data.
+Larger font sizes can look a bit rough, however. I tried designing the UI in a way that’d accommodate larger font sizes. I set all text fields to only have 1 line and their overflow type to append an ellipsis to the end. This way as the font gets bigger, it doesn’t necessarily break the UI, however some areas could be more legible.
 
 ## Testing:
-Extensive testing was performed during the development process, focusing on unit tests. JUnit, Mockito, and Apollo's mock server were used to create test cases. A document with detailed test cases was prepared for a potential bug bash to ensure the app's robustness. The document can be accessed here:
+I did a lot of testing during development. I created a handful of unit tests using JUnit, Mockito, and Apollo’s mock server you can check out in the project. I also created a spreadsheet with test cases for a potential bug bash. That document can be viewed here:
 [Bug Bash Test Cases](https://docs.google.com/spreadsheets/d/17q23UqSX26u6LsCewFgVi_28bHhbKhRfNkTDqcv4bmY/edit?usp=sharing)
 
 ## Known Issues:
-The app exhibits a few known issues, mostly related to UI elements:
+There are a few known issues that are mostly UI related.
 
-**Pokedex Number Display:** Pokedex numbers above 999 may get cut off due to the UI design. This issue primarily affects a small number of Pokemon.
+**Pokedex Number Display:** Pokedex numbers above 999 may get cut off due to the UI design. This issue only affects like 10 Pokemon.
 
-**Missing Large Images:** Some Pokemon, particularly from the latest generation, do not have large images available in the data domain used by the app. As a result, a blank view fills the space where the image would be displayed.
+**Missing Large Images:** The Pokemon in the latest generation don’t have large images and therefore nothing will load. I could have put something in place of the image but right now it’s just a blank view to at the very least not mess up the UI formatting.
 
-**GraphQL Endpoint Reliability:** As the GraphQL endpoint is still in beta, occasional issues may arise when it goes down. Users experiencing loading delays or retry prompts should check the PokeAPI Status page for current issues:
+**GraphQL Endpoint Reliability:** The GraphQL endpoint is still in beta so occasionally issues may arise when it goes down. It claims to have a 98% uptime but I had a day where it was down for almost 6 hours. If you’re experiencing loading delays or retry prompts, you should check the PokeAPI Status page for current issues:
 [PokeAPI Server Status](https://pokeapi.statuspage.io/#)
 
 ## Critiques:
-As with any project, there are areas for improvement:
+There's always room for improvement and I'm always looking for new approaches to problems. 
 
-Code Architecture and System Design: While solid patterns were used, there might be room for exploring more efficient approaches to solving certain problems.
+**Code Architecture:** I think I could have organized some of the files and functions a bit better, namely the shared stuff. That ended up being kind of a catch all for things that didn't have a home.
 
-Unit Test Granularity: The unit tests focused heavily on Apollo queries and specific queries. Breaking up these tests into smaller, more specific ones could enhance traceability in case of failures.
+**System Design:** While I think I went with patterns that suited the given problems well, I always think there's better, more clever way out there to accomplish the same thing.
+
+**Unit Test Granularity:** The unit tests focused heavily on the repositories. These repositories do test a lot of things when it come to data ingestion and I think it covers a lot of cases. However if I were to break these tests up into smaller, more focused tests, it'd be easier to trace back any issues.
 
 ## Other Considerations:
 Several considerations were made during development, leading to certain decisions:
 
-**Dagger:** While dependency injection is appealing, for this project's scope, it was deemed unnecessary. Injecting the Apollo client and repositories into view models would have added complexity without significant benefits.
+**Dagger:** I debated using dependency injection for this project but ultimately decided against it. It would have been nice to inject the Apollo client into the repositories and then the repositories into the view models but outside of that, it wouldn't have been used.
 
-**Multiple Modules:** While multiple modules have been used for larger projects, it was not needed for this app's scale, as data models and repositories were kept together.
+**Multiple Modules:** Kind of going back to architecture improvements above, I contemplated breaking things out into their own modules but again, due to the scope of the project, decided against it.
 
-**RecyclerView vs. LazyColumn:** The choice between RecyclerView and LazyColumn for the Pokedex was initially challenging. Ultimately, Jetpack Compose's LazyColumn was chosen, as it performed well on physical devices.
+**RecyclerView vs. LazyColumn:** As much as I wanted to use Compose for everything, I did toss around the idea of using a RecyclerView as I've heard they're more efficient with larger data sets. I didn't see any noticeable performance loss from using a LazyColumn though so ultimately went that route.
 
+## Summary
+
+I am super happy with how this project turned out. It may not be perfect, but I hope it comes across how much fun I had with this project. I tried to not only meet but exceed expectations of what a two screen/activity app can look like with only a weeks worth of work. As always, I'd love to here any and all feedback. I have a laundry list of stretch goals/features I didn't get around to that I think would be fun to add. Thanks for taking the time to look at my project!
+
+## Project Details
+**Gradle Version:** 8.1.0
+**Gradle JDK:** JetBrains Runtime version 17.0.6 (jbr-17)
+**Minimum SDK:** 23
+**Target SDK:** 33
