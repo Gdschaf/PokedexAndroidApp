@@ -2,8 +2,8 @@
 
 ## Summary:
 This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
-![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
 <br>
+![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
 
 ## Screens/UI:
 The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app. The color pallet was inspired by a retro theme and I hope it meets the 4.5:1 minimum contrast ratio for optimal accessibility.
@@ -30,7 +30,7 @@ There are a few known issues that are mostly UI related.
 
 **Missing Large Images:** The Pokemon in the latest generation don’t have large images and therefore nothing will load. I could have put something in place of the image but right now it’s just a blank view to at the very least not mess up the UI formatting.
 
-**GraphQL Endpoint Reliability:** The GraphQL endpoint is still in beta so occasionally issues may arise when it goes down. It claims to have a 98% uptime but I had a day where it was down for almost 6 hours. If you’re experiencing loading delays or retry prompts, you should check the PokeAPI Status page for current issues:
+**GraphQL Endpoint Reliability:** The GraphQL endpoint is still in beta so occasionally issues may arise when it goes down. It claims to have a 98% uptime but I had a day where it was down for almost 5 hours. If you’re experiencing loading delays or retry prompts, you should check the PokeAPI Status page for current issues:
 [PokeAPI Server Status](https://pokeapi.statuspage.io/#)
 
 ## Critiques:
@@ -38,7 +38,7 @@ There's always room for improvement and I'm always looking for new approaches to
 
 **Code Architecture:** I think I could have organized some of the files and functions a bit better, namely the shared stuff. That ended up being kind of a catch all for things that didn't have a home.
 
-**System Design:** While I think I went with patterns that suited the given problems well, I always think there's better, more clever way out there to accomplish the same thing.
+**System Design:** While I think I went with patterns that suited the given problems well, I always think there's better, more clever way out there to solve the same problems.
 
 **Unit Test Granularity:** The unit tests focused heavily on the repositories. These repositories do test a lot of things when it come to data ingestion and I think it covers a lot of cases. However if I were to break these tests up into smaller, more focused tests, it'd be easier to trace back any issues.
 
@@ -53,7 +53,7 @@ Several considerations were made during development, leading to certain decision
 
 ## Summary
 
-I am super happy with how this project turned out. It may not be perfect, but I hope it comes across how much fun I had with this project. I tried to not only meet but exceed expectations of what a two screen/activity app can look like with only a weeks worth of work. As always, I'd love to here any and all feedback. I have a laundry list of stretch goals/features I didn't get around to that I think would be fun to add. Thanks for taking the time to look at my project!
+I am super happy with how this project turned out. It may not be perfect, but I hope it comes across how much fun I had with this project. I tried to not only meet but exceed expectations of what a two screen/activity app can look like with only a weeks worth of work. As always, I'd love to hear any and all feedback. I have a laundry list of stretch goals/features I didn't get around to that I think would be fun to add. Thanks for taking the time to look at my project!
 
 ## Project Details
 **Gradle Version:** 8.1.0<br>
