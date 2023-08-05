@@ -88,7 +88,7 @@ fun PokemonDetail(details: PokemonDetailPresentationModel) {
                 .semantics(mergeDescendants = true) { }
         )
         PokemonCoreStats(details, Modifier.semantics(mergeDescendants = true) { })
-        EvolutionChain(chain = details.evolutionaryChain)
+        EvolutionChain(chain = details.evolutionChain)
         PokemonBaseStats(stats = details.baseStats)
     }
 }

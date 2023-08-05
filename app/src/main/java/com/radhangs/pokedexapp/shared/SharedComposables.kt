@@ -95,7 +95,6 @@ fun Loading() {
     Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
         CircularProgressIndicator(
             modifier = Modifier.size(dimensionResource(id = R.dimen.loading_progress_size)),
-            // color = colorResource(id = R.color.primary_color) //kinda silly, kinda cool, idk
         )
         Text(
             text = stringResource(id = R.string.loading_text),

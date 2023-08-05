@@ -77,7 +77,12 @@ fun PokemonCoreStats(details: PokemonDetailPresentationModel, modifier: Modifier
 
 // used to display the core stat labels/values
 @Composable
-fun LabelValueStat(label: String, value: String, modifier: Modifier, arrangement: Arrangement.Horizontal = Arrangement.Start) {
+fun LabelValueStat(
+    label: String,
+    value: String,
+    modifier: Modifier,
+    arrangement: Arrangement.Horizontal = Arrangement.Start
+) {
     val textStyle = TextStyle(fontSize = 18.sp, color = colorResource(id = R.color.text_color)) // todo, define this text style somewhere
     Row (
         modifier = modifier,
@@ -179,7 +184,6 @@ fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, empt
             modifier = Modifier
                 .fillMaxSize()
                 .weight(0.5f)
-                .semantics { contentDescription = value.toString() }
         ) {
             val weight = (value.toFloat() / maxValue).coerceIn(0.0f, 1.0f)
             val barHeight = dimensionResource(id = R.dimen.stat_bar_height)

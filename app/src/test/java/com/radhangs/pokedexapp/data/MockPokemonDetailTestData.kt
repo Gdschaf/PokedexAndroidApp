@@ -126,7 +126,7 @@ val mockPokemonDetailPresentationData = PokemonDetailPresentationModel(
     types = mockPresentationType,
     baseHappiness = 50,
     captureRate = 45,
-    evolutionaryChain = mockPresentationEvolutionChain,
+    evolutionChain = mockPresentationEvolutionChain,
     baseStats = mockPresentationBaseStats
 )
 
@@ -148,6 +148,6 @@ val mockPokemonDetailNullPresentationData = PokemonDetailPresentationModel(
     types = PokemonTypesPresentationModel.empty,
     baseHappiness = 0,
     captureRate = 0,
-    evolutionaryChain = emptyList(),
+    evolutionChain = emptyList(),
     baseStats = emptyMap()
 )

@@ -15,11 +15,17 @@ class PokemonDetailRepository(private val apolloClient: ApolloClient) {
         try {
             val response = apolloClient.query(PokemonDetailQuery(pokemonId)).execute()
             if (response.hasErrors()) {
-                PokemonDetailResult.Error(errorMessage = "Pokemon detail query response included errors")
+                PokemonDetailResult.Error(
+                    errorMessage = "Pokemon detail query response included errors"
+                )
             } else {
                 response.data?.pokemon_v2_pokemon_by_pk?.let { pokemonData ->
-                    PokemonDetailResult.Success(data = PokemonDetailPresentationModel.fromNetworkData(pokemonData))
-                } ?: PokemonDetailResult.Error(errorMessage = "Pokemon detail query returned null data we weren't expecting")
+                    PokemonDetailResult.Success(
+                        data = PokemonDetailPresentationModel.fromNetworkData(pokemonData)
+                    )
+                } ?: PokemonDetailResult.Error(
+                    errorMessage = "Pokemon detail query returned null data we weren't expecting"
+                )
             }
         } catch (e: ApolloException) {
             PokemonDetailResult.Error(errorMessage = "Apollo Exception: ${e.message}")

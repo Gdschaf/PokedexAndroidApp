@@ -17,15 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
-import com.radhangs.pokedexapp.model.PokemonMovePresentationModel.Companion.getDrawableDamageTypeIcon
 import com.radhangs.pokedexapp.R
-import com.radhangs.pokedexapp.model.DamageType
+import com.radhangs.pokedexapp.model.DamageCategoryPresentationModel
+import com.radhangs.pokedexapp.model.PokemonTypeWithResources
 import com.radhangs.pokedexapp.shared.getValueString
 
 @Composable
@@ -33,15 +35,18 @@ fun MoveCard(item: PokemonMovePresentationModel) {
     Card(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { },
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.background_primary))
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.background_primary)
+        )
     ) {
         Column {
             PokemonMoveTitleRow(
                 moveName = item.moveName,
-                typeResourceId = item.type.typeIconResourceId,
+                moveType = item.type,
                 damageType = item.damageType,
                 modifier = Modifier.padding(4.dp)
             )
@@ -61,15 +66,20 @@ fun MoveCard(item: PokemonMovePresentationModel) {
 }
 
 @Composable
-fun PokemonMoveTitleRow(moveName: String, typeResourceId: Int, damageType: DamageType, modifier: Modifier) {
+fun PokemonMoveTitleRow(
+    moveName: String,
+    moveType: PokemonTypeWithResources,
+    damageType: DamageCategoryPresentationModel,
+    modifier: Modifier
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Image (
-            painter = painterResource(typeResourceId),
-            contentDescription = "something type", // todo, add content description for the types
+            painter = painterResource(moveType.typeIconResourceId),
+            contentDescription = stringResource(id = moveType.typeStringResourceId) + stringResource(id = R.string.type_content_description),
             modifier = Modifier.padding(start = 4.dp).size(20.dp)
         )
         Text(
@@ -80,8 +90,8 @@ fun PokemonMoveTitleRow(moveName: String, typeResourceId: Int, damageType: Damag
             modifier = Modifier.weight(1f).fillMaxWidth()
         )
         Image (
-            painter = painterResource(getDrawableDamageTypeIcon(damageType)),
-            contentDescription = "something type", // todo, add content description for the types
+            painter = painterResource(damageType.drawableResourceId),
+            contentDescription = stringResource(id = damageType.stringResourceId) + stringResource(id = R.string.damage_category_content_description),
             modifier = Modifier.padding(end = 4.dp).size(25.dp)
         )
     }

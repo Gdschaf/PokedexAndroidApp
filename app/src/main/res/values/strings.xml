@@ -32,6 +32,10 @@
     <string name="unknown_name">"Unknown"</string>,
     <string name="shadow_name">"Shadow"</string>
 
+    <string name="physical_damage_category">Physical</string>
+    <string name="special_damage_category">Special</string>
+    <string name="status_damage_category">Status</string>
+
     <!-- Pokemon Stats Text -->
     <string name="height_label">Height</string>
     <string name="weight_label">Weight</string>
@@ -44,5 +48,6 @@
     <string name="pokemon_evolution_chain_content_description">"Evolution chain"</string>
     <string name="type_content_description">"type"</string>
     <string name="pokedex_number_content_description">"Pokedex number</string>
+    <string name="damage_category_content_description">damage category</string>
 
 </resources>

@@ -12,10 +12,32 @@ enum class DamageType {
 }
 
 val DamageTypeMap = mapOf(
-    "physical" to DamageType.PHYSICAL,
-    "special" to DamageType.SPECIAL,
-    "status" to DamageType.STATUS
+    "physical" to DamageCategoryPresentationModel(
+        DamageType.PHYSICAL,
+        R.string.physical_damage_category,
+        R.drawable.physical_move_icon
+    ),
+    "special" to DamageCategoryPresentationModel(
+        DamageType.SPECIAL,
+        R.string.special_damage_category,
+        R.drawable.special_move_icon
+    ),
+    "status" to DamageCategoryPresentationModel(
+        DamageType.STATUS,
+        R.string.status_damage_category,
+        R.drawable.status_move_icon
+    )
 )
+
+data class DamageCategoryPresentationModel(
+    val type: DamageType,
+    val stringResourceId: Int,
+    val drawableResourceId: Int
+) {
+    companion object {
+        val empty = DamageCategoryPresentationModel(DamageType.UNKNOWN, 0, 0)
+    }
+}
 
 enum class LearnType {
     LEVEL_UP,
@@ -38,9 +60,9 @@ data class PokemonMovePresentationModel(
     val type: PokemonTypeWithResources,
     val learnType: LearnType,
     val learnLevel: Int?,
-    val damageType: DamageType
+    val damageType: DamageCategoryPresentationModel
 ) {
-    // this is a tad better, but it ain't great
+
     companion object {
         fun fromNetworkData(moveInfo: PokemonMovesQuery.Pokemon_v2_pokemonmofe) =
             PokemonMovePresentationModel(
@@ -53,24 +75,16 @@ data class PokemonMovePresentationModel(
                 } ?: PokemonTypeWithResources.unknown,
                 learnType = getLearnType(moveInfo.pokemon_v2_movelearnmethod),
                 learnLevel = if (moveInfo.level <= 0) null else moveInfo.level,
-                damageType = getDamageType(moveInfo.pokemon_v2_move)
+                damageType = getDamageCategoryType(moveInfo.pokemon_v2_move)
             )
 
-        fun getDrawableDamageTypeIcon(type: DamageType): Int =
-            when (type) {
-                DamageType.PHYSICAL -> R.drawable.physical_move_icon
-                DamageType.SPECIAL -> R.drawable.special_move_icon
-                DamageType.STATUS -> R.drawable.status_move_icon
-                else -> R.drawable.physical_move_icon // todo change this out to something better
-            }
-
-        fun getDamageType(move: PokemonMovesQuery.Pokemon_v2_move?) =
+        private fun getDamageCategoryType(move: PokemonMovesQuery.Pokemon_v2_move?) =
             move?.pokemon_v2_movedamageclass?.let { damageClass ->
                 DamageTypeMap[damageClass.name]
-            } ?: DamageType.UNKNOWN
+            } ?: DamageCategoryPresentationModel.empty
 
 
-        fun getLearnType(learnMethod: PokemonMovesQuery.Pokemon_v2_movelearnmethod?) =
+        private fun getLearnType(learnMethod: PokemonMovesQuery.Pokemon_v2_movelearnmethod?) =
             learnMethod?.let {
                 LearnTypeMap[it.name]
             } ?: LearnType.UNKNOWN

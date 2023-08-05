@@ -21,7 +21,9 @@ class PokemonDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val pokemonId = intent.getIntExtra(POKEMON_ID, 1) // we'll default to Bulbasaur but probably should handle errors
+        // if we don't get a pokemon_id, first off, something's wrong, but also,
+        // default value of 0 will return null and display the "something went wrong" screen
+        val pokemonId = intent.getIntExtra(POKEMON_ID, 0)
 
         setContent {
             PokedexAppTheme {

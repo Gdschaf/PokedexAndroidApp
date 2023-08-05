@@ -24,7 +24,9 @@ class PokemonMovesRepository(private val apolloClient: ApolloClient) {
         try {
             val response = apolloClient.query(PokemonMovesQuery(pokemonId)).execute()
             if (response.hasErrors()) {
-                PokemonMovesResult.Error(errorMessage = "Pokemon moves query response included errors")
+                PokemonMovesResult.Error(
+                    errorMessage = "Pokemon moves query response included errors"
+                )
             } else {
                 response.data?.pokemon_v2_pokemon_by_pk?.let { pokemon ->
                     PokemonMovesResult.Success(
@@ -34,7 +36,9 @@ class PokemonMovesRepository(private val apolloClient: ApolloClient) {
                             .distinctBy { it.moveName }
                             .sortedWith(moveComparator)
                     )
-                } ?: PokemonMovesResult.Error(errorMessage = "Pokemon moves query returned null data we weren't expecting")
+                } ?: PokemonMovesResult.Error(
+                    errorMessage = "Pokemon moves query returned null data we weren't expecting"
+                )
             }
         } catch (e: ApolloException) {
             PokemonMovesResult.Error(errorMessage = "Apollo Exception: ${e.message}")

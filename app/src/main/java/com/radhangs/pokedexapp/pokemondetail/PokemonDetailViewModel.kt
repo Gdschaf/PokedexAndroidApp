@@ -32,7 +32,7 @@ class PokemonDetailViewModel(
     private val pokemonDetailRepository = PokemonDetailRepository(apolloClient)
     private val pokemonMovesRepository = PokemonMovesRepository(apolloClient)
 
-    private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.bulbasaur) // should replace bulbasaur with some other default
+    private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.empty)
     private val pokemonMoves = mutableStateListOf<PokemonMovePresentationModel>()
     private val pokemonBitmap = mutableStateOf<Bitmap?>(null)
     private val pokemonDominantColor = mutableStateOf(Color.Transparent)
@@ -67,7 +67,8 @@ class PokemonDetailViewModel(
             }
             loading.value = false
 
-            // I'm not worrying TOO much about this failing, if it does, it just won't display the moves
+            // I'm not worrying TOO much about this failing
+            // if it does, it just won't display the moves
             val movesResult = pokemonMovesRepository.fetchMovesForPokemon(pokemonId)
             if (movesResult is PokemonMovesRepository.PokemonMovesResult.Success) {
                 pokemonMoves.addAll(movesResult.data)
@@ -85,9 +86,12 @@ class PokemonDetailViewModel(
     // get the image's bitmap for the dominant color background.
     fun loadLargeBitmap(context: Context) {
         viewModelScope.launch {
-            val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL + getFormattedImageFilename(pokemonDetail.value.pokemonId)
+            val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL +
+                    getFormattedImageFilename(pokemonDetail.value.pokemonId)
             pokemonBitmap.value = getBitmapFromUrl(context, imageUrl)
-            pokemonDominantColor.value = pokemonBitmap.value?.let { getDominantColorFromBitmap(it) } ?: Color.Transparent
+            pokemonDominantColor.value = pokemonBitmap.value?.let {
+                getDominantColorFromBitmap(it)
+            } ?: Color.Transparent
         }
     }
 
@@ -110,7 +114,9 @@ class PokemonDetailViewModel(
         }
     }
 
-    private fun getFormattedImageFilename(pokemonId: Int): String = String.format("%03d.png", pokemonId)
+    private fun getFormattedImageFilename(
+        pokemonId: Int
+    ): String = String.format("%03d.png", pokemonId)
 }
 
 class PokemonDetailViewModelFactory(

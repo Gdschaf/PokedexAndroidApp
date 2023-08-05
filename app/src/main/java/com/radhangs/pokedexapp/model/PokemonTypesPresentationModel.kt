@@ -1,6 +1,5 @@
 package com.radhangs.pokedexapp.model
 
-import androidx.compose.ui.res.stringResource
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.R
@@ -164,12 +163,6 @@ data class PokemonTypesPresentationModel(
         ): PokemonTypesPresentationModel {
             if(listOfTypes.isNullOrEmpty())
                 return empty
-
-            // val mappedItems = listOfTypes.take(2).map {type ->
-            //     type.type_id?.let { id ->
-            //         typeRepository.getPokemonTypeById(id)
-            //     } ?: ""
-            // }
 
             // we should be able to do this a bit more elegantly honestly...
             var mainType: PokemonTypeWithResources? = null

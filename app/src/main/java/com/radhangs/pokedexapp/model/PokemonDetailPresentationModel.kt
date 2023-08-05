@@ -2,7 +2,6 @@ package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel.Companion.getFrontDefaultSprite
-import com.radhangs.pokedexapp.shared.ConvertToTitle
 import com.radhangs.pokedexapp.shared.capitalizeFirstLetter
 
 data class PokemonDetailPresentationModel(
@@ -13,11 +12,21 @@ data class PokemonDetailPresentationModel(
     val types: PokemonTypesPresentationModel,
     val baseHappiness: Int,
     val captureRate: Int,
-    val evolutionaryChain: List<EvolutionChainPresentationModel>, //lets sort this in order of id, lowest to highest
+    val evolutionChain: List<EvolutionChainPresentationModel>, // sorted by pokedex number/pokemon id
     val baseStats: Map<String, Int>
 ) {
     companion object {
-        val bulbasaur = PokemonDetailPresentationModel(1, "Bulbasaur", 0.7f, 6.9f, PokemonTypesPresentationModel.empty, 50, 50, emptyList(), emptyMap())
+        val empty = PokemonDetailPresentationModel(
+            pokemonId = 0,
+            pokemonName = "",
+            height = 0f,
+            weight = 0f,
+            types = PokemonTypesPresentationModel.empty,
+            baseHappiness = 0,
+            captureRate = 0,
+            evolutionChain = emptyList(),
+            baseStats = emptyMap()
+        )
 
         fun fromNetworkData(pokemonData: PokemonDetailQuery.Pokemon_v2_pokemon_by_pk) =
             PokemonDetailPresentationModel(
@@ -28,7 +37,7 @@ data class PokemonDetailPresentationModel(
                 types = PokemonTypesPresentationModel.fromDetailsNetworkData(pokemonData.pokemon_v2_pokemontypes),
                 baseHappiness = pokemonData.pokemon_v2_pokemonspecy?.base_happiness ?: 0,
                 captureRate = pokemonData.pokemon_v2_pokemonspecy?.capture_rate ?: 0,
-                evolutionaryChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
+                evolutionChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
                 baseStats = pokemonData.pokemon_v2_pokemonstats
                     .filter { it.pokemon_v2_stat != null }
                     .associate { it.pokemon_v2_stat!!.name to it.base_stat }
@@ -48,7 +57,6 @@ data class PokemonDetailPresentationModel(
     }
 }
 
-// might wanna add the sprite onto this
 data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?) {
     companion object {
         fun fromNetworkData(evo: PokemonDetailQuery.Pokemon_v2_pokemonspecy1) =
