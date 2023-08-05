@@ -9,11 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
-import com.radhangs.pokedexapp.shared.apolloClient
 import java.lang.IllegalArgumentException
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
 
 class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
     private val pokedexRepository = PokedexRepository(apolloClient)
