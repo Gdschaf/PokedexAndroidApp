@@ -43,12 +43,14 @@ data class PokemonDetailPresentationModel(
                     .associate { it.pokemon_v2_stat!!.name to it.base_stat }
             )
 
-        fun divideByTen(value: Int?) =
+        // used to convert the weight and height, which are ints, into their respective units
+        // both just need to be divided by 10
+        private fun divideByTen(value: Int?) =
             value?.let {
                 value / 10.0f
             } ?: 0.0f
 
-        fun buildEvolutionChain(evolutionaryChain: PokemonDetailQuery.Pokemon_v2_evolutionchain?) =
+        private fun buildEvolutionChain(evolutionaryChain: PokemonDetailQuery.Pokemon_v2_evolutionchain?) =
             evolutionaryChain?.pokemon_v2_pokemonspecies?.let {list ->
                 list.map { evo ->
                     EvolutionChainPresentationModel.fromNetworkData(evo)

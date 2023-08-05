@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,14 +20,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.shared.Constants.MAX_STAT_VALUE
-import com.radhangs.pokedexapp.shared.ConvertToTitle
+import com.radhangs.pokedexapp.shared.convertToTitle
+import com.radhangs.pokedexapp.shared.MediumText
 import com.radhangs.pokedexapp.shared.PokedexSprite
 
 // all the pokemon stats under the titles and above the moves
@@ -83,19 +81,16 @@ fun LabelValueStat(
     modifier: Modifier,
     arrangement: Arrangement.Horizontal = Arrangement.Start
 ) {
-    val textStyle = TextStyle(fontSize = 18.sp, color = colorResource(id = R.color.text_color)) // todo, define this text style somewhere
     Row (
         modifier = modifier,
         horizontalArrangement = arrangement
     ){
-        Text(
+        MediumText(
             text = "$label:",
-            style = textStyle,
             modifier = Modifier.padding(end = dimensionResource(id = R.dimen.label_value_gap))
         )
-        Text(
-            text = value,
-            style = textStyle
+        MediumText(
+            text = value
         )
     }
 }
@@ -137,7 +132,6 @@ val statColorMap = mapOf(
 )
 
 // all of the base stats, their labels, and bar graph.
-// todo, add base stat values
 @Composable
 fun PokemonBaseStats(stats: Map<String, Int>) {
     Column(
@@ -145,7 +139,7 @@ fun PokemonBaseStats(stats: Map<String, Int>) {
     ) {
         for(stat in stats) {
             StatDisplay(
-                label = stat.key.ConvertToTitle(),
+                label = stat.key.convertToTitle(),
                 value = stat.value,
                 maxValue = MAX_STAT_VALUE,
                 fillColor = statColorMap[stat.key]?.let { colorResource(id = it) } ?: Color.Black,
@@ -170,14 +164,12 @@ fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, empt
             modifier = Modifier.weight(0.5f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            MediumText(
                 text = "$label:",
-                modifier = Modifier.weight(1f).fillMaxWidth(),
-                style = TextStyle(fontSize = 18.sp, color = colorResource(id = R.color.text_color)) // todo define this text style somewhere
+                modifier = Modifier.weight(1f).fillMaxWidth()
             )
-            Text(
-                text = "$value",
-                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.text_color)) // todo define this text style somewhere
+            MediumText(
+                text = "$value"
             )
         }
         Row(

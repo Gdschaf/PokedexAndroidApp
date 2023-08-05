@@ -37,16 +37,24 @@ class PokemonTypeTests {
         }
     }
 
-    // this test currently fails because I don't have an icon for the shadow or unknown types so they do in fact default to normal
-    //@Test
-    //fun `test all types have a drawable`() {
-    //    // I'm currently using the normal icon for unknowns, so we're basically making sure we only get the normal icon when the type is in fact, normal
-    //    for(e in PokemonType.values()) {
-    //        if(e != PokemonType.NORMAL) {
-    //            assertTrue(getDrawableTypeIcon(e) != R.drawable.pokemon_type_icon_normal)
-    //        } else {
-    //            assertTrue(getDrawableTypeIcon(e) == R.drawable.pokemon_type_icon_normal)
-    //        }
-    //    }
-    //}
+    @Test
+    fun `null pokedex network data should adapt to unknown and null types`() {
+        val test = PokemonTypesPresentationModel.fromPokedexNetworkData(null)
+        assertEquals(PokemonTypeWithResources.unknown, test.mainType)
+        assertEquals(null, test.secondaryType)
+    }
+
+    @Test
+    fun `empty pokedex network data should adapt to unknown and null types`() {
+        val test = PokemonTypesPresentationModel.fromPokedexNetworkData(emptyList())
+        assertEquals(PokemonTypeWithResources.unknown, test.mainType)
+        assertEquals(null, test.secondaryType)
+    }
+
+    @Test
+    fun `empty pokemon details network data should adapt to unknown and null types`() {
+        val test = PokemonTypesPresentationModel.fromDetailsNetworkData(emptyList())
+        assertEquals(PokemonTypeWithResources.unknown, test.mainType)
+        assertEquals(null, test.secondaryType)
+    }
 }

@@ -18,15 +18,13 @@ data class PokedexPresentationModel(
             PokedexPresentationModel(
                 pokemonId = pokemon.id,
                 pokemonName = pokemon.name.capitalizeFirstLetter(),
-                pokemonTypes = PokemonTypesPresentationModel.fromPokedexNetworkData(
-                    pokemon.pokemon_v2_pokemontypes
-                ),
+                pokemonTypes = PokemonTypesPresentationModel.fromPokedexNetworkData(pokemon.pokemon_v2_pokemontypes),
                 spriteUri = getFrontDefaultSprite(pokemon.pokemon_v2_pokemonsprites.first().sprites)
             )
 
-        fun getFrontDefaultSprite(input: String) = parseStringToMap(input)["front_default"] ?: "0.png"
+        fun getFrontDefaultSprite(input: String) = parseStringToMap(input)["front_default"]
 
-        fun parseStringToMap(input: String): Map<String, String> {
+        private fun parseStringToMap(input: String): Map<String, String> {
             val regex = """\s*"([^"]+)": "([^"]+)"""".toRegex()
             val matches = regex.findAll(input)
 

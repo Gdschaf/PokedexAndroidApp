@@ -3,7 +3,6 @@ package com.radhangs.pokedexapp.data
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
-import com.radhangs.pokedexapp.model.PokemonType
 import com.radhangs.pokedexapp.model.PokemonTypeWithResources
 
 val mockGrassNetworkType = PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = "grass"))

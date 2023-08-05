@@ -149,43 +149,26 @@ data class PokemonTypesPresentationModel(
     {
         val empty = PokemonTypesPresentationModel(PokemonTypeWithResources.unknown)
 
-        // todo, this isn't the best pattern, maybe figure out something else?
         fun fromDetailsNetworkData(
             listOfTypes: List<PokemonDetailQuery.Pokemon_v2_pokemontype>
-        ) = fromPokedexNetworkData(
-            listOfTypes.map {
-                PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = it.pokemon_v2_type?.name ?: ""))
+        ) = PokemonTypesPresentationModel(
+            mainType = listOfTypes.getOrNull(0)?.pokemon_v2_type?.let { type ->
+                PokemonTypeWithResources.getType(type.name)
+            } ?: PokemonTypeWithResources.unknown,
+            secondaryType = listOfTypes.getOrNull(1)?.pokemon_v2_type?.let { type ->
+                PokemonTypeWithResources.getType(type.name)
             }
         )
 
         fun fromPokedexNetworkData(
             listOfTypes: List<PokedexQuery.Pokemon_v2_pokemontype>?
-        ): PokemonTypesPresentationModel {
-            if(listOfTypes.isNullOrEmpty())
-                return empty
-
-            // we should be able to do this a bit more elegantly honestly...
-            var mainType: PokemonTypeWithResources? = null
-            var secondType: PokemonTypeWithResources? = null
-            for(i in listOfTypes.indices)
-            {
-                listOfTypes[i].pokemon_v2_type?.let {type ->
-                    val typeString = type.name
-                    if(typeString.isNotEmpty())
-                    {
-                        when(i)
-                        {
-                            0 -> mainType = PokemonTypeWithResources.getType(typeString)
-                            1 -> secondType = PokemonTypeWithResources.getType(typeString)
-                            // else -> // UUUH WHAT POKEMON HAS MORE THEN 2 TYPES? something is wrong... log something
-                        }
-                    }
-                }
+        ) = PokemonTypesPresentationModel(
+            mainType = listOfTypes?.getOrNull(0)?.pokemon_v2_type?.let { type ->
+                PokemonTypeWithResources.getType(type.name)
+            } ?: PokemonTypeWithResources.unknown,
+            secondaryType = listOfTypes?.getOrNull(1)?.pokemon_v2_type?.let { type ->
+                PokemonTypeWithResources.getType(type.name)
             }
-
-            return mainType?.let {
-                PokemonTypesPresentationModel(it, secondType)
-            } ?: empty
-        }
+        )
     }
 }

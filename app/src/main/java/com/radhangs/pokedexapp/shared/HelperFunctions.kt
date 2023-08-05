@@ -24,7 +24,7 @@ fun getDominantColorFromBitmap(bitmap: Bitmap) : Color
 
 fun String.capitalizeFirstLetter() : String = this.replaceFirstChar { char -> char.uppercase() }
 
-fun String.ConvertToTitle(): String = this.split("-").joinToString(" ") {
+fun String.convertToTitle(): String = this.split("-").joinToString(" ") {
     it.capitalizeFirstLetter()
 }
 

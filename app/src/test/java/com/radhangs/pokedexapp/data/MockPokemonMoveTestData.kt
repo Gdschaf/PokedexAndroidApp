@@ -1,10 +1,9 @@
 package com.radhangs.pokedexapp.data
 
 import com.radhangs.pokedexapp.PokemonMovesQuery
-import com.radhangs.pokedexapp.model.DamageType
+import com.radhangs.pokedexapp.model.DamageCategoryPresentationModel
 import com.radhangs.pokedexapp.model.LearnType
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
-import com.radhangs.pokedexapp.model.PokemonType
 import com.radhangs.pokedexapp.model.PokemonTypeWithResources
 
 val mockLearnLevelUpNetworkData = PokemonMovesQuery.Pokemon_v2_movelearnmethod(
@@ -108,7 +107,7 @@ val mockPokemonMovesPresentationData = listOf(
         type = PokemonTypeWithResources.getType("grass"),
         learnType = LearnType.LEVEL_UP,
         learnLevel = 27,
-        damageType = DamageType.PHYSICAL
+        damageType = DamageCategoryPresentationModel.getCategory("physical")
     ),
     PokemonMovePresentationModel(
         moveName = "Swords Dance",
@@ -118,7 +117,7 @@ val mockPokemonMovesPresentationData = listOf(
         type = PokemonTypeWithResources.getType("normal"),
         learnType = LearnType.MACHINE,
         learnLevel = null,
-        damageType = DamageType.STATUS
+        damageType = DamageCategoryPresentationModel.getCategory("status")
     ),
     PokemonMovePresentationModel(
         moveName = "Growl",
@@ -128,7 +127,7 @@ val mockPokemonMovesPresentationData = listOf(
         type = PokemonTypeWithResources.unknown,
         learnType = LearnType.UNKNOWN,
         learnLevel = null,
-        damageType = DamageType.UNKNOWN
+        damageType = DamageCategoryPresentationModel.empty
     )
 )
 
@@ -141,6 +140,6 @@ val mockPokemonSwordsDancePresentationData = listOf(
         type = PokemonTypeWithResources.getType("normal"),
         learnType = LearnType.MACHINE,
         learnLevel = null,
-        damageType = DamageType.STATUS
+        damageType = DamageCategoryPresentationModel.getCategory("status")
     )
 )

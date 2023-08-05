@@ -2,7 +2,7 @@ package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.R
-import com.radhangs.pokedexapp.shared.ConvertToTitle
+import com.radhangs.pokedexapp.shared.convertToTitle
 
 enum class DamageType {
     PHYSICAL,
@@ -36,6 +36,8 @@ data class DamageCategoryPresentationModel(
 ) {
     companion object {
         val empty = DamageCategoryPresentationModel(DamageType.UNKNOWN, 0, 0)
+
+        fun getCategory(damageCategory: String) = DamageTypeMap[damageCategory] ?: empty
     }
 }
 
@@ -66,7 +68,7 @@ data class PokemonMovePresentationModel(
     companion object {
         fun fromNetworkData(moveInfo: PokemonMovesQuery.Pokemon_v2_pokemonmofe) =
             PokemonMovePresentationModel(
-                moveName = moveInfo.pokemon_v2_move?.name?.ConvertToTitle() ?: "",
+                moveName = moveInfo.pokemon_v2_move?.name?.convertToTitle() ?: "",
                 accuracy = moveInfo.pokemon_v2_move?.accuracy ?: 100,
                 power = moveInfo.pokemon_v2_move?.power,
                 pp = moveInfo.pokemon_v2_move?.pp ?: 0, // uuuuh no shot this should be null, right?
