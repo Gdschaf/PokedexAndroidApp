@@ -3,10 +3,11 @@
 ## Summary:
 This Android app was created as a week-long challenge, allowing the use of any public API. For this project, the PokeAPI was chosen due to its beta GraphQL endpoint. The app was developed using modern Android development technologies, including Kotlin, Kotlin coroutines, Jetpack Compose, and others. The main goal was to treat the challenge as if it were a professional project, showcasing best practices and attention to detail.
 
+![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
+![Screenshot 2023-08-04 at 11 40 55 PM](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/eb0e9409-6520-4e9c-b5bb-c52356a2a8ba)![Screenshot 2023-08-04 at 11 41 23 PM](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/cbae5ac6-d86f-48cf-9fa2-694bda3968a6)
+
 ## Screens/UI:
 The app features two main screens: the Pokedex screen, serving as the homepage, and the Pokemon detail screen. Both screens are fully built with Compose, and reusability was kept in mind when designing composables. Additionally, both light and dark themes are supported throughout the app.
-
-![pokedex_app_demo_light](https://github.com/Gdschaf/PokedexAndroidApp/assets/76528786/c2cd553d-5e24-4360-91a1-726c9bddc35a)
 
 ## Accessibility (A11y):
 Ensuring accessibility is a crucial aspect of app development, and this app was designed with inclusivity in mind. Both screens, the Pokedex screen, and the Pokemon detail screen, feature full TalkBack support. Elements are appropriately ordered and grouped together with the right content descriptions to facilitate a smooth user experience for those relying on assistive technologies.
