@@ -1,6 +1,6 @@
 package com.radhangs.pokedexapp.pokedex
 
-import androidx.activity.ComponentActivity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,32 +28,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
-import com.radhangs.pokedexapp.pokemondetail.PokemonDetailIntent
+import com.radhangs.pokedexapp.pokemondetail.PokemonDetailActivity
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.Loading
 import com.radhangs.pokedexapp.shared.PokedexSprite
 import com.radhangs.pokedexapp.shared.PokemonTitle
 import com.radhangs.pokedexapp.shared.VerticalText
-import com.radhangs.pokedexapp.shared.apolloClient
 import com.radhangs.pokedexapp.shared.getDominantColor
 
 @Composable
-fun Pokedex(context: ComponentActivity) {
-    val pokedexViewModel = ViewModelProvider(
-        context,
-        PokedexViewModelFactory(apolloClient())
-    )[PokedexViewModel::class.java]
+fun Pokedex(
+    pokedexViewModel: PokedexViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    val viewState = pokedexViewModel.viewState.observeAsState(initial = PokedexViewModel.PokedexViewState())
 
     // we show a loading screen while waiting for the query to finish
-    if(pokedexViewModel.isLoading().value) {
+    if(viewState.value.loading) {
         Loading()
     }
     // if there are any errors, we can set this flag in the view model to display a
     // "something went wrong, try again" screen with a retry button
-    else if(pokedexViewModel.hasError().value) {
+    else if(viewState.value.error) {
         ErrorTryAgain(pokedexViewModel::retry)
     }
     else {
@@ -62,9 +62,10 @@ fun Pokedex(context: ComponentActivity) {
             contentPadding = PaddingValues(defaultGap),
             verticalArrangement = Arrangement.spacedBy(defaultGap)
         ) {
-            items(pokedexViewModel.getPokedexList()) { item ->
+            items(viewState.value.pokedexList) { item ->
                 PokedexCard(item) {
-                    startActivity(context, context.PokemonDetailIntent(item.pokemonId), null)
+                    pokedexViewModel.setSelectedPokemon(item.pokemonId)
+                    startActivity(context, Intent(context, PokemonDetailActivity::class.java), null)
                 }
             }
         }

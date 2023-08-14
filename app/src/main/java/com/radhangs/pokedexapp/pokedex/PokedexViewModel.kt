@@ -1,37 +1,34 @@
 package com.radhangs.pokedexapp.pokedex
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
-import java.lang.IllegalArgumentException
+import com.radhangs.pokedexapp.repository.SelectedPokemonRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
-    private val pokedexRepository = PokedexRepository(apolloClient)
+@HiltViewModel
+class PokedexViewModel @Inject constructor(
+    private val pokedexRepository: PokedexRepository,
+    private val selectedPokemonRepository: SelectedPokemonRepository
+) : ViewModel() {
 
-    // can this be put into a state class?
-    private val pokedexList = mutableStateListOf<PokedexPresentationModel>()
-    private val loading = mutableStateOf(true)
-    private val error = mutableStateOf(false)
+    private val _state = MutableLiveData<PokedexViewState>()
+    val viewState : LiveData<PokedexViewState> get() = _state
 
     init {
+        _state.value = PokedexViewState()
         fetchData()
     }
 
-    fun getPokedexList() = pokedexList
-
-    fun isLoading(): State<Boolean> = loading
-
-    fun hasError(): State<Boolean> = error
-
     private fun fetchData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             // I had a coroutine timeout here but apollo will eventually time out itself, it takes a while
             // and I was having issues trying to cancel the on going query after a set amount of time
@@ -40,27 +37,31 @@ class PokedexViewModel(private val apolloClient: ApolloClient) : ViewModel() {
             // so i'll let apollo figure out the timeout for me
 
             val result = pokedexRepository.fetchPokedex()
-            if(result is PokedexRepository.PokedexResult.Success) {
-                pokedexList.addAll(result.data)
-            } else {
-                error.value = true
+
+            withContext(Dispatchers.Main) {
+                if (result is PokedexRepository.PokedexResult.Success) {
+                    _state.value = _state.value!!.copy(loading = false, pokedexList = result.data)
+                } else {
+                    _state.value = _state.value!!.copy(loading = false, error = true)
+                }
             }
-            loading.value = false
         }
     }
 
     fun retry() {
-        loading.value = true
-        error.value = false
+        _state.value = _state.value!!.copy(loading = true, error = false)
         fetchData()
     }
-}
 
-class PokedexViewModelFactory(private val apolloClient: ApolloClient) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PokedexViewModel::class.java)) {
-            return PokedexViewModel(apolloClient) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    fun setSelectedPokemon(pokemonId: Int)
+    {
+        selectedPokemonRepository.setSelectedPokemon(pokemonId)
     }
+
+    data class PokedexViewState (
+        val pokedexList: List<PokedexPresentationModel> = emptyList(),
+        val selectedPokemonId: Int? = null,
+        val loading: Boolean = true,
+        val error: Boolean = false
+    )
 }

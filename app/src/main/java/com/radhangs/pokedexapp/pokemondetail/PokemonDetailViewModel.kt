@@ -2,83 +2,74 @@ package com.radhangs.pokedexapp.pokemondetail
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
 import com.radhangs.pokedexapp.repository.PokemonDetailRepository
 import com.radhangs.pokedexapp.repository.PokemonMovesRepository
+import com.radhangs.pokedexapp.repository.SelectedPokemonRepository
 import com.radhangs.pokedexapp.shared.Constants
 import com.radhangs.pokedexapp.shared.getDominantColorFromBitmap
-import java.lang.IllegalArgumentException
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PokemonDetailViewModel(
-    private val apolloClient: ApolloClient,
-    private val pokemonId: Int
+@HiltViewModel
+class PokemonDetailViewModel @Inject constructor(
+    private val pokemonDetailRepository: PokemonDetailRepository,
+    private val pokemonMovesRepository: PokemonMovesRepository,
+    private val selectedPokemonRepository: SelectedPokemonRepository
 ) : ViewModel() {
-    private val pokemonDetailRepository = PokemonDetailRepository(apolloClient)
-    private val pokemonMovesRepository = PokemonMovesRepository(apolloClient)
 
-    private val pokemonDetail = mutableStateOf(PokemonDetailPresentationModel.empty)
-    private val pokemonMoves = mutableStateListOf<PokemonMovePresentationModel>()
-    private val pokemonBitmap = mutableStateOf<Bitmap?>(null)
-    private val pokemonDominantColor = mutableStateOf(Color.Transparent)
-    private val loading = mutableStateOf(true)
-    private val error = mutableStateOf(false)
+    private val _state = MutableLiveData<PokemonDetailViewState>()
+    val viewState : LiveData<PokemonDetailViewState> get() = _state
 
     init {
+        _state.value = PokemonDetailViewState()
         fetchData()
     }
 
-    fun isLoading(): State<Boolean> = loading
-
-    fun hasError(): State<Boolean> = error
-
-    fun getPokemonDetails() = pokemonDetail
-
-    fun getPokemonMoves() = pokemonMoves
-
-    fun getPokemonBitmap() = pokemonBitmap
-
-    fun getPokemonDominantColor() = pokemonDominantColor
-
     private fun fetchData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            val pokemonId = selectedPokemonRepository.getSelectedPokemon().value ?: 1
+
             // I decided to load the details first, show the page, then load the image and moves
             // it's not too jarring and presents the user with something to view/read
             val detailsRessult = pokemonDetailRepository.fetchPokemonDetails(pokemonId)
-            if (detailsRessult is PokemonDetailRepository.PokemonDetailResult.Success) {
-                pokemonDetail.value = detailsRessult.data
-            } else {
-                error.value = true
+
+            withContext(Dispatchers.Main) {
+                if (detailsRessult is PokemonDetailRepository.PokemonDetailResult.Success) {
+                    _state.value =
+                        _state.value!!.copy(loading = false, pokemonDetail = detailsRessult.data)
+                } else {
+                    _state.value = _state.value!!.copy(loading = false, error = true)
+                }
             }
-            loading.value = false
 
             // I'm not worrying TOO much about this failing
             // if it does, it just won't display the moves
             val movesResult = pokemonMovesRepository.fetchMovesForPokemon(pokemonId)
-            if (movesResult is PokemonMovesRepository.PokemonMovesResult.Success) {
-                pokemonMoves.addAll(movesResult.data)
+
+            withContext(Dispatchers.Main) {
+                if (movesResult is PokemonMovesRepository.PokemonMovesResult.Success) {
+                    _state.value = _state.value!!.copy(pokemonMoves = movesResult.data)
+                }
             }
         }
     }
 
     fun retry() {
-        loading.value = true
-        error.value = false
+        _state.value = _state.value!!.copy(loading = true, error = false)
         fetchData()
     }
 
@@ -87,11 +78,12 @@ class PokemonDetailViewModel(
     fun loadLargeBitmap(context: Context) {
         viewModelScope.launch {
             val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL +
-                    getFormattedImageFilename(pokemonDetail.value.pokemonId)
-            pokemonBitmap.value = getBitmapFromUrl(context, imageUrl)
-            pokemonDominantColor.value = pokemonBitmap.value?.let {
+                    getFormattedImageFilename(selectedPokemonRepository.getSelectedPokemon().value ?: 1)
+            val bitmap = getBitmapFromUrl(context, imageUrl)
+            val dominantColor = bitmap?.let {
                 getDominantColorFromBitmap(it)
             } ?: Color.Transparent
+            _state.value = _state.value!!.copy(largeImageBitmap = bitmap, largeImageDominantColor = dominantColor)
         }
     }
 
@@ -117,16 +109,13 @@ class PokemonDetailViewModel(
     private fun getFormattedImageFilename(
         pokemonId: Int
     ): String = String.format("%03d.png", pokemonId)
-}
 
-class PokemonDetailViewModelFactory(
-    private val apolloClient: ApolloClient,
-    private val pokemonId: Int
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PokemonDetailViewModel::class.java)) {
-            return PokemonDetailViewModel(apolloClient, pokemonId) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
+    data class PokemonDetailViewState (
+        val pokemonDetail: PokemonDetailPresentationModel = PokemonDetailPresentationModel.empty,
+        val pokemonMoves: List<PokemonMovePresentationModel> = emptyList(),
+        val largeImageBitmap: Bitmap? = null,
+        val largeImageDominantColor: Color = Color.Transparent,
+        val loading: Boolean = true,
+        val error: Boolean = false
+    )
 }

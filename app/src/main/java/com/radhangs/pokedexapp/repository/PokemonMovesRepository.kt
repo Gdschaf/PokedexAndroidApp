@@ -4,8 +4,11 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
-class PokemonMovesRepository(private val apolloClient: ApolloClient) {
+@ViewModelScoped
+class PokemonMovesRepository @Inject constructor(private val apolloClient: ApolloClient) {
     sealed class PokemonMovesResult {
         data class Success(val data: List<PokemonMovePresentationModel>): PokemonMovesResult()
         data class Error(val errorMessage: String): PokemonMovesResult()

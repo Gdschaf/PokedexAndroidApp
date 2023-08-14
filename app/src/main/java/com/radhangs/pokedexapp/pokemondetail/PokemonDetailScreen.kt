@@ -1,7 +1,7 @@
 package com.radhangs.pokedexapp.pokemondetail
 
+import android.app.Activity
 import android.graphics.Bitmap
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,34 +17,36 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.semantics
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
+import com.radhangs.pokedexapp.pokedex.PokedexViewModel
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading
 import com.radhangs.pokedexapp.shared.PokemonTitle
-import com.radhangs.pokedexapp.shared.apolloClient
 
 @Composable
-fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
-    val pokemonDetailViewModel = ViewModelProvider(context, PokemonDetailViewModelFactory(
-        apolloClient(),
-        pokemonId
-    ))[PokemonDetailViewModel::class.java]
+fun PokemonDetailScreen(
+    pokemonDetailViewModel: PokemonDetailViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current as Activity
+    val viewState = pokemonDetailViewModel.viewState.observeAsState(initial = PokemonDetailViewModel.PokemonDetailViewState())
 
-    if(pokemonDetailViewModel.isLoading().value) {
+    if(viewState.value.loading) {
         Loading()
     }
-    else if(pokemonDetailViewModel.hasError().value) {
+    else if(viewState.value.error) {
         ErrorTryAgain(pokemonDetailViewModel::retry)
     }
     else {
@@ -57,14 +59,14 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
             // stays at the top but not header option that I could find.
             items(listOf("")) {
                 LargePokemonImage(
-                    pokemonDetailViewModel.getPokemonBitmap().value,
-                    pokemonDetailViewModel.getPokemonDominantColor().value
+                    viewState.value.largeImageBitmap,
+                    viewState.value.largeImageDominantColor
                 ) {
                     context.finish()
                 }
-                PokemonDetail(pokemonDetailViewModel.getPokemonDetails().value)
+                PokemonDetail(viewState.value.pokemonDetail)
             }
-            items(pokemonDetailViewModel.getPokemonMoves()) { item ->
+            items(viewState.value.pokemonMoves) { item ->
                 MoveCard(item)
             }
         }
@@ -75,7 +77,9 @@ fun PokemonDetailScreen(context: ComponentActivity, pokemonId: Int) {
 fun PokemonDetail(details: PokemonDetailPresentationModel) {
     val defaultGap = dimensionResource(id = R.dimen.default_gap)
     Column(
-        modifier = Modifier.fillMaxSize().padding(defaultGap),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(defaultGap),
         verticalArrangement = Arrangement.spacedBy(defaultGap),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

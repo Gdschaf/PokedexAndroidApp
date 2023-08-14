@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.ui.theme.PokedexAppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class PokedexActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +22,7 @@ class PokedexActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.background_primary)
                 ) {
-                    Pokedex(this)
+                    Pokedex()
                 }
             }
         }
