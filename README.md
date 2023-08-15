@@ -53,7 +53,7 @@ Several considerations were made during development, leading to certain decision
 
 ## Feedback
 
-I received some great feedback which helped me make improvements. <br>
+I received some great feedback which helped me make improvements. <br><br>
 **Dagger** I added dagger hilt to the project. There wasn't a ton to inject but it cleans up somethings and really comes in handy. <br>
 
 **View Model Improvements** I touched on the view model tests cases a bit above but added test cases for both view models. They are fairly similar since they kind of do the same stuff. <br>
@@ -61,7 +61,7 @@ I reworked that state data in the view models and included data classes for each
 I moved the fetchData outside of the init in both view models for testing. To prevent that from getting called a million times I added a loading status enum to both view models so it knows when it's loading, has an error, or has/hasn't been initialized. All of which is tested in the view model unit tests. <br>
 I also changed which thread the mapping of network to presentation data was being done on so the progress circle no longer freezes at the end of loading. I then switch back to the main thread to set the state variables.
 
-**ktlint** I also did many general passes to improve and clean up code. I also added ktlint to make sure everything was formatted correctly. <br>
+**ktlint** I also did many general passes to improve and clean up code. I also added ktlint to make sure everything was formatted correctly. <br><br>
 There's a bunch more little things I did to improve readability, scalability, and reliability and I'm sure I could keep improving it further, but I'm really happy with the feedback provided and the updates made.
 
 
