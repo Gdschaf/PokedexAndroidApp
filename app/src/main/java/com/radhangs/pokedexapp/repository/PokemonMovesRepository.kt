@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonMovesQuery
 import com.radhangs.pokedexapp.model.PokemonMovePresentationModel
+import com.radhangs.pokedexapp.model.toPresentationModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class PokemonMovesRepository @Inject constructor(private val apolloClient: Apoll
                 response.data?.pokemon_v2_pokemon_by_pk?.let { pokemon ->
                     PokemonMovesResult.Success(
                         data = pokemon.pokemon_v2_pokemonmoves
-                            .map { PokemonMovePresentationModel.fromNetworkData(it) }
+                            .map { it.toPresentationModel() }
                             .filter { it.moveName.isNotEmpty() }
                             .distinctBy { it.moveName }
                             .sortedWith(moveComparator)

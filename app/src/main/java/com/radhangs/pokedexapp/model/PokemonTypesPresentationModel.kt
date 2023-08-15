@@ -29,6 +29,8 @@ enum class PokemonType {
     SHADOW
 }
 
+// Found vector images of the type icons here:
+// https://www.deviantart.com/lugia-sea/art/Pokemon-Type-Icons-Vector-869706864
 val PokemonTypeMap = mapOf(
     "normal" to PokemonTypeWithResources(
         PokemonType.NORMAL,
@@ -141,6 +143,26 @@ data class PokemonTypeWithResources(val type: PokemonType, val typeIconResourceI
     }
 }
 
+fun List<PokemonDetailQuery.Pokemon_v2_pokemontype>.detailToPresentationModel() =
+    PokemonTypesPresentationModel(
+        mainType = getOrNull(0)?.pokemon_v2_type?.let { type ->
+            PokemonTypeWithResources.getType(type.name)
+        } ?: PokemonTypeWithResources.unknown,
+        secondaryType = getOrNull(1)?.pokemon_v2_type?.let { type ->
+            PokemonTypeWithResources.getType(type.name)
+        }
+    )
+
+fun List<PokedexQuery.Pokemon_v2_pokemontype>.pokedexToPresentationModel() =
+    PokemonTypesPresentationModel(
+        mainType = getOrNull(0)?.pokemon_v2_type?.let { type ->
+            PokemonTypeWithResources.getType(type.name)
+        } ?: PokemonTypeWithResources.unknown,
+        secondaryType = getOrNull(1)?.pokemon_v2_type?.let { type ->
+            PokemonTypeWithResources.getType(type.name)
+        }
+    )
+
 data class PokemonTypesPresentationModel(
     val mainType: PokemonTypeWithResources,
     val secondaryType: PokemonTypeWithResources? = null
@@ -148,27 +170,5 @@ data class PokemonTypesPresentationModel(
     companion object
     {
         val empty = PokemonTypesPresentationModel(PokemonTypeWithResources.unknown)
-
-        fun fromDetailsNetworkData(
-            listOfTypes: List<PokemonDetailQuery.Pokemon_v2_pokemontype>
-        ) = PokemonTypesPresentationModel(
-            mainType = listOfTypes.getOrNull(0)?.pokemon_v2_type?.let { type ->
-                PokemonTypeWithResources.getType(type.name)
-            } ?: PokemonTypeWithResources.unknown,
-            secondaryType = listOfTypes.getOrNull(1)?.pokemon_v2_type?.let { type ->
-                PokemonTypeWithResources.getType(type.name)
-            }
-        )
-
-        fun fromPokedexNetworkData(
-            listOfTypes: List<PokedexQuery.Pokemon_v2_pokemontype>?
-        ) = PokemonTypesPresentationModel(
-            mainType = listOfTypes?.getOrNull(0)?.pokemon_v2_type?.let { type ->
-                PokemonTypeWithResources.getType(type.name)
-            } ?: PokemonTypeWithResources.unknown,
-            secondaryType = listOfTypes?.getOrNull(1)?.pokemon_v2_type?.let { type ->
-                PokemonTypeWithResources.getType(type.name)
-            }
-        )
     }
 }

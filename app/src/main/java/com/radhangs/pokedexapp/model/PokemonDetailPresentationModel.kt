@@ -1,8 +1,31 @@
 package com.radhangs.pokedexapp.model
 
 import com.radhangs.pokedexapp.PokemonDetailQuery
-import com.radhangs.pokedexapp.model.PokedexPresentationModel.Companion.getFrontDefaultSprite
 import com.radhangs.pokedexapp.shared.capitalizeFirstLetter
+
+fun Int.divideByTen(): Float = this / 10f
+
+fun PokemonDetailQuery.Pokemon_v2_pokemon_by_pk.toPresentationData() =
+    PokemonDetailPresentationModel(
+        pokemonId = id,
+        pokemonName = name.capitalizeFirstLetter(),
+        height = height?.divideByTen() ?: 0f,
+        weight = weight?.divideByTen() ?: 0f,
+        types = pokemon_v2_pokemontypes.detailToPresentationModel(),
+        baseHappiness = pokemon_v2_pokemonspecy?.base_happiness ?: 0,
+        captureRate = pokemon_v2_pokemonspecy?.capture_rate ?: 0,
+        evolutionChain = pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain?.toPresentationList() ?: emptyList(),
+        baseStats = pokemon_v2_pokemonstats
+            .filter { it.pokemon_v2_stat != null }
+            .associate { it.pokemon_v2_stat!!.name to it.base_stat }
+    )
+
+fun PokemonDetailQuery.Pokemon_v2_evolutionchain.toPresentationList() =
+    this.pokemon_v2_pokemonspecies.let { list ->
+        list.map { evo ->
+            evo.toPresentationModel()
+        }.sortedBy { it.pokemonId }
+    }
 
 data class PokemonDetailPresentationModel(
     val pokemonId: Int,
@@ -27,45 +50,14 @@ data class PokemonDetailPresentationModel(
             evolutionChain = emptyList(),
             baseStats = emptyMap()
         )
-
-        fun fromNetworkData(pokemonData: PokemonDetailQuery.Pokemon_v2_pokemon_by_pk) =
-            PokemonDetailPresentationModel(
-                pokemonId = pokemonData.id,
-                pokemonName = pokemonData.name.capitalizeFirstLetter(),
-                height = divideByTen(pokemonData.height),
-                weight = divideByTen(pokemonData.weight),
-                types = PokemonTypesPresentationModel.fromDetailsNetworkData(pokemonData.pokemon_v2_pokemontypes),
-                baseHappiness = pokemonData.pokemon_v2_pokemonspecy?.base_happiness ?: 0,
-                captureRate = pokemonData.pokemon_v2_pokemonspecy?.capture_rate ?: 0,
-                evolutionChain = buildEvolutionChain(pokemonData.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain),
-                baseStats = pokemonData.pokemon_v2_pokemonstats
-                    .filter { it.pokemon_v2_stat != null }
-                    .associate { it.pokemon_v2_stat!!.name to it.base_stat }
-            )
-
-        // used to convert the weight and height, which are ints, into their respective units
-        // both just need to be divided by 10
-        private fun divideByTen(value: Int?) =
-            value?.let {
-                value / 10.0f
-            } ?: 0.0f
-
-        private fun buildEvolutionChain(evolutionaryChain: PokemonDetailQuery.Pokemon_v2_evolutionchain?) =
-            evolutionaryChain?.pokemon_v2_pokemonspecies?.let {list ->
-                list.map { evo ->
-                    EvolutionChainPresentationModel.fromNetworkData(evo)
-                }.sortedBy { it.pokemonId }
-            } ?: emptyList()
     }
 }
 
-data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?) {
-    companion object {
-        fun fromNetworkData(evo: PokemonDetailQuery.Pokemon_v2_pokemonspecy1) =
-            EvolutionChainPresentationModel(
-                pokemonName = evo.name.capitalizeFirstLetter(),
-                pokemonId = evo.id,
-                spriteUri = getFrontDefaultSprite(evo.pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites)
-            )
-    }
-}
+fun PokemonDetailQuery.Pokemon_v2_pokemonspecy1.toPresentationModel() =
+    EvolutionChainPresentationModel(
+        pokemonName = name.capitalizeFirstLetter(),
+        pokemonId = id,
+        spriteUri = pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites.parseToSpriteMap()["front_default"]
+    )
+
+data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?)

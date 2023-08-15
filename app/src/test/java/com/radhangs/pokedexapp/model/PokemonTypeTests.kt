@@ -1,5 +1,7 @@
 package com.radhangs.pokedexapp.model
 
+import com.radhangs.pokedexapp.PokedexQuery
+import com.radhangs.pokedexapp.PokemonDetailQuery
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
@@ -38,22 +40,17 @@ class PokemonTypeTests {
     }
 
     @Test
-    fun `null pokedex network data should adapt to unknown and null types`() {
-        val test = PokemonTypesPresentationModel.fromPokedexNetworkData(null)
-        assertEquals(PokemonTypeWithResources.unknown, test.mainType)
-        assertEquals(null, test.secondaryType)
-    }
-
-    @Test
     fun `empty pokedex network data should adapt to unknown and null types`() {
-        val test = PokemonTypesPresentationModel.fromPokedexNetworkData(emptyList())
+        val list: List<PokedexQuery.Pokemon_v2_pokemontype> = emptyList()
+        val test = list.pokedexToPresentationModel()
         assertEquals(PokemonTypeWithResources.unknown, test.mainType)
         assertEquals(null, test.secondaryType)
     }
 
     @Test
     fun `empty pokemon details network data should adapt to unknown and null types`() {
-        val test = PokemonTypesPresentationModel.fromDetailsNetworkData(emptyList())
+        val list: List<PokemonDetailQuery.Pokemon_v2_pokemontype> = emptyList()
+        val test = list.detailToPresentationModel()
         assertEquals(PokemonTypeWithResources.unknown, test.mainType)
         assertEquals(null, test.secondaryType)
     }

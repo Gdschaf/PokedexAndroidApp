@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokemonDetailQuery
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
+import com.radhangs.pokedexapp.model.toPresentationData
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ class PokemonDetailRepository @Inject constructor(private val apolloClient: Apol
             } else {
                 response.data?.pokemon_v2_pokemon_by_pk?.let { pokemonData ->
                     PokemonDetailResult.Success(
-                        data = PokemonDetailPresentationModel.fromNetworkData(pokemonData)
+                        data = pokemonData.toPresentationData()
                     )
                 } ?: PokemonDetailResult.Error(
                     errorMessage = "Pokemon detail query returned null data we weren't expecting"

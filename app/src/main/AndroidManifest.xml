@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- app icon found here: https://365webresources.com/pokemon-ios-app-icons/ -->
     <application
         android:name=".PokedexApp"
         android:allowBackup="true"

@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.exception.ApolloException
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
+import com.radhangs.pokedexapp.model.toPresentationModel
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -22,9 +23,7 @@ class PokedexRepository @Inject constructor(private val apolloClient: ApolloClie
             } else {
                 response.data?.pokemon_v2_pokemon?.let { listOfPokemon ->
                     PokedexResult.Success(
-                        data = listOfPokemon.map {
-                            PokedexPresentationModel.fromNetworkData(it)
-                        }
+                        data = listOfPokemon.map { it.toPresentationModel() }
                     )
                 } ?: PokedexResult.Error(errorMessage = "Response data returned null")
             }
