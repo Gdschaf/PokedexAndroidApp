@@ -25,9 +25,8 @@ class PokemonDetailViewModelTests {
     val mockImageLoader: ImageLoader = mock()
 
     @Test
-    fun `loading state set to initialized after successful pokemon details response`()
-    {
-        val pokemonDetailViewModel = object: PokemonDetailViewModel(
+    fun `loading state set to initialized after successful pokemon details response`() {
+        val pokemonDetailViewModel = object : PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
             mockImageLoader,
@@ -35,7 +34,9 @@ class PokemonDetailViewModelTests {
         ) {
             override fun fetchData() {
                 processPokemonDetailsResult(
-                    PokemonDetailRepository.PokemonDetailResult.Success(mockPokemonDetailPresentationData)
+                    PokemonDetailRepository.PokemonDetailResult.Success(
+                        mockPokemonDetailPresentationData
+                    )
                 )
             }
         }
@@ -48,26 +49,29 @@ class PokemonDetailViewModelTests {
     }
 
     @Test
-    fun `loading state set to error after receiving pokemon details error response`()
-    {
-        val pokemonDetailViewModel = object: PokemonDetailViewModel(
+    fun `loading state set to error after receiving pokemon details error response`() {
+        val pokemonDetailViewModel = object : PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
             mockImageLoader,
             pokemonId = 1
         ) {
             override fun fetchData() {
-                processPokemonDetailsResult(PokemonDetailRepository.PokemonDetailResult.Error("Test error message"))
+                processPokemonDetailsResult(
+                    PokemonDetailRepository.PokemonDetailResult.Error("Test error message")
+                )
             }
         }
         pokemonDetailViewModel.fetchData()
 
-        Assert.assertEquals(pokemonDetailViewModel.viewState.value!!.loadingState, LoadingState.ERROR)
+        Assert.assertEquals(
+            pokemonDetailViewModel.viewState.value!!.loadingState,
+            LoadingState.ERROR
+        )
     }
 
     @Test
-    fun `loading state is set to uninitialized on init`()
-    {
+    fun `loading state is set to uninitialized on init`() {
         val pokemonDetailViewModel = PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
@@ -82,9 +86,8 @@ class PokemonDetailViewModelTests {
     }
 
     @Test
-    fun `Pokemon detail is not empty after valid data in successful pokemon details result`()
-    {
-        val pokemonDetailViewModel = object: PokemonDetailViewModel(
+    fun `Pokemon detail is not empty after valid data in successful pokemon details result`() {
+        val pokemonDetailViewModel = object : PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
             mockImageLoader,
@@ -92,7 +95,9 @@ class PokemonDetailViewModelTests {
         ) {
             override fun fetchData() {
                 processPokemonDetailsResult(
-                    PokemonDetailRepository.PokemonDetailResult.Success(mockPokemonDetailPresentationData)
+                    PokemonDetailRepository.PokemonDetailResult.Success(
+                        mockPokemonDetailPresentationData
+                    )
                 )
             }
         }
@@ -105,9 +110,8 @@ class PokemonDetailViewModelTests {
     }
 
     @Test
-    fun `loading state is set to uninitialized when calling retry`()
-    {
-        val pokemonDetailViewModel = object: PokemonDetailViewModel(
+    fun `loading state is set to uninitialized when calling retry`() {
+        val pokemonDetailViewModel = object : PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
             mockImageLoader,
@@ -125,9 +129,8 @@ class PokemonDetailViewModelTests {
     }
 
     @Test
-    fun `Pokemon moves list isn't empty after success result`()
-    {
-        val pokemonDetailViewModel = object: PokemonDetailViewModel(
+    fun `Pokemon moves list isn't empty after success result`() {
+        val pokemonDetailViewModel = object : PokemonDetailViewModel(
             pokemonDetailRepository,
             pokemonMovesRepository,
             mockImageLoader,
@@ -135,7 +138,9 @@ class PokemonDetailViewModelTests {
         ) {
             override fun fetchData() {
                 processPokemonMovesResult(
-                    PokemonMovesRepository.PokemonMovesResult.Success(mockPokemonMovesPresentationData)
+                    PokemonMovesRepository.PokemonMovesResult.Success(
+                        mockPokemonMovesPresentationData
+                    )
                 )
             }
         }

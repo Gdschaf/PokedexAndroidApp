@@ -11,8 +11,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class PokedexRepository @Inject constructor(private val apolloClient: ApolloClient) {
     sealed class PokedexResult {
-        data class Success(val data: List<PokedexPresentationModel>): PokedexResult()
-        data class Error(val errorMessage: String): PokedexResult()
+        data class Success(val data: List<PokedexPresentationModel>) : PokedexResult()
+        data class Error(val errorMessage: String) : PokedexResult()
     }
 
     suspend fun fetchPokedex(): PokedexResult =

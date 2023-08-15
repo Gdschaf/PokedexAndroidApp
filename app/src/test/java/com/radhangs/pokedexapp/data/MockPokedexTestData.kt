@@ -2,11 +2,15 @@ package com.radhangs.pokedexapp.data
 
 import com.radhangs.pokedexapp.PokedexQuery
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
-import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 import com.radhangs.pokedexapp.model.PokemonTypeWithResources
+import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 
-val mockGrassNetworkType = PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = "grass"))
-val mockPoisonNetworkType = PokedexQuery.Pokemon_v2_pokemontype(PokedexQuery.Pokemon_v2_type(name = "poison"))
+val mockGrassNetworkType = PokedexQuery.Pokemon_v2_pokemontype(
+    PokedexQuery.Pokemon_v2_type(name = "grass")
+)
+val mockPoisonNetworkType = PokedexQuery.Pokemon_v2_pokemontype(
+    PokedexQuery.Pokemon_v2_type(name = "poison")
+)
 
 val mockPresentationType = PokemonTypesPresentationModel(
     PokemonTypeWithResources.getType("grass"),
@@ -18,7 +22,9 @@ val mockPokedexNetworkData = listOf(
         id = 1,
         name = "bulbasaur",
         pokemon_v2_pokemonsprites = listOf(
-            PokedexQuery.Pokemon_v2_pokemonsprite(sprites = "\"front_default\": \"/media/sprites/pokemon/1.png\"")
+            PokedexQuery.Pokemon_v2_pokemonsprite(
+                sprites = "\"front_default\": \"/media/sprites/pokemon/1.png\""
+            )
         ),
         pokemon_v2_pokemontypes = listOf(
             mockGrassNetworkType,

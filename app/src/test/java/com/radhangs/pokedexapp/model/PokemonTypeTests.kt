@@ -34,7 +34,7 @@ class PokemonTypeTests {
 
     @Test
     fun `test all types are in the type map`() {
-        for(e in PokemonType.values()) {
+        for (e in PokemonType.values()) {
             assertTrue(PokemonTypeMap.values.any { it.type == e })
         }
     }

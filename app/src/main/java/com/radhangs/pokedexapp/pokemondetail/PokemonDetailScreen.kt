@@ -42,16 +42,17 @@ fun PokemonDetailScreen(
 ) {
     pokemonDetailViewModel.fetchData()
     val context = LocalContext.current as Activity
-    val viewState = pokemonDetailViewModel.viewState.observeAsState(initial = PokemonDetailViewModel.PokemonDetailViewState())
+    val viewState = pokemonDetailViewModel.viewState.observeAsState(
+        initial = PokemonDetailViewModel.PokemonDetailViewState()
+    )
 
-    when(viewState.value.loadingState)
-    {
+    when (viewState.value.loadingState) {
         LoadingState.LOADING -> Loading()
         LoadingState.ERROR -> ErrorTryAgain(pokemonDetailViewModel::retry)
         LoadingState.INITIALIZED -> {
-            pokemonDetailViewModel.loadLargeBitmap(context) //this is getting called multiple times and it ain't good
+            pokemonDetailViewModel.loadLargeBitmap(context)
             LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // this first set of items is for all the stuff above the live of moves/header
                 // needed a list of size one for this there's a static header which always

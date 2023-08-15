@@ -32,9 +32,11 @@ class PokemonDetailRepositoryTests {
     @Test
     fun `test fetchPokemonDetails with valid data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonDetailQuery(mockPokemonId), PokemonDetailQuery.Data(
+            PokemonDetailQuery(mockPokemonId),
+            PokemonDetailQuery.Data(
                 mockPokemonDetailNetworkData
-        ))
+            )
+        )
 
         val result = runBlocking {
             pokemonDetailRepository.fetchPokemonDetails(mockPokemonId)
@@ -49,9 +51,11 @@ class PokemonDetailRepositoryTests {
     @Test
     fun `test fetchPokemonDetails with null data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonDetailQuery(mockPokemonId), PokemonDetailQuery.Data(
+            PokemonDetailQuery(mockPokemonId),
+            PokemonDetailQuery.Data(
                 mockPokemonDetailNullNetworkData
-            ))
+            )
+        )
 
         val result = runBlocking {
             pokemonDetailRepository.fetchPokemonDetails(mockPokemonId)
@@ -65,7 +69,10 @@ class PokemonDetailRepositoryTests {
     @OptIn(ApolloExperimental::class)
     @Test
     fun `test fetchPokemonDetails with no data`() {
-        testApolloClient.enqueueTestResponse(PokemonDetailQuery(mockPokemonId), PokemonDetailQuery.Data(null))
+        testApolloClient.enqueueTestResponse(
+            PokemonDetailQuery(mockPokemonId),
+            PokemonDetailQuery.Data(null)
+        )
 
         val result = runBlocking {
             pokemonDetailRepository.fetchPokemonDetails(mockPokemonId)
@@ -73,6 +80,9 @@ class PokemonDetailRepositoryTests {
 
         TestCase.assertTrue(result is PokemonDetailRepository.PokemonDetailResult.Error)
         val errorResult = result as PokemonDetailRepository.PokemonDetailResult.Error
-        TestCase.assertEquals(errorResult.errorMessage, "Pokemon detail query returned null data we weren't expecting")
+        TestCase.assertEquals(
+            errorResult.errorMessage,
+            "Pokemon detail query returned null data we weren't expecting"
+        )
     }
 }

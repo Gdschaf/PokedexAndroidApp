@@ -14,7 +14,10 @@ fun PokemonDetailQuery.Pokemon_v2_pokemon_by_pk.toPresentationData() =
         types = pokemon_v2_pokemontypes.detailToPresentationModel(),
         baseHappiness = pokemon_v2_pokemonspecy?.base_happiness ?: 0,
         captureRate = pokemon_v2_pokemonspecy?.capture_rate ?: 0,
-        evolutionChain = pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain?.toPresentationList() ?: emptyList(),
+        evolutionChain = pokemon_v2_pokemonspecy
+            ?.pokemon_v2_evolutionchain
+            ?.toPresentationList()
+            ?: emptyList(),
         baseStats = pokemon_v2_pokemonstats
             .filter { it.pokemon_v2_stat != null }
             .associate { it.pokemon_v2_stat!!.name to it.base_stat }
@@ -35,7 +38,7 @@ data class PokemonDetailPresentationModel(
     val types: PokemonTypesPresentationModel,
     val baseHappiness: Int,
     val captureRate: Int,
-    val evolutionChain: List<EvolutionChainPresentationModel>, // sorted by pokedex number/pokemon id
+    val evolutionChain: List<EvolutionChainPresentationModel>, // sorted by pokemon id
     val baseStats: Map<String, Int>
 ) {
     companion object {
@@ -57,7 +60,13 @@ fun PokemonDetailQuery.Pokemon_v2_pokemonspecy1.toPresentationModel() =
     EvolutionChainPresentationModel(
         pokemonName = name.capitalizeFirstLetter(),
         pokemonId = id,
-        spriteUri = pokemon_v2_pokemons.first().pokemon_v2_pokemonsprites.first().sprites.parseToSpriteMap()["front_default"]
+        spriteUri = pokemon_v2_pokemons.first()
+            .pokemon_v2_pokemonsprites.first()
+            .sprites.parseToSpriteMap()["front_default"]
     )
 
-data class EvolutionChainPresentationModel(val pokemonName: String, val pokemonId: Int, val spriteUri: String?)
+data class EvolutionChainPresentationModel(
+    val pokemonName: String,
+    val pokemonId: Int,
+    val spriteUri: String?
+)

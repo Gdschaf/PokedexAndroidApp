@@ -9,33 +9,36 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.radhangs.pokedexapp.R
 
+// 16.sp is small
 @Composable
 fun SmallText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 16.sp), //16.sp is small
+        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 16.sp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier
     )
 }
 
+// 18.sp is medium
 @Composable
 fun MediumText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 18.sp), //18.sp is medium
+        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 18.sp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier
     )
 }
 
+// 24.sp is large
 @Composable
 fun LargeText(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 24.sp), //24.sp is large
+        style = TextStyle(color = colorResource(id = R.color.text_color), fontSize = 24.sp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier

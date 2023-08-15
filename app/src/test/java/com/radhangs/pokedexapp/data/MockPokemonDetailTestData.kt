@@ -16,9 +16,11 @@ val mockNetworkEvolutionChain = PokemonDetailQuery.Pokemon_v2_evolutionchain(
             id = 2,
             pokemon_v2_pokemons = listOf(
                 PokemonDetailQuery.Pokemon_v2_pokemon(
-                    listOf(PokemonDetailQuery.Pokemon_v2_pokemonsprite(
-                        sprites = "\"front_default\": \"/media/sprites/pokemon/2.png\""
-                    ))
+                    listOf(
+                        PokemonDetailQuery.Pokemon_v2_pokemonsprite(
+                            sprites = "\"front_default\": \"/media/sprites/pokemon/2.png\""
+                        )
+                    )
                 )
             )
         ),
@@ -27,9 +29,11 @@ val mockNetworkEvolutionChain = PokemonDetailQuery.Pokemon_v2_evolutionchain(
             id = mockPokemonId,
             pokemon_v2_pokemons = listOf(
                 PokemonDetailQuery.Pokemon_v2_pokemon(
-                    listOf(PokemonDetailQuery.Pokemon_v2_pokemonsprite(
-                        sprites = "\"front_default\": \"/media/sprites/pokemon/1.png\""
-                    ))
+                    listOf(
+                        PokemonDetailQuery.Pokemon_v2_pokemonsprite(
+                            sprites = "\"front_default\": \"/media/sprites/pokemon/1.png\""
+                        )
+                    )
                 )
             )
         ),
@@ -38,9 +42,11 @@ val mockNetworkEvolutionChain = PokemonDetailQuery.Pokemon_v2_evolutionchain(
             id = 3,
             pokemon_v2_pokemons = listOf(
                 PokemonDetailQuery.Pokemon_v2_pokemon(
-                    listOf(PokemonDetailQuery.Pokemon_v2_pokemonsprite(
-                        sprites = "\"front_default\": \"/media/sprites/pokemon/3.png\""
-                    ))
+                    listOf(
+                        PokemonDetailQuery.Pokemon_v2_pokemonsprite(
+                            sprites = "\"front_default\": \"/media/sprites/pokemon/3.png\""
+                        )
+                    )
                 )
             )
         )
@@ -108,8 +114,12 @@ val mockPokemonDetailNetworkData = PokemonDetailQuery.Pokemon_v2_pokemon_by_pk(
     weight = 69,
     pokemon_v2_pokemonstats = mockNetworkBaseStats,
     pokemon_v2_pokemontypes = listOf(
-        PokemonDetailQuery.Pokemon_v2_pokemontype(PokemonDetailQuery.Pokemon_v2_type("grass")),
-        PokemonDetailQuery.Pokemon_v2_pokemontype(PokemonDetailQuery.Pokemon_v2_type("poison"))
+        PokemonDetailQuery.Pokemon_v2_pokemontype(
+            PokemonDetailQuery.Pokemon_v2_type("grass")
+        ),
+        PokemonDetailQuery.Pokemon_v2_pokemontype(
+            PokemonDetailQuery.Pokemon_v2_type("poison")
+        )
     ),
     pokemon_v2_pokemonspecy = PokemonDetailQuery.Pokemon_v2_pokemonspecy(
         base_happiness = 50,

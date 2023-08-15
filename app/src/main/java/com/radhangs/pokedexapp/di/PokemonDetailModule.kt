@@ -10,10 +10,11 @@ import javax.inject.Named
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object PokemonDetailModule
-{
+object PokemonDetailModule {
     @Provides
     @ViewModelScoped
     @Named("PokemonId")
-    fun providePokemonId(selectedPokemonRepository: SelectedPokemonRepository): Int = selectedPokemonRepository.getSelectedPokemon().value ?: 1
+    fun providePokemonId(
+        selectedPokemonRepository: SelectedPokemonRepository
+    ): Int = selectedPokemonRepository.getSelectedPokemon().value ?: 1
 }

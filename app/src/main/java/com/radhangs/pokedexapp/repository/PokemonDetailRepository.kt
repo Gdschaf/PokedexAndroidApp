@@ -11,8 +11,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class PokemonDetailRepository @Inject constructor(private val apolloClient: ApolloClient) {
     sealed class PokemonDetailResult {
-        data class Success(val data: PokemonDetailPresentationModel): PokemonDetailResult()
-        data class Error(val errorMessage: String): PokemonDetailResult()
+        data class Success(val data: PokemonDetailPresentationModel) : PokemonDetailResult()
+        data class Error(val errorMessage: String) : PokemonDetailResult()
     }
 
     suspend fun fetchPokemonDetails(pokemonId: Int): PokemonDetailResult =

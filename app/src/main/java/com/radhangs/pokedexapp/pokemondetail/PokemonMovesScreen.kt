@@ -76,9 +76,10 @@ fun PokemonMoveTitle(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Image (
+        Image(
             painter = painterResource(moveType.typeIconResourceId),
-            contentDescription = stringResource(id = moveType.typeStringResourceId) + stringResource(id = R.string.type_content_description),
+            contentDescription = stringResource(id = moveType.typeStringResourceId) +
+                stringResource(id = R.string.type_content_description),
             modifier = Modifier
                 .padding(start = 4.dp)
                 .size(20.dp)
@@ -89,9 +90,10 @@ fun PokemonMoveTitle(
                 .weight(1f)
                 .fillMaxWidth()
         )
-        Image (
+        Image(
             painter = painterResource(damageType.drawableResourceId),
-            contentDescription = stringResource(id = damageType.stringResourceId) + stringResource(id = R.string.damage_category_content_description),
+            contentDescription = stringResource(id = damageType.stringResourceId) +
+                stringResource(id = R.string.damage_category_content_description),
             modifier = Modifier
                 .padding(end = 4.dp)
                 .size(25.dp)

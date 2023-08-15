@@ -11,8 +11,8 @@ import javax.inject.Inject
 @ViewModelScoped
 class PokemonMovesRepository @Inject constructor(private val apolloClient: ApolloClient) {
     sealed class PokemonMovesResult {
-        data class Success(val data: List<PokemonMovePresentationModel>): PokemonMovesResult()
-        data class Error(val errorMessage: String): PokemonMovesResult()
+        data class Success(val data: List<PokemonMovePresentationModel>) : PokemonMovesResult()
+        data class Error(val errorMessage: String) : PokemonMovesResult()
     }
 
     private val moveComparator = Comparator<PokemonMovePresentationModel> { obj1, obj2 ->

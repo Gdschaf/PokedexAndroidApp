@@ -25,16 +25,17 @@ import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.EvolutionChainPresentationModel
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.shared.Constants.MAX_STAT_VALUE
-import com.radhangs.pokedexapp.shared.convertToTitle
 import com.radhangs.pokedexapp.shared.MediumText
 import com.radhangs.pokedexapp.shared.PokedexSprite
+import com.radhangs.pokedexapp.shared.convertToTitle
 
 // all the pokemon stats under the titles and above the moves
 @Composable
 fun PokemonCoreStats(details: PokemonDetailPresentationModel, modifier: Modifier) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
         Row(
             modifier = Modifier
@@ -81,10 +82,10 @@ fun LabelValueStat(
     modifier: Modifier,
     arrangement: Arrangement.Horizontal = Arrangement.Start
 ) {
-    Row (
+    Row(
         modifier = modifier,
         horizontalArrangement = arrangement
-    ){
+    ) {
         MediumText(
             text = "$label:",
             modifier = Modifier.padding(end = dimensionResource(id = R.dimen.label_value_gap))
@@ -99,7 +100,9 @@ fun LabelValueStat(
 // reuses the PokedexSprite composable used on the main/pokedex screen
 @Composable
 fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
-    val evolutionChainContentDescription = stringResource(id = R.string.pokemon_evolution_chain_content_description)
+    val evolutionChainContentDescription = stringResource(
+        id = R.string.pokemon_evolution_chain_content_description
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,8 +111,7 @@ fun EvolutionChain(chain: List<EvolutionChainPresentationModel>) {
                 contentDescription = evolutionChainContentDescription
             }
     ) {
-        for (evo in chain)
-        {
+        for (evo in chain) {
             PokedexSprite(
                 spriteUri = evo.spriteUri,
                 modifier = Modifier
@@ -151,8 +153,7 @@ fun PokemonBaseStats(stats: Map<String, Int>) {
 
 // bar graph display used to display base stats but could very well be used for other things
 @Composable
-fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, emptyColor: Color)
-{
+fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, emptyColor: Color) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -183,7 +184,7 @@ fun StatDisplay(label: String, value: Int, maxValue: Int, fillColor: Color, empt
                 modifier = Modifier
                     .weight(weight)
                     .background(fillColor)
-                    .height(barHeight),
+                    .height(barHeight)
             )
             Box(
                 modifier = Modifier

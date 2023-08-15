@@ -1,7 +1,6 @@
 package com.radhangs.pokedexapp.di
 
 import android.content.Context
-import coil.ImageLoader
 import coil.imageLoader
 import com.apollographql.apollo3.ApolloClient
 import com.radhangs.pokedexapp.repository.SelectedPokemonRepository

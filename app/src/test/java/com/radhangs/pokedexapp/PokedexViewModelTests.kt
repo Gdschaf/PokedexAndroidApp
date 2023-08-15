@@ -21,9 +21,11 @@ class PokedexViewModelTests {
     val mockSelectedPokemonRepository: SelectedPokemonRepository = mock()
 
     @Test
-    fun `loading state set to initialized after successful response`()
-    {
-        val pokedexViewModel = object: PokedexViewModel(mockPokedexRepository, mockSelectedPokemonRepository) {
+    fun `loading state set to initialized after successful response`() {
+        val pokedexViewModel = object : PokedexViewModel(
+            mockPokedexRepository,
+            mockSelectedPokemonRepository
+        ) {
             override fun fetchData() {
                 processPokedexResult(PokedexRepository.PokedexResult.Success(emptyList()))
             }
@@ -34,9 +36,11 @@ class PokedexViewModelTests {
     }
 
     @Test
-    fun `loading state set to error after receiving error response`()
-    {
-        val pokedexViewModel = object: PokedexViewModel(mockPokedexRepository, mockSelectedPokemonRepository) {
+    fun `loading state set to error after receiving error response`() {
+        val pokedexViewModel = object : PokedexViewModel(
+            mockPokedexRepository,
+            mockSelectedPokemonRepository
+        ) {
             override fun fetchData() {
                 processPokedexResult(PokedexRepository.PokedexResult.Error("Test error message"))
             }
@@ -47,17 +51,21 @@ class PokedexViewModelTests {
     }
 
     @Test
-    fun `loading state is set to uninitialized on init`()
-    {
-        val pokedexViewModel = PokedexViewModel(mockPokedexRepository, mockSelectedPokemonRepository)
+    fun `loading state is set to uninitialized on init`() {
+        val pokedexViewModel = PokedexViewModel(
+            mockPokedexRepository,
+            mockSelectedPokemonRepository
+        )
 
         assertEquals(pokedexViewModel.viewState.value!!.loadingState, LoadingState.UNINITIALIZED)
     }
 
     @Test
-    fun `Pokedex list is not empty after valid data in successful result`()
-    {
-        val pokedexViewModel = object: PokedexViewModel(mockPokedexRepository, mockSelectedPokemonRepository) {
+    fun `Pokedex list is not empty after valid data in successful result`() {
+        val pokedexViewModel = object : PokedexViewModel(
+            mockPokedexRepository,
+            mockSelectedPokemonRepository
+        ) {
             override fun fetchData() {
                 processPokedexResult(
                     PokedexRepository.PokedexResult.Success(data = mockPokedexPresentationData)
@@ -70,9 +78,11 @@ class PokedexViewModelTests {
     }
 
     @Test
-    fun `loading state is set to uninitialized when calling retry`()
-    {
-        val pokedexViewModel = object: PokedexViewModel(mockPokedexRepository, mockSelectedPokemonRepository) {
+    fun `loading state is set to uninitialized when calling retry`() {
+        val pokedexViewModel = object : PokedexViewModel(
+            mockPokedexRepository,
+            mockSelectedPokemonRepository
+        ) {
             override fun fetchData() { }
         }
 

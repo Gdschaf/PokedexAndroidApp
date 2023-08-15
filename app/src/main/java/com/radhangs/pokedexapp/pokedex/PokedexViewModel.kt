@@ -10,10 +10,10 @@ import com.radhangs.pokedexapp.repository.PokedexRepository
 import com.radhangs.pokedexapp.repository.SelectedPokemonRepository
 import com.radhangs.pokedexapp.shared.LoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /* I don't like the fact that this view model class is open, long story short, it's for testing
    I know this should be designed/architected better for testing to not be open, and I do prefer
@@ -31,7 +31,7 @@ open class PokedexViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableLiveData<PokedexViewState>()
-    val viewState : LiveData<PokedexViewState> get() = _state
+    val viewState: LiveData<PokedexViewState> get() = _state
 
     init {
         _state.value = PokedexViewState()
@@ -45,7 +45,6 @@ open class PokedexViewModel @Inject constructor(
 
         Log.e("GARRETT", "Pokedex fetchData() is being called")
         viewModelScope.launch(Dispatchers.IO) {
-
             /* I had a coroutine timeout here but apollo will eventually time out itself, it takes a while
                and I was having issues trying to cancel the on going query after a set amount of time
                it also dawned on me that maybe not everyone has the fastest internet
@@ -61,7 +60,10 @@ open class PokedexViewModel @Inject constructor(
 
     protected fun processPokedexResult(result: PokedexRepository.PokedexResult) {
         if (result is PokedexRepository.PokedexResult.Success) {
-            _state.value = _state.value!!.copy(loadingState = LoadingState.INITIALIZED, pokedexList = result.data)
+            _state.value = _state.value!!.copy(
+                loadingState = LoadingState.INITIALIZED,
+                pokedexList = result.data
+            )
         } else {
             _state.value = _state.value!!.copy(loadingState = LoadingState.ERROR)
         }
@@ -72,8 +74,7 @@ open class PokedexViewModel @Inject constructor(
         fetchData()
     }
 
-    fun setSelectedPokemon(pokemonId: Int)
-    {
+    fun setSelectedPokemon(pokemonId: Int) {
         selectedPokemonRepository.setSelectedPokemon(pokemonId)
     }
 
@@ -81,7 +82,7 @@ open class PokedexViewModel @Inject constructor(
         it.loadingState == LoadingState.UNINITIALIZED
     } ?: true
 
-    data class PokedexViewState (
+    data class PokedexViewState(
         val pokedexList: List<PokedexPresentationModel> = emptyList(),
         val loadingState: LoadingState = LoadingState.UNINITIALIZED
     )

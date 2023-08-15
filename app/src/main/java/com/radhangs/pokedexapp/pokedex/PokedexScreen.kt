@@ -45,10 +45,11 @@ fun Pokedex(
 ) {
     pokedexViewModel.fetchData()
     val context = LocalContext.current
-    val viewState = pokedexViewModel.viewState.observeAsState(initial = PokedexViewModel.PokedexViewState())
+    val viewState = pokedexViewModel.viewState.observeAsState(
+        initial = PokedexViewModel.PokedexViewState()
+    )
 
-    when(viewState.value.loadingState)
-    {
+    when (viewState.value.loadingState) {
         // we show a loading screen while waiting for the query to finish
         LoadingState.LOADING -> Loading()
 
@@ -84,26 +85,31 @@ fun PokedexCard(item: PokedexPresentationModel, onPokemonClicked: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-          modifier = Modifier
-              .width(dimensionResource(id = R.dimen.pokedex_number_width))
-              .height(dimensionResource(id = R.dimen.sprite_size))
-              .background(
-                  getDominantColor(
-                      LocalContext.current,
-                      item.pokemonTypes.mainType.typeIconResourceId
-                  )
-              )
+            modifier = Modifier
+                .width(dimensionResource(id = R.dimen.pokedex_number_width))
+                .height(dimensionResource(id = R.dimen.sprite_size))
+                .background(
+                    getDominantColor(
+                        LocalContext.current,
+                        item.pokemonTypes.mainType.typeIconResourceId
+                    )
+                )
         ) {
-            val pokedexNumberSidePadding = dimensionResource(id = R.dimen.pokedex_number_side_padding)
+            val pokedexNumberSidePadding = dimensionResource(
+                id = R.dimen.pokedex_number_side_padding
+            )
             val pokedexNumberString = item.pokemonId.toString()
+            val pokedexNumberContentDescription = stringResource(
+                id = R.string.pokedex_number_content_description
+            )
             VerticalText(
                 text = pokedexNumberString,
                 modifier = Modifier
                     .fillMaxHeight()
                     .wrapContentWidth()
                     .padding(start = pokedexNumberSidePadding, end = pokedexNumberSidePadding),
-                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.white)), // todo can we define this text style somewhere?
-                description = "${stringResource(id = R.string.pokedex_number_content_description)} $pokedexNumberString"
+                style = TextStyle(fontSize = 16.sp, color = colorResource(id = R.color.white)),
+                description = "$pokedexNumberContentDescription $pokedexNumberString"
             )
         }
         PokedexSprite(

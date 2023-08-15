@@ -19,11 +19,11 @@ import com.radhangs.pokedexapp.shared.Constants
 import com.radhangs.pokedexapp.shared.LoadingState
 import com.radhangs.pokedexapp.shared.getDominantColorFromBitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import javax.inject.Named
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 open class PokemonDetailViewModel @Inject constructor(
@@ -34,7 +34,7 @@ open class PokemonDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableLiveData<PokemonDetailViewState>()
-    val viewState : LiveData<PokemonDetailViewState> get() = _state
+    val viewState: LiveData<PokemonDetailViewState> get() = _state
 
     init {
         _state.value = PokemonDetailViewState()
@@ -68,7 +68,10 @@ open class PokemonDetailViewModel @Inject constructor(
     protected fun processPokemonDetailsResult(result: PokemonDetailRepository.PokemonDetailResult) {
         if (result is PokemonDetailRepository.PokemonDetailResult.Success) {
             _state.value =
-                _state.value!!.copy(loadingState = LoadingState.INITIALIZED, pokemonDetail = result.data)
+                _state.value!!.copy(
+                    loadingState = LoadingState.INITIALIZED,
+                    pokemonDetail = result.data
+                )
         } else {
             _state.value = _state.value!!.copy(loadingState = LoadingState.ERROR)
         }
@@ -92,17 +95,21 @@ open class PokemonDetailViewModel @Inject constructor(
     // rather then having a painter load this image, we're doing it separately so we can
     // get the image's bitmap for the dominant color background.
     fun loadLargeBitmap(context: Context) {
-        if (viewState.value!!.largeImageBitmap != null)
+        if (viewState.value!!.largeImageBitmap != null) {
             return
+        }
 
         viewModelScope.launch {
             val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL +
-                    getFormattedImageFilename(pokemonId)
+                getFormattedImageFilename(pokemonId)
             val bitmap = getBitmapFromUrl(context, imageUrl)
             val dominantColor = bitmap?.let {
                 getDominantColorFromBitmap(it)
             } ?: Color.Transparent
-            _state.value = _state.value!!.copy(largeImageBitmap = bitmap, largeImageDominantColor = dominantColor)
+            _state.value = _state.value!!.copy(
+                largeImageBitmap = bitmap,
+                largeImageDominantColor = dominantColor
+            )
         }
     }
 
@@ -124,7 +131,7 @@ open class PokemonDetailViewModel @Inject constructor(
         pokemonId: Int
     ): String = String.format("%03d.png", pokemonId)
 
-    data class PokemonDetailViewState (
+    data class PokemonDetailViewState(
         val pokemonDetail: PokemonDetailPresentationModel = PokemonDetailPresentationModel.empty,
         val pokemonMoves: List<PokemonMovePresentationModel> = emptyList(),
         val largeImageBitmap: Bitmap? = null,

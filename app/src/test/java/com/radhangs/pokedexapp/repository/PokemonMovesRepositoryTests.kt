@@ -33,9 +33,11 @@ class PokemonMovesRepositoryTests {
     @Test
     fun `test fetchMovesForPokemon with valid unsorted data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonMovesQuery(mockPokemonId), PokemonMovesQuery.Data(
+            PokemonMovesQuery(mockPokemonId),
+            PokemonMovesQuery.Data(
                 mockPokemonMovesNetworkData
-            ))
+            )
+        )
 
         val result = runBlocking {
             pokemonMovesRepository.fetchMovesForPokemon(mockPokemonId)
@@ -50,9 +52,11 @@ class PokemonMovesRepositoryTests {
     @Test
     fun `test fetchPokemonDetails with null data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonMovesQuery(mockPokemonId), PokemonMovesQuery.Data(
+            PokemonMovesQuery(mockPokemonId),
+            PokemonMovesQuery.Data(
                 mockPokemonMovesNullNetworkData
-            ))
+            )
+        )
 
         val result = runBlocking {
             pokemonMovesRepository.fetchMovesForPokemon(mockPokemonId)
@@ -67,7 +71,9 @@ class PokemonMovesRepositoryTests {
     @Test
     fun `test fetchPokemonDetails with no data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonMovesQuery(mockPokemonId), PokemonMovesQuery.Data(null))
+            PokemonMovesQuery(mockPokemonId),
+            PokemonMovesQuery.Data(null)
+        )
 
         val result = runBlocking {
             pokemonMovesRepository.fetchMovesForPokemon(mockPokemonId)
@@ -75,14 +81,19 @@ class PokemonMovesRepositoryTests {
 
         TestCase.assertTrue(result is PokemonMovesRepository.PokemonMovesResult.Error)
         val errorResult = result as PokemonMovesRepository.PokemonMovesResult.Error
-        TestCase.assertEquals("Pokemon moves query returned null data we weren't expecting", errorResult.errorMessage)
+        TestCase.assertEquals(
+            "Pokemon moves query returned null data we weren't expecting",
+            errorResult.errorMessage
+        )
     }
 
     @OptIn(ApolloExperimental::class)
     @Test
     fun `test fetchPokemonDetails with duplicate move data`() {
         testApolloClient.enqueueTestResponse(
-            PokemonMovesQuery(mockPokemonId), PokemonMovesQuery.Data(mockPokemonMovesDuplicateNetworkData))
+            PokemonMovesQuery(mockPokemonId),
+            PokemonMovesQuery.Data(mockPokemonMovesDuplicateNetworkData)
+        )
 
         val result = runBlocking {
             pokemonMovesRepository.fetchMovesForPokemon(mockPokemonId)

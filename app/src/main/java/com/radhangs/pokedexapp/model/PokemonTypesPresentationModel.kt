@@ -27,8 +27,7 @@ data class PokemonTypesPresentationModel(
     val mainType: PokemonTypeWithResources,
     val secondaryType: PokemonTypeWithResources? = null
 ) {
-    companion object
-    {
+    companion object {
         val empty = PokemonTypesPresentationModel(PokemonTypeWithResources.unknown)
     }
 }

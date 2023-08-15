@@ -18,17 +18,17 @@ import com.radhangs.pokedexapp.R
 @Composable
 fun Loading() {
     Row(
-        //setting mergeDescendants to true makes the progress indicator not animate which I find odd
+        // setting mergeDescendants to true makes the progress indicator not animate which I find odd
         modifier = Modifier.fillMaxSize().semantics(mergeDescendants = true) { },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(dimensionResource(id = R.dimen.loading_progress_size)),
+            modifier = Modifier.size(dimensionResource(id = R.dimen.loading_progress_size))
         )
         LargeText(
             text = stringResource(id = R.string.loading_text),
-            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.default_gap)),
+            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.default_gap))
         )
     }
 }

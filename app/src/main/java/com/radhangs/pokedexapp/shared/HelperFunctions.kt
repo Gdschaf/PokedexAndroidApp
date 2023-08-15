@@ -15,14 +15,13 @@ fun getDominantColor(context: Context, drawableId: Int): Color {
     } ?: Color(context.getColor(R.color.primary_color))
 }
 
-fun getDominantColorFromBitmap(bitmap: Bitmap) : Color
-{
+fun getDominantColorFromBitmap(bitmap: Bitmap): Color {
     val palette = Palette.from(bitmap).generate()
     val dominantColor = palette.getDominantColor(Color.Transparent.toArgb())
     return Color(dominantColor)
 }
 
-fun String.capitalizeFirstLetter() : String = this.replaceFirstChar { char -> char.uppercase() }
+fun String.capitalizeFirstLetter(): String = this.replaceFirstChar { char -> char.uppercase() }
 
 fun String.convertToTitle(): String = this.split("-").joinToString(" ") {
     it.capitalizeFirstLetter()

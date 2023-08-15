@@ -17,7 +17,9 @@ fun PokemonMovesQuery.Pokemon_v2_pokemonmofe.toPresentationModel() =
         } ?: PokemonTypeWithResources.unknown,
         learnType = pokemon_v2_movelearnmethod?.getLearnType() ?: LearnType.UNKNOWN,
         learnLevel = if (level <= 0) null else level,
-        damageType = DamageCategoryPresentationModel.getCategory(pokemon_v2_move?.pokemon_v2_movedamageclass?.name)
+        damageType = DamageCategoryPresentationModel.getCategory(
+            pokemon_v2_move?.pokemon_v2_movedamageclass?.name
+        )
     )
 
 data class PokemonMovePresentationModel(

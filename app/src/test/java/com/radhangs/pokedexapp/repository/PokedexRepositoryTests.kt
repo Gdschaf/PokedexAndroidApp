@@ -5,9 +5,9 @@ import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.radhangs.pokedexapp.PokedexQuery
-import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.data.mockPokedexNetworkData
 import com.radhangs.pokedexapp.data.mockPokedexPresentationData
+import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
@@ -35,9 +35,12 @@ class PokedexRepositoryTests {
     @OptIn(ApolloExperimental::class)
     @Test
     fun `test fetchPokedex with valid data`() {
-        testApolloClient.enqueueTestResponse(PokedexQuery(), PokedexQuery.Data(
-            mockPokedexNetworkData
-        ))
+        testApolloClient.enqueueTestResponse(
+            PokedexQuery(),
+            PokedexQuery.Data(
+                mockPokedexNetworkData
+            )
+        )
 
         val result = runBlocking {
             pokedexRepository.fetchPokedex()

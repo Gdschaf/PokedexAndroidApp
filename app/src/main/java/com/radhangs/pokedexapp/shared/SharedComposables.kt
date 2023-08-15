@@ -27,7 +27,11 @@ import com.radhangs.pokedexapp.model.PokemonTypesPresentationModel
 
 // used on both the pokedex and pokemon detail's screen
 @Composable
-fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationModel, modifier: Modifier) {
+fun PokemonTitle(
+    pokemonName: String,
+    pokemonTypes: PokemonTypesPresentationModel,
+    modifier: Modifier
+) {
     Row(
         modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -40,23 +44,25 @@ fun PokemonTitle(pokemonName: String, pokemonTypes: PokemonTypesPresentationMode
 // used by the PokemonTitle above
 @Composable
 fun PokemonTypes(pokemonTypes: PokemonTypesPresentationModel) {
-    Row (
+    Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
         val typeContentDescription = stringResource(id = R.string.type_content_description)
-        Image (
+        Image(
             painter = painterResource(pokemonTypes.mainType.typeIconResourceId),
-            contentDescription = stringResource(id = pokemonTypes.mainType.typeStringResourceId) + typeContentDescription,
-            modifier = Modifier.size(dimensionResource(id = R.dimen.type_icon_size)),
+            contentDescription = stringResource(id = pokemonTypes.mainType.typeStringResourceId) +
+                typeContentDescription,
+            modifier = Modifier.size(dimensionResource(id = R.dimen.type_icon_size))
         )
         pokemonTypes.secondaryType?.let { type ->
-            Image (
+            Image(
                 painter = painterResource(type.typeIconResourceId),
-                contentDescription = "${stringResource(id = type.typeStringResourceId)} $typeContentDescription",
+                contentDescription = "${stringResource(id = type.typeStringResourceId)} " +
+                    "$typeContentDescription",
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .size(dimensionResource(id = R.dimen.type_icon_size)),
+                    .size(dimensionResource(id = R.dimen.type_icon_size))
             )
         }
     }
@@ -90,7 +96,7 @@ fun ImageFromUrl(url: String, modifier: Modifier, contentDescription: String) {
 // generic helper image with bitmap that's already loaded either locally or via coil
 @Composable
 fun ImageFromBitmap(bitmap: Bitmap?, modifier: Modifier, contentDescription: String) {
-    if(bitmap != null) {
+    if (bitmap != null) {
         Image(
             bitmap = bitmap.asImageBitmap(),
             contentDescription = contentDescription,
@@ -103,13 +109,12 @@ fun ImageFromBitmap(bitmap: Bitmap?, modifier: Modifier, contentDescription: Str
 
 // generic vertical text element, only used in one place, but it's generic enough
 @Composable
-fun VerticalText(text: String, modifier: Modifier, style: TextStyle, description: String = text)
-{
+fun VerticalText(text: String, modifier: Modifier, style: TextStyle, description: String = text) {
     Column(
         modifier = modifier.semantics { contentDescription = description },
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
-        for(char in text) {
+        for (char in text) {
             Text(text = char.toString(), style = style)
         }
     }

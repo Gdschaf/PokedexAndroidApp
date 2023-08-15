@@ -21,7 +21,11 @@ import com.radhangs.pokedexapp.R
 // same error try again ui for both screens
 @Composable
 fun ErrorTryAgain(onRetryClicked: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val defaultGap = dimensionResource(id = R.dimen.default_gap)
         // show an exclamation point image
         Image(
@@ -36,7 +40,7 @@ fun ErrorTryAgain(onRetryClicked: () -> Unit) {
             modifier = Modifier.padding(top = defaultGap, bottom = defaultGap)
         )
         // show a retry button
-        Button(onClick = { onRetryClicked() } ) {
+        Button(onClick = { onRetryClicked() }) {
             Text(
                 text = stringResource(id = R.string.retry)
             )

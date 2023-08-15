@@ -128,8 +128,11 @@ val PokemonTypeMap = mapOf(
     )
 )
 
-data class PokemonTypeWithResources(val type: PokemonType, val typeIconResourceId: Int, val typeStringResourceId: Int) {
-
+data class PokemonTypeWithResources(
+    val type: PokemonType,
+    val typeIconResourceId: Int,
+    val typeStringResourceId: Int
+) {
     companion object {
         val unknown = PokemonTypeWithResources(
             PokemonType.UNKNOWN,
