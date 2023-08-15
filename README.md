@@ -20,7 +20,7 @@ Both screens, the Pokedex screen, and the Pokemon detail screen, feature full Ta
 Larger font sizes can look a bit rough, however. I tried designing the UI in a way that’d accommodate larger font sizes. I set all text fields to only have 1 line and their overflow type to append an ellipsis to the end. This way as the font gets bigger, it doesn’t necessarily break the UI, however some areas could be more legible.
 
 ## Testing:
-I did a lot of testing during development. I created a handful of unit tests using JUnit, Mockito, and Apollo’s mock server you can check out in the project. I also created a spreadsheet with test cases for a potential bug bash. That document can be viewed here:
+I did a lot of testing during development. I created a handful of unit tests using JUnit, Mockito, and Apollo’s mock server you can check out in the project. Testing the view models proved to be a little difficult because of the coroutines. Everything I read online via forums and api documentation said to have a rule that overrides the setMain on the Dispatchers which I did, but that seemed to only work half of the time. Sometimes the tests would pass, other times it'd fail. Seemed random and it was always complaining about the context of the coroutine in the test. I also created a spreadsheet with test cases for a potential bug bash. That document can be viewed here:
 [Bug Bash Test Cases](https://docs.google.com/spreadsheets/d/17q23UqSX26u6LsCewFgVi_28bHhbKhRfNkTDqcv4bmY/edit?usp=sharing)
 
 ## Known Issues:
@@ -45,8 +45,6 @@ There's always room for improvement and I'm always looking for new approaches to
 ## Other Considerations:
 Several considerations were made during development, leading to certain decisions:
 
-**Dagger:** I debated using dependency injection for this project but ultimately decided against it. It would have been nice to inject the Apollo client into the repositories and then the repositories into the view models but outside of that, it wouldn't have been used.
-
 **Multiple Modules:** Kind of going back to architecture improvements above, I contemplated breaking things out into their own modules but again, due to the scope of the project, decided against it.
 
 **RecyclerView vs. LazyColumn:** As much as I wanted to use Compose for everything, I did toss around the idea of using a RecyclerView as I've heard they're more efficient with larger data sets. I didn't see any noticeable performance loss from using a LazyColumn though so ultimately went that route.
@@ -60,3 +58,8 @@ I am super happy with how this project turned out. It may not be perfect, but I 
 **Gradle JDK:** JetBrains Runtime version 17.0.6 (jbr-17)<br>
 **Minimum SDK:** 23<br>
 **Target SDK:** 33<br>
+
+## Attributions
+I just want to add a few attributes here for the lovely art I found online and used in the app <br>
+The pokemon type icons were found [Here](https://www.deviantart.com/lugia-sea/art/Pokemon-Type-Icons-Vector-869706864). <br>
+and the app icon was found [Here](https://365webresources.com/pokemon-ios-app-icons/). <br>
