@@ -137,7 +137,7 @@ fun PokemonBaseStats(stats: Map<String, Int>) {
     Column(
         modifier = Modifier.fillMaxWidth().wrapContentHeight()
     ) {
-        for(stat in stats) {
+        for (stat in stats) {
             StatDisplay(
                 label = stat.key.convertToTitle(),
                 value = stat.value,

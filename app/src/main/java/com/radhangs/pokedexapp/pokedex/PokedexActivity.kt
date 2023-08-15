@@ -10,7 +10,6 @@ import androidx.compose.ui.res.colorResource
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.ui.theme.PokedexAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class PokedexActivity : ComponentActivity() {

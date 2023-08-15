@@ -2,7 +2,6 @@ package com.radhangs.pokedexapp.pokemondetail
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.LiveData
@@ -30,6 +29,7 @@ import javax.inject.Named
 open class PokemonDetailViewModel @Inject constructor(
     private val pokemonDetailRepository: PokemonDetailRepository,
     private val pokemonMovesRepository: PokemonMovesRepository,
+    private val imageLoader: ImageLoader,
     @Named("PokemonId") private val pokemonId: Int
 ) : ViewModel() {
 
@@ -41,12 +41,11 @@ open class PokemonDetailViewModel @Inject constructor(
     }
 
     open fun fetchData() {
-        if(!shouldFetchData()) {
+        if (!shouldFetchData()) {
             return
         }
         _state.value = _state.value!!.copy(loadingState = LoadingState.LOADING)
 
-        Log.e("GARRETT", "PokemonDetails fetchData() is being called")
         viewModelScope.launch(Dispatchers.IO) {
             // I decided to load the details first, show the page, then load the image and moves
             // it's not too jarring and presents the user with something to view/read
@@ -93,7 +92,9 @@ open class PokemonDetailViewModel @Inject constructor(
     // rather then having a painter load this image, we're doing it separately so we can
     // get the image's bitmap for the dominant color background.
     fun loadLargeBitmap(context: Context) {
-        Log.e("GARRETT", "Load Large Bitmap is being called")
+        if (viewState.value!!.largeImageBitmap != null)
+            return
+
         viewModelScope.launch {
             val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL +
                     getFormattedImageFilename(pokemonId)
@@ -107,11 +108,6 @@ open class PokemonDetailViewModel @Inject constructor(
 
     private suspend fun getBitmapFromUrl(context: Context, imageUrl: String): Bitmap? {
         return withContext(Dispatchers.IO) {
-            val imageLoader = ImageLoader.Builder(context)
-                .crossfade(true)
-                .allowHardware(false)
-                .build()
-
             val request = ImageRequest.Builder(context)
                 .data(imageUrl)
                 .allowHardware(false)

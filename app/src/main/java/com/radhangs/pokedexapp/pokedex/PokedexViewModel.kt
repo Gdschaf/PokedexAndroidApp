@@ -38,7 +38,7 @@ open class PokedexViewModel @Inject constructor(
     }
 
     open fun fetchData() {
-        if(!shouldFetchData()) {
+        if (!shouldFetchData()) {
             return
         }
         _state.value = _state.value!!.copy(loadingState = LoadingState.LOADING)
