@@ -53,13 +53,13 @@ Several considerations were made during development, leading to certain decision
 
 ## Feedback
 
-I received some great feedback and took that feedback to make improvements as well as took it upon myself to make more improvements. <br>
-I added dagger hilt. I'm more familiar with dagger2, just because in my past experience the library I'm used to was built on top of dagger2, and I thought the scoping in dagger hilt was a little interesting. That being said, there wasn't a ton to inject but it did come in handy a few times.<br>
+I received some great feedback which helped me make improvements. <br>
+I added dagger hilt to the project. There wasn't a ton to inject but it cleans up somethings and really comes in handy. <br>
 I touched on the view model tests cases a bit above but added test cases for both view models. They are fairly similar since they kind of do the same stuff. <br>
-There was a little graphical bug where the loading circle would freeze during the mapping of the network data to the presentation data. I moved that to the IO thread and then come back to the main thread to set the state in the view model. <br>
-Speaking of view model states, I added state data classes to both view models so instead of the composables looking at like, 5 different variables, it can now just look at the view model state and update when that changes. <br>
-I moved the fetchData outside of the init in both view models for testing. To prevent that from getting called a million times I added a loading status enum to both view models so it knows when it's loading, has an error, has or hasn't been initialized. All of which is tested in the view model unit tests. <br>
+I reworked that state data in the view models and included data classes for each view model's data. This way the composable only has to look at one variable for updating. <br>
+I moved the fetchData outside of the init in both view models for testing. To prevent that from getting called a million times I added a loading status enum to both view models so it knows when it's loading, has an error, or has/hasn't been initialized. All of which is tested in the view model unit tests. <br>
 I also did many general passes to improve and clean up code. I also added ktlint to make sure everything was formatted correctly. <br>
+There's a bunch more little things I did to improve readability, scalability, and reliability and I'm sure I could keep improving it further, but I'm really happy with the feedback provided and the updates made.
 
 
 ## Summary
