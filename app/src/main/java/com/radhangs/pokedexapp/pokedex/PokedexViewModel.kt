@@ -1,5 +1,6 @@
 package com.radhangs.pokedexapp.pokedex
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
 import com.radhangs.pokedexapp.repository.SelectedPokemonRepository
+import com.radhangs.pokedexapp.shared.LoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
 
 /* I don't like the fact that this view model class is open, long story short, it's for testing
@@ -37,6 +38,12 @@ open class PokedexViewModel @Inject constructor(
     }
 
     open fun fetchData() {
+        if(!shouldFetchData()) {
+            return
+        }
+        _state.value = _state.value!!.copy(loadingState = LoadingState.LOADING)
+
+        Log.e("GARRETT", "Pokedex fetchData() is being called")
         viewModelScope.launch(Dispatchers.IO) {
 
             /* I had a coroutine timeout here but apollo will eventually time out itself, it takes a while
@@ -54,14 +61,14 @@ open class PokedexViewModel @Inject constructor(
 
     protected fun processPokedexResult(result: PokedexRepository.PokedexResult) {
         if (result is PokedexRepository.PokedexResult.Success) {
-            _state.value = _state.value!!.copy(loading = false, pokedexList = result.data)
+            _state.value = _state.value!!.copy(loadingState = LoadingState.INITIALIZED, pokedexList = result.data)
         } else {
-            _state.value = _state.value!!.copy(loading = false, error = true)
+            _state.value = _state.value!!.copy(loadingState = LoadingState.ERROR)
         }
     }
 
     fun retry() {
-        _state.value = _state.value!!.copy(loading = true, error = false)
+        _state.value = _state.value!!.copy(loadingState = LoadingState.UNINITIALIZED)
         fetchData()
     }
 
@@ -70,9 +77,12 @@ open class PokedexViewModel @Inject constructor(
         selectedPokemonRepository.setSelectedPokemon(pokemonId)
     }
 
+    private fun shouldFetchData(): Boolean = viewState.value?.let {
+        it.loadingState == LoadingState.UNINITIALIZED
+    } ?: true
+
     data class PokedexViewState (
         val pokedexList: List<PokedexPresentationModel> = emptyList(),
-        val loading: Boolean = true,
-        val error: Boolean = false
+        val loadingState: LoadingState = LoadingState.UNINITIALIZED
     )
 }

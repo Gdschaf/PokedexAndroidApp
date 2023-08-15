@@ -33,6 +33,7 @@ import com.radhangs.pokedexapp.model.PokedexPresentationModel
 import com.radhangs.pokedexapp.pokemondetail.PokemonDetailActivity
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.Loading
+import com.radhangs.pokedexapp.shared.LoadingState
 import com.radhangs.pokedexapp.shared.PokedexSprite
 import com.radhangs.pokedexapp.shared.PokemonTitle
 import com.radhangs.pokedexapp.shared.VerticalText
@@ -46,29 +47,31 @@ fun Pokedex(
     val context = LocalContext.current
     val viewState = pokedexViewModel.viewState.observeAsState(initial = PokedexViewModel.PokedexViewState())
 
-    // we show a loading screen while waiting for the query to finish
-    if(viewState.value.loading) {
-        Loading()
-    }
-    // if there are any errors, we can set this flag in the view model to display a
-    // "something went wrong, try again" screen with a retry button
-    else if(viewState.value.error) {
-        ErrorTryAgain(pokedexViewModel::retry)
-    }
-    else {
-        val defaultGap = dimensionResource(id = R.dimen.default_gap)
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(defaultGap),
-            verticalArrangement = Arrangement.spacedBy(defaultGap)
-        ) {
-            items(viewState.value.pokedexList) { item ->
-                PokedexCard(item) {
-                    pokedexViewModel.setSelectedPokemon(item.pokemonId)
-                    context.startActivity(Intent(context, PokemonDetailActivity::class.java))
+    when(viewState.value.loadingState)
+    {
+        // we show a loading screen while waiting for the query to finish
+        LoadingState.LOADING -> Loading()
+
+        // if there are any errors, we can set this flag in the view model to display a
+        // "something went wrong, try again" screen with a retry button
+        LoadingState.ERROR -> ErrorTryAgain(pokedexViewModel::retry)
+
+        LoadingState.INITIALIZED -> {
+            val defaultGap = dimensionResource(id = R.dimen.default_gap)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(defaultGap),
+                verticalArrangement = Arrangement.spacedBy(defaultGap)
+            ) {
+                items(viewState.value.pokedexList) { item ->
+                    PokedexCard(item) {
+                        pokedexViewModel.setSelectedPokemon(item.pokemonId)
+                        context.startActivity(Intent(context, PokemonDetailActivity::class.java))
+                    }
                 }
             }
         }
+        else -> { }
     }
 }
 

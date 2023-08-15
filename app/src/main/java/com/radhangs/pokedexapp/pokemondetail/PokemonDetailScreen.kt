@@ -33,42 +33,44 @@ import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading
+import com.radhangs.pokedexapp.shared.LoadingState
 import com.radhangs.pokedexapp.shared.PokemonTitle
 
 @Composable
 fun PokemonDetailScreen(
     pokemonDetailViewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
+    pokemonDetailViewModel.fetchData()
     val context = LocalContext.current as Activity
     val viewState = pokemonDetailViewModel.viewState.observeAsState(initial = PokemonDetailViewModel.PokemonDetailViewState())
 
-    if(viewState.value.loading) {
-        Loading()
-    }
-    else if(viewState.value.error) {
-        ErrorTryAgain(pokemonDetailViewModel::retry)
-    }
-    else {
-        pokemonDetailViewModel.loadLargeBitmap(context)
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            // this first set of items is for all the stuff above the live of moves/header
-            // needed a list of size one for this there's a static header which always
-            // stays at the top but not header option that I could find.
-            items(listOf("")) {
-                LargePokemonImage(
-                    viewState.value.largeImageBitmap,
-                    viewState.value.largeImageDominantColor
-                ) {
-                    context.finish()
+    when(viewState.value.loadingState)
+    {
+        LoadingState.LOADING -> Loading()
+        LoadingState.ERROR -> ErrorTryAgain(pokemonDetailViewModel::retry)
+        LoadingState.INITIALIZED -> {
+            pokemonDetailViewModel.loadLargeBitmap(context) //this is getting called multiple times and it ain't good
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // this first set of items is for all the stuff above the live of moves/header
+                // needed a list of size one for this there's a static header which always
+                // stays at the top but not header option that I could find.
+                items(listOf("")) {
+                    LargePokemonImage(
+                        viewState.value.largeImageBitmap,
+                        viewState.value.largeImageDominantColor
+                    ) {
+                        context.finish()
+                    }
+                    PokemonDetail(viewState.value.pokemonDetail)
                 }
-                PokemonDetail(viewState.value.pokemonDetail)
-            }
-            items(viewState.value.pokemonMoves) { item ->
-                MoveCard(item)
+                items(viewState.value.pokemonMoves) { item ->
+                    MoveCard(item)
+                }
             }
         }
+        else -> { }
     }
 }
 
