@@ -20,7 +20,9 @@ Both screens, the Pokedex screen, and the Pokemon detail screen, feature full Ta
 Larger font sizes can look a bit rough, however. I tried designing the UI in a way that’d accommodate larger font sizes. I set all text fields to only have 1 line and their overflow type to append an ellipsis to the end. This way as the font gets bigger, it doesn’t necessarily break the UI, however some areas could be more legible.
 
 ## Testing:
-I did a lot of testing during development. I created a handful of unit tests using JUnit, Mockito, and Apollo’s mock server you can check out in the project. Testing the view models proved to be a little difficult because of the coroutines. Everything I read online via forums and api documentation said to have a rule that overrides the setMain on the Dispatchers which I did, but that seemed to only work half of the time. Sometimes the tests would pass, other times it'd fail. Seemed random and it was always complaining about the context of the coroutine in the test. I also created a spreadsheet with test cases for a potential bug bash. That document can be viewed here:
+I did a lot of testing during development. I created a handful of unit tests using JUnit, Mockito, and Apollo’s mock server you can check out in the project. <br>
+Testing the view models proved to be a little difficult because of the coroutines. Everything I read online via forums and api documentation said to have a rule that overrides the setMain on the Dispatchers which I did, but that seemed to only work half of the time. Sometimes the tests would pass, other times it'd fail. Seemed random and it was always complaining about the context of the coroutine in the test. <br>
+I also created a spreadsheet with test cases for a potential bug bash. That document can be viewed here:
 [Bug Bash Test Cases](https://docs.google.com/spreadsheets/d/17q23UqSX26u6LsCewFgVi_28bHhbKhRfNkTDqcv4bmY/edit?usp=sharing)
 
 ## Known Issues:
@@ -48,6 +50,17 @@ Several considerations were made during development, leading to certain decision
 **Multiple Modules:** Kind of going back to architecture improvements above, I contemplated breaking things out into their own modules but again, due to the scope of the project, decided against it.
 
 **RecyclerView vs. LazyColumn:** As much as I wanted to use Compose for everything, I did toss around the idea of using a RecyclerView as I've heard they're more efficient with larger data sets. I didn't see any noticeable performance loss from using a LazyColumn though so ultimately went that route.
+
+## Feedback
+
+I received some great feedback and took that feedback to make improvements as well as took it upon myself to make more improvements. <br>
+I added dagger hilt. I'm more familiar with dagger2, just because in my past experience the library I'm used to was built on top of dagger2, and I thought the scoping in dagger hilt was a little interesting. That being said, there wasn't a ton to inject but it did come in handy a few times.<br>
+I touched on the view model tests cases a bit above but added test cases for both view models. They are fairly similar since they kind of do the same stuff. <br>
+There was a little graphical bug where the loading circle would freeze during the mapping of the network data to the presentation data. I moved that to the IO thread and then come back to the main thread to set the state in the view model. <br>
+Speaking of view model states, I added state data classes to both view models so instead of the composables looking at like, 5 different variables, it can now just look at the view model state and update when that changes. <br>
+I moved the fetchData outside of the init in both view models for testing. To prevent that from getting called a million times I added a loading status enum to both view models so it knows when it's loading, has an error, has or hasn't been initialized. All of which is tested in the view model unit tests. <br>
+I also did many general passes to improve and clean up code. I also added ktlint to make sure everything was formatted correctly. <br>
+
 
 ## Summary
 
