@@ -1,92 +1,88 @@
 package com.radhangs.pokedexapp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.radhangs.pokedexapp.data.mockPokedexPresentationData
 import com.radhangs.pokedexapp.pokedex.PokedexViewModel
 import com.radhangs.pokedexapp.repository.PokedexRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class PokedexViewModelTests {
 
     @get:Rule
-    val rule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val instantTaskRule = InstantTaskExecutorRule() // Rule for live data
 
     @Test
-    fun `Test loading and retry false after successful response`()
+    fun `Loading and retry false after successful response`()
     {
-        val pokedexRepository = mock<PokedexRepository>()
-        val pokedexViewModel: PokedexViewModel
-
-        runBlocking {
-            `when`(pokedexRepository.fetchPokedex())
-                .thenReturn(PokedexRepository.PokedexResult.Success(emptyList()))
-
-            pokedexViewModel = PokedexViewModel(pokedexRepository, mock())
-
-            delay(1)
+        val pokedexViewModel = object: PokedexViewModel(mock(), mock()) {
+            override fun fetchData() {
+                processPokedexResult(PokedexRepository.PokedexResult.Success(emptyList()))
+            }
         }
+        pokedexViewModel.fetchData()
 
-        val loading = pokedexViewModel.viewState.value!!.loading
-        val error = pokedexViewModel.viewState.value!!.error
-
-        assertFalse(loading)
-        assertFalse(error)
+        assertFalse(pokedexViewModel.viewState.value!!.loading)
+        assertFalse(pokedexViewModel.viewState.value!!.error)
     }
 
     @Test
-    fun `Test error is false and loading is true when getting an error response`()
+    fun `Error is true and loading is false when getting an error response`()
     {
-        val pokedexRepository = mock<PokedexRepository>()
-        val pokedexViewModel: PokedexViewModel
-
-        runBlocking {
-            `when`(pokedexRepository.fetchPokedex())
-                .thenReturn(PokedexRepository.PokedexResult.Error("Test error message"))
-
-            pokedexViewModel = PokedexViewModel(pokedexRepository, mock())
-
-            delay(1)
+        val pokedexViewModel = object: PokedexViewModel(mock(), mock()) {
+            override fun fetchData() {
+                processPokedexResult(PokedexRepository.PokedexResult.Error("Test error message"))
+            }
         }
+        pokedexViewModel.fetchData()
 
-        val loading = pokedexViewModel.viewState.value!!.loading
-        val error = pokedexViewModel.viewState.value!!.error
-
-        assertFalse(loading)
-        assertTrue(error)
+        assertFalse(pokedexViewModel.viewState.value!!.loading)
+        assertTrue(pokedexViewModel.viewState.value!!.error)
     }
 
     @Test
-    fun `Test loading is true and error is false while waiting on a response`()
+    fun `Loading is true and error is false on init of view model`()
     {
-        val pokedexRepository = mock<PokedexRepository>()
-        val pokedexViewModel: PokedexViewModel
-
-        runBlocking {
-            `when`(pokedexRepository.fetchPokedex())
-                .thenReturn(PokedexRepository.PokedexResult.Success(emptyList()))
-
-            pokedexViewModel = PokedexViewModel(pokedexRepository, mock())
-
-            //don't delay here
+        val pokedexViewModel = object: PokedexViewModel(mock(), mock()) {
+            override fun fetchData() { }
         }
 
-        val loading = pokedexViewModel.viewState.value!!.loading
-        val error = pokedexViewModel.viewState.value!!.error
+        assertTrue(pokedexViewModel.viewState.value!!.loading)
+        assertFalse(pokedexViewModel.viewState.value!!.error)
+    }
 
-        assertTrue(loading)
-        assertFalse(error)
+    @Test
+    fun `Pokedex list is not empty after valid data in successful result`()
+    {
+        val pokedexViewModel = object: PokedexViewModel(mock(), mock()) {
+            override fun fetchData() {
+                processPokedexResult(
+                    PokedexRepository.PokedexResult.Success(data = mockPokedexPresentationData)
+                )
+            }
+        }
+        pokedexViewModel.fetchData()
+
+        assertEquals(mockPokedexPresentationData, pokedexViewModel.viewState.value!!.pokedexList)
+    }
+
+    @Test
+    fun `Loading is true and error is false when calling retry`()
+    {
+        val pokedexViewModel = object: PokedexViewModel(mock(), mock()) {
+            override fun fetchData() { }
+        }
+
+        pokedexViewModel.retry()
+
+        assertTrue(pokedexViewModel.viewState.value!!.loading)
+        assertFalse(pokedexViewModel.viewState.value!!.error)
     }
 }

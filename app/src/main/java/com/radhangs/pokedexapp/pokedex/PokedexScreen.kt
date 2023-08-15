@@ -42,6 +42,7 @@ import com.radhangs.pokedexapp.shared.getDominantColor
 fun Pokedex(
     pokedexViewModel: PokedexViewModel = hiltViewModel()
 ) {
+    pokedexViewModel.fetchData()
     val context = LocalContext.current
     val viewState = pokedexViewModel.viewState.observeAsState(initial = PokedexViewModel.PokedexViewState())
 
