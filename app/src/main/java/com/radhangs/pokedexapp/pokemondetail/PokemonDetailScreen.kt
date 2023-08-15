@@ -30,7 +30,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokemonDetailPresentationModel
-import com.radhangs.pokedexapp.pokedex.PokedexViewModel
 import com.radhangs.pokedexapp.shared.ErrorTryAgain
 import com.radhangs.pokedexapp.shared.ImageFromBitmap
 import com.radhangs.pokedexapp.shared.Loading

@@ -27,7 +27,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.radhangs.pokedexapp.R
 import com.radhangs.pokedexapp.model.PokedexPresentationModel
@@ -65,7 +64,7 @@ fun Pokedex(
             items(viewState.value.pokedexList) { item ->
                 PokedexCard(item) {
                     pokedexViewModel.setSelectedPokemon(item.pokemonId)
-                    startActivity(context, Intent(context, PokemonDetailActivity::class.java), null)
+                    context.startActivity(Intent(context, PokemonDetailActivity::class.java))
                 }
             }
         }

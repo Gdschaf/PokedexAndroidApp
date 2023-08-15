@@ -23,12 +23,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class PokemonDetailViewModel @Inject constructor(
     private val pokemonDetailRepository: PokemonDetailRepository,
     private val pokemonMovesRepository: PokemonMovesRepository,
-    private val selectedPokemonRepository: SelectedPokemonRepository
+    @Named("PokemonId") private val pokemonId: Int
 ) : ViewModel() {
 
     private val _state = MutableLiveData<PokemonDetailViewState>()
@@ -41,8 +42,6 @@ class PokemonDetailViewModel @Inject constructor(
 
     private fun fetchData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val pokemonId = selectedPokemonRepository.getSelectedPokemon().value ?: 1
-
             // I decided to load the details first, show the page, then load the image and moves
             // it's not too jarring and presents the user with something to view/read
             val detailsRessult = pokemonDetailRepository.fetchPokemonDetails(pokemonId)
@@ -78,7 +77,7 @@ class PokemonDetailViewModel @Inject constructor(
     fun loadLargeBitmap(context: Context) {
         viewModelScope.launch {
             val imageUrl = Constants.LARGE_POKEMON_IMAGE_URL +
-                    getFormattedImageFilename(selectedPokemonRepository.getSelectedPokemon().value ?: 1)
+                    getFormattedImageFilename(pokemonId)
             val bitmap = getBitmapFromUrl(context, imageUrl)
             val dominantColor = bitmap?.let {
                 getDominantColorFromBitmap(it)
